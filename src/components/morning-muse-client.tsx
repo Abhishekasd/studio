@@ -8,6 +8,7 @@ import {
   Image as ImageIcon,
   Loader,
   Globe,
+  Download,
 } from "lucide-react";
 import Image from "next/image";
 
@@ -21,6 +22,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogDescription,
+  DialogFooter,
 } from "@/components/ui/dialog";
 import {
   Select,
@@ -92,6 +94,16 @@ export const MorningMuseClient: FC = () => {
         });
       }
     });
+  };
+  
+  const handleDownloadImage = () => {
+    if (!generatedImage) return;
+    const link = document.createElement("a");
+    link.href = generatedImage;
+    link.download = "morning-muse.png";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
 
   return (
@@ -199,6 +211,14 @@ export const MorningMuseClient: FC = () => {
               />
             )}
           </div>
+          {generatedImage && (
+            <DialogFooter>
+              <Button onClick={handleDownloadImage} className="w-full">
+                <Download />
+                Download Image
+              </Button>
+            </DialogFooter>
+          )}
         </DialogContent>
       </Dialog>
     </div>
