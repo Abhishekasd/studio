@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, useEffect, useCallback } from 'react';
@@ -23,10 +24,6 @@ export const useMessageGenerator = (language: string, category: string) => {
 
   useEffect(() => {
     setIsMounted(true);
-    // When component mounts for the first time on client, get a new message
-    // to avoid using the static initial one if the user doesn't interact.
-    getNewMessage();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const getNewMessage = useCallback(() => {
@@ -41,7 +38,7 @@ export const useMessageGenerator = (language: string, category: string) => {
     );
 
     if (availableIndices.length === 0) {
-      // All messages have been shown, reset used indices
+      // All messages have been shown, reset used indices but keep the last message for now
       const newUsed = new Set<number>();
       setUsedIndices(newUsed);
       availableIndices = Array.from(Array(messageList.length).keys());
@@ -55,7 +52,6 @@ export const useMessageGenerator = (language: string, category: string) => {
   }, [language, category, usedIndices]);
   
   useEffect(() => {
-    // When category or language changes, reset and get a new message, but only on the client.
     if (isMounted) {
       const firstMessage = getInitialMessage(language, category);
       setCurrentMessage(firstMessage);
@@ -64,6 +60,7 @@ export const useMessageGenerator = (language: string, category: string) => {
           newUsedIndices.add(firstMessage.key);
       }
       setUsedIndices(newUsedIndices);
+      // Get a new random message after resetting
       getNewMessage();
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
