@@ -1,15 +1,20 @@
 'use client';
 
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 import { cn } from '@/lib/utils';
 
 const ThreeBackground: React.FC = () => {
   const mountRef = useRef<HTMLDivElement>(null);
   const animationFrameId = useRef<number>();
+  const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
-    if (!mountRef.current || typeof window === 'undefined') return;
+    setIsClient(true);
+  }, []);
+
+  useEffect(() => {
+    if (!isClient || !mountRef.current || typeof window === 'undefined') return;
 
     const currentMount = mountRef.current;
 
@@ -89,7 +94,11 @@ const ThreeBackground: React.FC = () => {
       particlesMaterial.dispose();
       renderer.dispose();
     };
-  }, []);
+  }, [isClient]);
+
+  if (!isClient) {
+    return null;
+  }
 
   return (
     <div className="fixed inset-0 -z-20 h-full w-full">
