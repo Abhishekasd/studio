@@ -20,15 +20,8 @@ const getFirstMessage = (language: string, category: string): Message => {
 export const useMessageGenerator = (language: string, category: string) => {
   const [currentMessage, setCurrentMessage] = useState<Message>(() => getFirstMessage(language, category));
   const [usedIndices, setUsedIndices] = useState(new Set<number>());
-  const [isMounted, setIsMounted] = useState(false);
-
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
 
   const getNewMessage = useCallback(() => {
-    if (!isMounted) return;
-
     const messageList = messages[language]?.[category] ?? [];
     if (messageList.length === 0) {
       setCurrentMessage({ text: 'No messages in this category yet. Stay tuned!', key: -1 });
@@ -41,34 +34,31 @@ export const useMessageGenerator = (language: string, category: string) => {
 
     if (availableIndices.length === 0) {
       // All messages shown, reset and show a random one
-      const newUsedIndices = new Set<number>();
-      const randomIndex = Math.floor(Math.random() * messageList.length);
-      newUsedIndices.add(randomIndex);
-      setUsedIndices(newUsedIndices);
-      setCurrentMessage({ text: messageList[randomIndex], key: randomIndex });
+      setUsedIndices(prev => {
+        const newUsedIndices = new Set<number>();
+        const randomIndex = Math.floor(Math.random() * messageList.length);
+        newUsedIndices.add(randomIndex);
+        setCurrentMessage({ text: messageList[randomIndex], key: randomIndex });
+        return newUsedIndices;
+      });
       return;
     }
 
     const randomIndex = availableIndices[Math.floor(Math.random() * availableIndices.length)];
-    const newUsedIndices = new Set(usedIndices);
-    newUsedIndices.add(randomIndex);
-    setUsedIndices(newUsedIndices);
+    setUsedIndices(prev => new Set(prev).add(randomIndex));
     setCurrentMessage({ text: messageList[randomIndex], key: randomIndex });
 
-  }, [language, category, usedIndices, isMounted]);
+  }, [language, category, usedIndices]);
 
   useEffect(() => {
     // Reset used indices and fetch the first message when language or category changes
     setUsedIndices(new Set());
     setCurrentMessage(getFirstMessage(language, category));
-  }, [language, category]);
+    // We call getNewMessage here to get a random one on category/language change.
+    // The timeout ensures state updates from the lines above are processed.
+    setTimeout(() => getNewMessage(), 0);
+  }, [language, category, getNewMessage]);
 
-  useEffect(() => {
-    // When the component mounts on the client, get a random message.
-    if(isMounted) {
-        getNewMessage();
-    }
-  }, [isMounted, getNewMessage]);
 
   return { currentMessage, getNewMessage };
 };
