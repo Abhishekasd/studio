@@ -37,8 +37,13 @@ export const useMessageGenerator = (language: string, category: string) => {
     );
 
     if (availableIndices.length === 0) {
-      setUsedIndices(new Set());
-      availableIndices = Array.from(Array(messageList.length).keys());
+      // Reset if all messages have been shown
+      const newUsedIndices = new Set<number>();
+      const randomIndex = Math.floor(Math.random() * messageList.length);
+      newUsedIndices.add(randomIndex);
+      setUsedIndices(newUsedIndices);
+      setCurrentMessage({ text: messageList[randomIndex], key: randomIndex });
+      return;
     }
 
     const randomIndex = availableIndices[Math.floor(Math.random() * availableIndices.length)];
@@ -50,15 +55,17 @@ export const useMessageGenerator = (language: string, category: string) => {
   
   useEffect(() => {
     setUsedIndices(new Set());
+    // Set a deterministic first message
     setCurrentMessage(getFirstMessage(language, category));
   }, [language, category]);
 
   useEffect(() => {
+    // Only get a new random message on the client after mounting
     if (isMounted) {
       getNewMessage();
     }
-    // We only want this to run once on mount for a new category/language, so we have specific deps.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+  // We only want this to run once on mount for a new category/language, so we have specific deps.
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isMounted, language, category]);
 
 
