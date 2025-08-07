@@ -67,7 +67,7 @@ export const MorningMuseClient: FC = () => {
 
   const handleCopy = () => {
     if (currentMessage.text) {
-      navigator.clipboard.writeText(currentMessage.text);
+      navigator.clipboard.writeText(`🌞 Good Morning! 🌸\n${currentMessage.text}\n☕️ Have a beautiful day ahead!`);
       setIsCopied(true);
       toast({ title: "Copied to clipboard!", description: "Share the inspiration." });
       setTimeout(() => setIsCopied(false), 2000);
@@ -80,7 +80,7 @@ export const MorningMuseClient: FC = () => {
     startGenerating(async () => {
       try {
         const result = await generateImageAction({
-          message: currentMessage.text,
+          message: `🌞 Good Morning! 🌸\n${currentMessage.text}\n☕️ Have a beautiful day ahead!`,
           category,
         });
         setGeneratedImage(result.imageDataUri);
@@ -138,17 +138,21 @@ export const MorningMuseClient: FC = () => {
           style={{ transform: isFlipped ? 'rotateX(180deg)' : 'rotateX(0deg)'}}
         >
           <Card className="min-h-[200px] w-full backface-hidden flex items-center justify-center bg-card/30 backdrop-blur-md border-border/50 shadow-2xl shadow-primary/10">
-            <CardContent className="p-6">
-              <p className="text-center text-xl md:text-2xl font-medium leading-relaxed text-foreground/90">
+            <CardContent className="p-6 text-center">
+              <p className="text-lg text-foreground/80">🌞 Good Morning! 🌸</p>
+              <p className="my-4 text-xl md:text-2xl font-medium leading-relaxed text-foreground/90">
                 {currentMessage.text}
               </p>
+              <p className="text-lg text-foreground/80">☕️ Have a beautiful day ahead!</p>
             </CardContent>
           </Card>
           <Card className="absolute top-0 min-h-[200px] w-full rotate-y-180 backface-hidden flex items-center justify-center bg-card/30 backdrop-blur-md border-border/50 shadow-2xl shadow-primary/10">
-             <CardContent className="p-6">
-              <p className="text-center text-xl md:text-2xl font-medium leading-relaxed text-foreground/90">
-                {currentMessage.text}
-              </p>
+             <CardContent className="p-6 text-center">
+                <p className="text-lg text-foreground/80">🌞 Good Morning! 🌸</p>
+                <p className="my-4 text-xl md:text-2xl font-medium leading-relaxed text-foreground/90">
+                  {currentMessage.text}
+                </p>
+                <p className="text-lg text-foreground/80">☕️ Have a beautiful day ahead!</p>
             </CardContent>
           </Card>
         </div>
