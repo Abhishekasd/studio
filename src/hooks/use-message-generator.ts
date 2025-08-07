@@ -12,6 +12,7 @@ interface Message {
 const getInitialMessage = (language: string, category: string): Message => {
     const messageList = messages[language]?.[category] ?? [];
     if (messageList.length > 0) {
+        // Always return the first message for the initial render to ensure consistency
         return { text: messageList[0], key: 0 };
     }
     return { text: 'Select a category to start your day!', key: -1 };
@@ -19,17 +20,13 @@ const getInitialMessage = (language: string, category: string): Message => {
 
 export const useMessageGenerator = (language: string, category: string) => {
   const [currentMessage, setCurrentMessage] = useState<Message>(() => getInitialMessage(language, category));
-  const [usedIndices, setUsedIndices] = useState(new Set<number>([0]));
-  const [isMounted, setIsMounted] = useState(false);
-
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
+  const [usedIndices, setUsedIndices] = useState(new Set<number>());
 
   const getNewMessage = useCallback(() => {
     const messageList = messages[language]?.[category] ?? [];
     if (messageList.length === 0) {
       setCurrentMessage({ text: 'No messages in this category yet. Stay tuned!', key: -1 });
+      setUsedIndices(new Set());
       return;
     }
 
@@ -38,7 +35,7 @@ export const useMessageGenerator = (language: string, category: string) => {
     );
 
     if (availableIndices.length === 0) {
-      // All messages have been shown, reset used indices but keep the last message for now
+      // All messages have been shown, reset for a new cycle
       const newUsed = new Set<number>();
       setUsedIndices(newUsed);
       availableIndices = Array.from(Array(messageList.length).keys());
@@ -51,8 +48,8 @@ export const useMessageGenerator = (language: string, category: string) => {
 
   }, [language, category, usedIndices]);
   
+  // Effect to reset and fetch a new message when language or category changes
   useEffect(() => {
-    if (isMounted) {
       const firstMessage = getInitialMessage(language, category);
       setCurrentMessage(firstMessage);
       const newUsedIndices = new Set<number>();
@@ -60,11 +57,7 @@ export const useMessageGenerator = (language: string, category: string) => {
           newUsedIndices.add(firstMessage.key);
       }
       setUsedIndices(newUsedIndices);
-      // Get a new random message after resetting
-      getNewMessage();
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [language, category, isMounted]);
+  }, [language, category]);
 
 
   return { currentMessage, getNewMessage };

@@ -1,6 +1,7 @@
+
 "use client";
 
-import { useState, useTransition, type FC } from "react";
+import { useState, useTransition, type FC, useEffect } from "react";
 import {
   Copy,
   Check,
@@ -49,6 +50,11 @@ const categories = [
 ];
 
 export const MorningMuseClient: FC = () => {
+  const [isClient, setIsClient] = useState(false);
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
   const [language, setLanguage] = useState("en");
   const [category, setCategory] = useState("motivational");
   const { currentMessage, getNewMessage } = useMessageGenerator(language, category);
@@ -106,6 +112,10 @@ export const MorningMuseClient: FC = () => {
     document.body.removeChild(link);
   };
 
+  if (!isClient) {
+    return null; // Render nothing on the server
+  }
+
   return (
     <div className="flex w-full max-w-2xl flex-col items-center gap-8">
       <header className="flex w-full flex-col items-center justify-between gap-4 sm:flex-row">
@@ -146,7 +156,6 @@ export const MorningMuseClient: FC = () => {
       <div className="w-full perspective-1000">
         <div
           className="relative w-full transform-style-preserve-3d transition-transform duration-700"
-          data-flipped={isFlipped}
           style={{ transform: isFlipped ? 'rotateX(180deg)' : 'rotateX(0deg)'}}
         >
           <Card className="min-h-[200px] w-full backface-hidden flex items-center justify-center bg-card/30 backdrop-blur-md border-border/50 shadow-2xl shadow-primary/10">

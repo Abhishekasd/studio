@@ -14,7 +14,7 @@ const ThreeBackground: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    if (!isClient || !mountRef.current || typeof window === 'undefined') return;
+    if (!isClient || !mountRef.current) return;
 
     const currentMount = mountRef.current;
 
