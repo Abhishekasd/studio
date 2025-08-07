@@ -8,7 +8,7 @@ interface Message {
   key: number;
 }
 
-const getFirstMessage = (language: string, category: string): Message => {
+const getInitialMessage = (language: string, category: string): Message => {
     const messageList = messages[language]?.[category] ?? [];
     if (messageList.length > 0) {
         return { text: messageList[0], key: 0 };
@@ -17,12 +17,16 @@ const getFirstMessage = (language: string, category: string): Message => {
 };
 
 export const useMessageGenerator = (language: string, category: string) => {
-  const [currentMessage, setCurrentMessage] = useState<Message>(() => getFirstMessage(language, category));
-  const [usedIndices, setUsedIndices] = useState(new Set<number>());
+  const [currentMessage, setCurrentMessage] = useState<Message>(() => getInitialMessage(language, category));
+  const [usedIndices, setUsedIndices] = useState(new Set<number>([0]));
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
     setIsMounted(true);
+    // When component mounts for the first time on client, get a new message
+    // to avoid using the static initial one if the user doesn't interact.
+    getNewMessage();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const getNewMessage = useCallback(() => {
@@ -37,8 +41,9 @@ export const useMessageGenerator = (language: string, category: string) => {
     );
 
     if (availableIndices.length === 0) {
-      // Reset if all messages have been shown
-      setUsedIndices(new Set());
+      // All messages have been shown, reset used indices
+      const newUsed = new Set<number>();
+      setUsedIndices(newUsed);
       availableIndices = Array.from(Array(messageList.length).keys());
     }
     
@@ -50,10 +55,15 @@ export const useMessageGenerator = (language: string, category: string) => {
   }, [language, category, usedIndices]);
   
   useEffect(() => {
-    // When category or language changes, reset the used indices and get a new message.
-    // This runs on the client, so it's safe.
-    setUsedIndices(new Set());
+    // When category or language changes, reset and get a new message, but only on the client.
     if (isMounted) {
+      const firstMessage = getInitialMessage(language, category);
+      setCurrentMessage(firstMessage);
+      const newUsedIndices = new Set<number>();
+      if (firstMessage.key !== -1) {
+          newUsedIndices.add(firstMessage.key);
+      }
+      setUsedIndices(newUsedIndices);
       getNewMessage();
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
