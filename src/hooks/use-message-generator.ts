@@ -8,11 +8,27 @@ interface Message {
   key: number;
 }
 
+const getFirstMessage = (language: string, category: string): Message => {
+    const messageList = messages[language]?.[category] ?? [];
+    if (messageList.length > 0) {
+        return { text: messageList[0], key: 0 };
+    }
+    return { text: 'Select a category to start your day!', key: -1 };
+};
+
+
 export const useMessageGenerator = (language: string, category: string) => {
-  const [currentMessage, setCurrentMessage] = useState<Message>({ text: 'Loading...', key: 0 });
+  const [currentMessage, setCurrentMessage] = useState<Message>(() => getFirstMessage(language, category));
   const [usedIndices, setUsedIndices] = useState(new Set<number>());
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   const getNewMessage = useCallback(() => {
+    if (!isMounted) return;
+
     const messageList = messages[language]?.[category] ?? [];
     if (messageList.length === 0) {
       setCurrentMessage({ text: 'No messages in this category yet. Stay tuned!', key: -1 });
@@ -39,19 +55,20 @@ export const useMessageGenerator = (language: string, category: string) => {
     setUsedIndices(newUsedIndices);
     setCurrentMessage({ text: messageList[randomIndex], key: randomIndex });
 
-  }, [language, category, usedIndices]);
+  }, [language, category, usedIndices, isMounted]);
 
   useEffect(() => {
     // Reset used indices and fetch the first message when language or category changes
-    const messageList = messages[language]?.[category] ?? [];
-    if (messageList.length > 0) {
-      const firstRandomIndex = Math.floor(Math.random() * messageList.length);
-      setUsedIndices(new Set([firstRandomIndex]));
-      setCurrentMessage({ text: messageList[firstRandomIndex], key: firstRandomIndex });
-    } else {
-      setCurrentMessage({ text: 'Select a category to start your day!', key: -1 });
-    }
+    setUsedIndices(new Set());
+    setCurrentMessage(getFirstMessage(language, category));
   }, [language, category]);
+
+  useEffect(() => {
+    // When the component mounts on the client, get a random message.
+    if(isMounted) {
+        getNewMessage();
+    }
+  }, [isMounted, getNewMessage]);
 
   return { currentMessage, getNewMessage };
 };
