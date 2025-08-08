@@ -35,18 +35,12 @@ import {
 import { useToast } from "@/hooks/use-toast";
 import { SunIcon } from "@/components/icons";
 import { cn } from "@/lib/utils";
+import { uiText } from "@/lib/ui-text";
 
 const languages = [
   { value: "en", label: "English" },
   { value: "hi", label: "हिन्दी" },
   { value: "es", label: "Español" },
-];
-
-const categories = [
-  { value: "shayari", label: "📜 Shayari" },
-  { value: "joke", label: "😂 Joke" },
-  { value: "motivational", label: "💪 Motivational" },
-  { value: "spiritual", label: "🧘 Spiritual" },
 ];
 
 export const MorningMuseClient: FC = () => {
@@ -65,6 +59,15 @@ export const MorningMuseClient: FC = () => {
   const [isGenerating, startGenerating] = useTransition();
   const [generatedImage, setGeneratedImage] = useState<string | null>(null);
 
+  const t = uiText[language] || uiText.en;
+
+  const categories = [
+    { value: "shayari", label: t.shayari },
+    { value: "joke", label: t.joke },
+    { value: "motivational", label: t.motivational },
+    { value: "spiritual", label: t.spiritual },
+  ];
+
   const handleNewMessage = () => {
     setIsFlipped(true);
     setTimeout(() => {
@@ -77,7 +80,7 @@ export const MorningMuseClient: FC = () => {
     if (currentMessage.text) {
       navigator.clipboard.writeText(`🌞 Good Morning! 🌸\n${currentMessage.text}\n☕️ Have a beautiful day ahead!`);
       setIsCopied(true);
-      toast({ title: "Copied to clipboard!", description: "Share the inspiration." });
+      toast({ title: t.copiedToClipboard, description: t.shareInspiration });
       setTimeout(() => setIsCopied(false), 2000);
     }
   };
@@ -95,7 +98,7 @@ export const MorningMuseClient: FC = () => {
       } catch (error) {
         toast({
           variant: "destructive",
-          title: "Image Generation Failed",
+          title: t.imageGenerationFailed,
           description: error instanceof Error ? error.message : "An unknown error occurred.",
         });
       }
@@ -128,7 +131,7 @@ export const MorningMuseClient: FC = () => {
         <Select value={language} onValueChange={setLanguage}>
           <SelectTrigger className="w-[180px] bg-card/50 backdrop-blur-sm">
             <Globe className="mr-2 h-4 w-4" />
-            <SelectValue placeholder="Language" />
+            <SelectValue placeholder={t.language} />
           </SelectTrigger>
           <SelectContent>
             {languages.map((lang) => (
@@ -182,31 +185,31 @@ export const MorningMuseClient: FC = () => {
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 w-full max-w-lg">
         <Button onClick={handleCopy} size="lg" variant="outline" className="bg-card/50 backdrop-blur-sm">
           {isCopied ? <Check /> : <Copy />}
-          {isCopied ? "Copied!" : "Copy Text"}
+          {isCopied ? t.copied : t.copyText}
         </Button>
         <Button onClick={handleGenerateImage} size="lg" disabled={isGenerating}>
           {isGenerating ? <Loader className="animate-spin" /> : <ImageIcon />}
-          {isGenerating ? "Creating..." : "Generate Image"}
+          {isGenerating ? t.creating : t.generateImage}
         </Button>
         <Button onClick={handleNewMessage} size="lg" variant="secondary">
           <RefreshCw className={cn(isFlipped && "animate-spin")} style={{animationDuration: '700ms'}}/>
-          Show Another
+          {t.showAnother}
         </Button>
       </div>
 
       <Dialog open={!!generatedImage || isGenerating} onOpenChange={(open) => !open && setGeneratedImage(null)}>
         <DialogContent className="max-w-xl bg-card/80 backdrop-blur-xl">
           <DialogHeader>
-            <DialogTitle>Your Morning Muse Image</DialogTitle>
+            <DialogTitle>{t.yourImage}</DialogTitle>
             <DialogDescription>
-              Here is your generated image. Feel free to download and share it!
+              {t.downloadAndShare}
             </DialogDescription>
           </DialogHeader>
           <div className="mt-4 flex items-center justify-center rounded-lg border border-dashed border-border bg-background/50 min-h-[300px]">
             {isGenerating && !generatedImage && (
               <div className="flex flex-col items-center gap-2 text-muted-foreground">
                 <Loader className="h-8 w-8 animate-spin text-primary" />
-                <p>Generating your masterpiece...</p>
+                <p>{t.generatingMasterpiece}</p>
               </div>
             )}
             {generatedImage && (
@@ -224,7 +227,7 @@ export const MorningMuseClient: FC = () => {
             <DialogFooter>
               <Button onClick={handleDownloadImage} className="w-full">
                 <Download />
-                Download Image
+                {t.downloadImage}
               </Button>
             </DialogFooter>
           )}
