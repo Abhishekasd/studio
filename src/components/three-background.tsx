@@ -9,6 +9,7 @@ const ThreeBackground: React.FC = () => {
   const mountRef = useRef<HTMLDivElement>(null);
   const animationFrameId = useRef<number>();
   const [isMounted, setIsMounted] = useState(false);
+  const mouse = useRef({ x: 0, y: 0 });
 
   useEffect(() => {
     setIsMounted(true);
@@ -67,8 +68,10 @@ const ThreeBackground: React.FC = () => {
 
     const animate = () => {
       const elapsedTime = clock.getElapsedTime();
-      particleSystem.rotation.y = elapsedTime * 0.05;
-      particleSystem.rotation.x = elapsedTime * 0.02;
+      
+      // Update rotation based on base animation and mouse position
+      particleSystem.rotation.y = elapsedTime * 0.05 + mouse.current.x * 0.1;
+      particleSystem.rotation.x = elapsedTime * 0.02 + mouse.current.y * 0.1;
 
       renderer.render(scene, camera);
       animationFrameId.current = requestAnimationFrame(animate);
@@ -83,10 +86,17 @@ const ThreeBackground: React.FC = () => {
       }
     };
     window.addEventListener('resize', handleResize);
+    
+    const handleMouseMove = (event: MouseEvent) => {
+      mouse.current.x = (event.clientX / window.innerWidth) * 2 - 1;
+      mouse.current.y = -((event.clientY / window.innerHeight) * 2 - 1);
+    };
+    window.addEventListener('mousemove', handleMouseMove);
 
     return () => {
       if(animationFrameId.current) cancelAnimationFrame(animationFrameId.current);
       window.removeEventListener('resize', handleResize);
+      window.removeEventListener('mousemove', handleMouseMove);
       if (currentMount && renderer.domElement) {
         currentMount.removeChild(renderer.domElement);
       }

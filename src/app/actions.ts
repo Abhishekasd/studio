@@ -16,7 +16,7 @@ export async function generateImageAction(
     return result;
   } catch (error) {
     console.error('Error generating image:', error);
-    if (error instanceof Error && error.message.includes('API key')) {
+    if (error instanceof Error && error.message.includes('AIzaSyC4wgNKRWl4FtOgZW1Rt_EoYUApneSp9Gw')) {
        throw new Error('Image generation failed: The API key is missing or invalid. Please check your server environment variables.');
     }
     throw new Error('Failed to generate image. Please try again.');
