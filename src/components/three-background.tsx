@@ -30,7 +30,7 @@ const ThreeBackground: React.FC = () => {
     renderer.setPixelRatio(window.devicePixelRatio);
     currentMount.appendChild(renderer.domElement);
 
-    const particlesCount = 5000;
+    const particlesCount = 10000;
     const positions = new Float32Array(particlesCount * 3);
     const colors = new Float32Array(particlesCount * 3);
 
@@ -118,7 +118,7 @@ const ThreeBackground: React.FC = () => {
         "bg-gradient-to-br from-[hsl(var(--background))] via-[hsl(var(--background)/0.9)] to-[hsl(var(--accent)/0.2)]"
       )}/>
        <div 
-        className="absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_-20%,hsl(var(--primary)/0.15),transparent)]"
+        className="absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_-20%,hsl(var(--primary)/0.1),transparent)]"
       />
       <div ref={mountRef} className="h-full w-full" />
     </div>
