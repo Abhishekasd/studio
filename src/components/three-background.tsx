@@ -30,7 +30,7 @@ const ThreeBackground: React.FC = () => {
     renderer.setPixelRatio(window.devicePixelRatio);
     currentMount.appendChild(renderer.domElement);
 
-    const particlesCount = 7000;
+    const particlesCount = 10000;
     const positions = new Float32Array(particlesCount * 3);
     const colors = new Float32Array(particlesCount * 3);
 
@@ -39,9 +39,9 @@ const ThreeBackground: React.FC = () => {
 
     for (let i = 0; i < particlesCount; i++) {
       const i3 = i * 3;
-      positions[i3] = (Math.random() - 0.5) * 10;
-      positions[i3 + 1] = (Math.random() - 0.5) * 10;
-      positions[i3 + 2] = (Math.random() - 0.5) * 10;
+      positions[i3] = (Math.random() - 0.5) * 12;
+      positions[i3 + 1] = (Math.random() - 0.5) * 12;
+      positions[i3 + 2] = (Math.random() - 0.5) * 12;
       
       const randomColor = Math.random() > 0.5 ? color1 : color2;
       colors[i3] = randomColor.r;
