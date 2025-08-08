@@ -18,6 +18,8 @@ export const uiText: Record<string, Record<string, string>> = {
     downloadAndShare: 'Here is your generated image. Feel free to download and share it!',
     generatingMasterpiece: 'Generating your masterpiece...',
     downloadImage: 'Download Image',
+    goodMorning: '🌞 Good Morning! 🌸',
+    haveANiceDay: '☕️ Have a beautiful day ahead!',
   },
   hi: {
     language: 'भाषा',
@@ -37,6 +39,8 @@ export const uiText: Record<string, Record<string, string>> = {
     downloadAndShare: 'यहां आपकी उत्पन्न छवि है। इसे डाउनलोड करने और साझा करने के लिए स्वतंत्र महसूस करें!',
     generatingMasterpiece: 'आपकी उत्कृष्ट कृति बना रहा है...',
     downloadImage: 'छवि डाउनलोड करें',
+    goodMorning: '🌞 सुप्रभात! 🌸',
+    haveANiceDay: '☕️ आपका दिन सुंदर हो!',
   },
   es: {
     language: 'Idioma',
@@ -56,5 +60,7 @@ export const uiText: Record<string, Record<string, string>> = {
     downloadAndShare: 'Aquí está tu imagen generada. ¡Siéntete libre de descargarla y compartirla!',
     generatingMasterpiece: 'Generando tu obra maestra...',
     downloadImage: 'Descargar imagen',
+    goodMorning: '🌞 ¡Buenos días! 🌸',
+    haveANiceDay: '☕️ ¡Que tengas un hermoso día por delante!',
   },
 };
