@@ -30,7 +30,7 @@ const ThreeBackground: React.FC = () => {
     renderer.setPixelRatio(window.devicePixelRatio);
     currentMount.appendChild(renderer.domElement);
 
-    const particlesCount = 10000;
+    const particlesCount = 5000;
     const positions = new Float32Array(particlesCount * 3);
     const colors = new Float32Array(particlesCount * 3);
 
@@ -39,9 +39,9 @@ const ThreeBackground: React.FC = () => {
 
     for (let i = 0; i < particlesCount; i++) {
       const i3 = i * 3;
-      positions[i3] = (Math.random() - 0.5) * 12;
-      positions[i3 + 1] = (Math.random() - 0.5) * 12;
-      positions[i3 + 2] = (Math.random() - 0.5) * 12;
+      positions[i3] = (Math.random() - 0.5) * 10;
+      positions[i3 + 1] = (Math.random() - 0.5) * 10;
+      positions[i3 + 2] = (Math.random() - 0.5) * 10;
       
       const randomColor = Math.random() > 0.5 ? color1 : color2;
       colors[i3] = randomColor.r;
@@ -118,7 +118,7 @@ const ThreeBackground: React.FC = () => {
         "bg-gradient-to-br from-[hsl(var(--background))] via-[hsl(var(--background)/0.9)] to-[hsl(var(--accent)/0.2)]"
       )}/>
        <div 
-        className="absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_-20%,hsl(var(--primary)/0.3),transparent)]"
+        className="absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_-20%,hsl(var(--primary)/0.15),transparent)]"
       />
       <div ref={mountRef} className="h-full w-full" />
     </div>
