@@ -44,9 +44,9 @@ const languages = [
 ];
 
 export const MorningMuseClient: FC = () => {
-  const [isClient, setIsClient] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
   useEffect(() => {
-    setIsClient(true);
+    setIsMounted(true);
   }, []);
 
   const [language, setLanguage] = useState("en");
@@ -115,7 +115,7 @@ export const MorningMuseClient: FC = () => {
     document.body.removeChild(link);
   };
 
-  if (!isClient) {
+  if (!isMounted) {
     return null; // Render nothing on the server
   }
 

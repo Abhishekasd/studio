@@ -1,3 +1,4 @@
+
 'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
@@ -7,14 +8,14 @@ import { cn } from '@/lib/utils';
 const ThreeBackground: React.FC = () => {
   const mountRef = useRef<HTMLDivElement>(null);
   const animationFrameId = useRef<number>();
-  const [isClient, setIsClient] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
-    setIsClient(true);
+    setIsMounted(true);
   }, []);
 
   useEffect(() => {
-    if (!isClient || !mountRef.current) return;
+    if (!isMounted || !mountRef.current) return;
 
     const currentMount = mountRef.current;
 
@@ -94,9 +95,9 @@ const ThreeBackground: React.FC = () => {
       particlesMaterial.dispose();
       renderer.dispose();
     };
-  }, [isClient]);
+  }, [isMounted]);
 
-  if (!isClient) {
+  if (!isMounted) {
     return null;
   }
 
