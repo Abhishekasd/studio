@@ -25,16 +25,22 @@ export async function generateImageWithWatermark(input: GenerateImageWithWaterma
   return generateImageWithWatermarkFlow(input);
 }
 
-const prompt = ai.definePrompt({
-  name: 'generateImageWithWatermarkPrompt',
-  input: {schema: GenerateImageWithWatermarkInputSchema},
-  output: {schema: GenerateImageWithWatermarkOutputSchema},
-  prompt: `Generate a stylized image with the following message embedded and a Morning Muse watermark. The image should be visually appealing and suitable for sharing.
+const generateImageWithWatermarkFlow = ai.defineFlow(
+  {
+    name: 'generateImageWithWatermarkFlow',
+    inputSchema: GenerateImageWithWatermarkInputSchema,
+    outputSchema: GenerateImageWithWatermarkOutputSchema,
+  },
+  async (input) => {
+    const {media} = await ai.generate({
+      // IMPORTANT: ONLY the googleai/gemini-2.0-flash-preview-image-generation model is able to generate images. You MUST use exactly this model to generate images.
+      model: 'googleai/gemini-2.0-flash-preview-image-generation',
+      prompt: `Generate a stylized image with the following message embedded and a Morning Muse watermark. The image should be visually appealing and suitable for sharing.
 
 Message: {{{message}}}
 Category: {{{category}}}
 
-Incorporate the "Morning Muse" watermark subtly and artistically. Consider the message category when designing the image (e.g., use relevant imagery and colors). The watermark should be readable but not distracting. Return the image as a data URI.
+Incorporate the "Morning Muse" watermark subtly and artistically. Consider the message category when designing the image (e.g., use relevant imagery and colors). The watermark should be readable but not distracting.
 
 Example styles, depending on category:
 - Shayari: soft, dreamy background with floral elements.
@@ -42,26 +48,13 @@ Example styles, depending on category:
 - Motivational: inspiring landscape with uplifting typography.
 - Spiritual: serene, minimalist design with symbolic elements.
 `,
-});
-
-const generateImageWithWatermarkFlow = ai.defineFlow(
-  {
-    name: 'generateImageWithWatermarkFlow',
-    inputSchema: GenerateImageWithWatermarkInputSchema,
-    outputSchema: GenerateImageWithWatermarkOutputSchema,
-  },
-  async input => {
-    const {media} = await ai.generate({
-      // IMPORTANT: ONLY the googleai/gemini-2.0-flash-preview-image-generation model is able to generate images. You MUST use exactly this model to generate images.
-      model: 'googleai/gemini-2.0-flash-preview-image-generation',
-      prompt: [
-        input.message,
-        'Incorporate a subtle "Morning Muse" watermark. The watermark should be readable but not distracting.',
-      ],
       config: {
         responseModalities: ['TEXT', 'IMAGE'], // MUST provide both TEXT and IMAGE, IMAGE only won't work
       },
     });
-    return {imageDataUri: media!.url!};
+    if (!media || !media.url) {
+      throw new Error('Image generation failed to return a valid image.');
+    }
+    return {imageDataUri: media.url};
   }
 );
