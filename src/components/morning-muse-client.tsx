@@ -11,6 +11,7 @@ import {
   Image as ImageIcon,
   Download,
   X,
+  Share2,
 } from "lucide-react";
 
 import { useMessageGenerator } from "@/hooks/use-message-generator";
@@ -130,6 +131,42 @@ export const MorningMuseClient: FC = () => {
     link.click();
     document.body.removeChild(link);
   };
+  
+  const handleShareImage = async () => {
+    if (!generatedImage || !currentMessage.text) return;
+
+    if (!navigator.share) {
+      toast({
+        title: "Sharing Not Supported",
+        description: "Your browser doesn't support this feature.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    try {
+      const response = await fetch(generatedImage);
+      const blob = await response.blob();
+      const file = new File([blob], "morning-muse-art.png", { type: blob.type });
+
+      await navigator.share({
+        title: t.generatedImageTitle,
+        text: currentMessage.text,
+        files: [file],
+      });
+       toast({ title: t.imageShared });
+    } catch (error) {
+      // Don't show an error if the user simply closes the share dialog
+      if (error instanceof Error && error.name !== 'AbortError') {
+        console.error("Error sharing image:", error);
+        toast({
+          title: t.shareFailed,
+          description: "An error occurred while trying to share.",
+          variant: "destructive",
+        });
+      }
+    }
+  };
 
 
   if (!isMounted) {
@@ -236,11 +273,14 @@ export const MorningMuseClient: FC = () => {
             )}
           </div>
           <DialogFooter className="sm:justify-end gap-2">
-             <Button type="button" variant="secondary" onClick={() => setShowImageDialog(false)}>
-              <X />{t.close}
+            <Button type="button" variant="secondary" onClick={() => setShowImageDialog(false)}>
+                <X />{t.close}
             </Button>
-            <Button type="button" onClick={handleDownloadImage} disabled={!generatedImage}>
-              <Download />{t.downloadImage}
+            <Button type="button" onClick={handleShareImage} disabled={!generatedImage || isImageGenerating}>
+                <Share2 />{t.shareImage}
+            </Button>
+            <Button type="button" onClick={handleDownloadImage} disabled={!generatedImage || isImageGenerating}>
+                <Download />{t.downloadImage}
             </Button>
           </DialogFooter>
         </DialogContent>
