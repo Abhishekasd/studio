@@ -156,7 +156,7 @@ export const MorningMuseClient: FC = () => {
       });
        toast({ title: t.imageShared });
     } catch (error) {
-      if (error instanceof Error && error.name === 'AbortError') {
+      if (error instanceof Error && (error.name === 'AbortError' || error.name === 'NotAllowedError')) {
         // Silently ignore the error if the user cancels the share dialog
         return;
       }
