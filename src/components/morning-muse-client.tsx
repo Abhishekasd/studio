@@ -11,6 +11,7 @@ import {
   Image as ImageIcon,
   Download,
   X,
+  Share2,
 } from "lucide-react";
 
 import { useMessageGenerator } from "@/hooks/use-message-generator";
@@ -56,6 +57,7 @@ export const MorningMuseClient: FC = () => {
   const [isFlipped, setIsFlipped] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
   const [isImageGenerating, setIsImageGenerating] = useState(false);
+  const [isSharing, setIsSharing] = useState(false);
   const [generatedImage, setGeneratedImage] = useState<string | null>(null);
   const [showImageDialog, setShowImageDialog] = useState(false);
   
@@ -133,6 +135,37 @@ export const MorningMuseClient: FC = () => {
     document.body.removeChild(link);
   };
   
+  const handleShareImage = async () => {
+    if (!generatedImage || !navigator.share) return;
+    setIsSharing(true);
+    try {
+      const response = await fetch(generatedImage);
+      const blob = await response.blob();
+      const file = new File([blob], "morning-muse-art.png", { type: blob.type });
+
+      await navigator.share({
+        title: t.generatedImageTitle,
+        text: currentMessage.text,
+        files: [file],
+      });
+    } catch (error: any) {
+      // This is the important part: check for AbortError or NotAllowedError
+      // which happens when the user cancels the share dialog.
+      if (error.name === 'AbortError' || error.name === 'NotAllowedError') {
+        // User cancelled the share, do nothing.
+      } else {
+        console.error("Error sharing image:", error);
+        toast({
+          title: "Share Failed",
+          description: "Could not share the image. Please try again.",
+          variant: "destructive",
+        });
+      }
+    } finally {
+      setIsSharing(false);
+    }
+  };
+
   if (!isMounted) {
     return null; // Render nothing on the server
   }
@@ -237,11 +270,17 @@ export const MorningMuseClient: FC = () => {
             )}
           </div>
           <DialogFooter className="sm:justify-end gap-2">
-            <Button type="button" variant="secondary" onClick={() => setShowImageDialog(false)}>
-                <X />{t.close}
-            </Button>
+             {navigator.share && (
+                <Button type="button" onClick={handleShareImage} disabled={!generatedImage || isImageGenerating || isSharing}>
+                    {isSharing ? <Loader className="animate-spin" /> : <Share2 />}
+                    {isSharing ? t.sharingImage : t.shareImage}
+                </Button>
+              )}
             <Button type="button" onClick={handleDownloadImage} disabled={!generatedImage || isImageGenerating}>
                 <Download />{t.downloadImage}
+            </Button>
+             <Button type="button" variant="secondary" onClick={() => setShowImageDialog(false)}>
+                <X />{t.close}
             </Button>
           </DialogFooter>
         </DialogContent>
