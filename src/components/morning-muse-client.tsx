@@ -79,7 +79,7 @@ export const MorningMuseClient: FC = () => {
 
   const handleCopy = () => {
     if (currentMessage.text) {
-      const siteUrl = window.location.origin;
+      const siteUrl = "https://morningmuse.netlify.app/";
       const shareText = `${t.goodMorning}\n${currentMessage.text}\n${t.haveANiceDay}\n\n${t.shareMessage} ${siteUrl}`;
       navigator.clipboard.writeText(shareText);
       setIsCopied(true);
@@ -248,3 +248,4 @@ export const MorningMuseClient: FC = () => {
       </Dialog>
     </>
   );
+};
