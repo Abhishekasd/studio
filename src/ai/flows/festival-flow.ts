@@ -20,31 +20,6 @@ const FestivalMessageOutputSchema = z.object({
 });
 export type FestivalMessageOutput = z.infer<typeof FestivalMessageOutputSchema>;
 
-const festivalPrompt = ai.definePrompt({
-  name: 'festivalPrompt',
-  input: {schema: FestivalMessageInputSchema},
-  output: {schema: FestivalMessageOutputSchema},
-  prompt: `You are an expert on world festivals and greetings.
-Your task is to generate a short, cheerful greeting for a major festival happening today.
-
-1.  Determine the current date.
-2.  Check if there is a major global festival (like Christmas, Diwali, Eid, New Year's, etc.) happening today.
-3.  If a major festival is found, generate a relevant, single-sentence greeting for it in the language: {{{language}}}.
-4.  If no major festival is happening today, generate a generic, cheerful festive greeting like "Wishing you a day full of joy and celebration!".
-5.  The response should only be the message text.
-
-Example for Diwali in English: "Wishing you a Diwali that's as bright as the lights and as sweet as the mithai! ✨"
-Example for no festival in Spanish: "¡Te deseo un día lleno de alegría y celebración!"
-
-Current Date: ${new Date().toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-  })}
-Language: {{{language}}}
-`,
-});
-
 const getFestivalMessageFlow = ai.defineFlow(
   {
     name: 'getFestivalMessageFlow',
@@ -52,6 +27,32 @@ const getFestivalMessageFlow = ai.defineFlow(
     outputSchema: FestivalMessageOutputSchema,
   },
   async (input) => {
+    const festivalPrompt = ai.definePrompt({
+      name: 'festivalPrompt',
+      input: {schema: FestivalMessageInputSchema},
+      output: {schema: FestivalMessageOutputSchema},
+      prompt: `You are an expert on world festivals and greetings.
+Your task is to generate a short, cheerful greeting for a major festival happening today.
+
+1.  Determine the current date.
+2.  Check if there is a major global or regional festival (like Rakshabandhan, Christmas, Diwali, Eid, New Year's, etc.) happening today.
+3.  If a major festival is found, generate a relevant, single-sentence greeting for it in the language: {{{language}}}.
+4.  If no major festival is happening today, generate a generic, cheerful festive greeting like "Wishing you a day full of joy and celebration!".
+5.  The response should only be the message text.
+
+Example for Diwali in English: "Wishing you a Diwali that's as bright as the lights and as sweet as the mithai! ✨"
+Example for Rakshabandhan in Hindi: "राखी का यह त्योहार आपके जीवन में खुशियां और समृद्धि लाए।"
+Example for no festival in Spanish: "¡Te deseo un día lleno de alegría y celebración!"
+
+Current Date: ${new Date().toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+      })}
+Language: {{{language}}}
+`,
+    });
+
     const {output} = await festivalPrompt(input);
     return output!;
   }
