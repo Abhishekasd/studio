@@ -41,9 +41,9 @@ import { textToSpeech } from "@/ai/flows/tts-flow";
 const languages = [
   { value: "en", label: "English" },
   { value: "hi", label: "हिन्दी" },
-  { value: "es", label: "Español" },
-  { value: "ur", label: "اردو" },
   { value: "sa", label: "संस्कृतम्" },
+  { value: "ur", label: "اردو" },
+  { value: "es", label: "Español" },
 ];
 
 export const MorningMuseClient: FC = () => {
