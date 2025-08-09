@@ -11,7 +11,6 @@ import {
   Image as ImageIcon,
   Download,
   X,
-  Volume2,
 } from "lucide-react";
 
 import { useMessageGenerator } from "@/hooks/use-message-generator";
@@ -36,7 +35,6 @@ import { SunIcon } from "@/components/icons";
 import { cn } from "@/lib/utils";
 import { uiText } from "@/lib/ui-text";
 import { generateImage } from "@/ai/flows/image-generation-flow";
-import { textToSpeech } from "@/ai/flows/tts-flow";
 
 const languages = [
   { value: "en", label: "English" },
@@ -62,8 +60,6 @@ export const MorningMuseClient: FC = () => {
   const [isImageGenerating, setIsImageGenerating] = useState(false);
   const [generatedImage, setGeneratedImage] = useState<string | null>(null);
   const [showImageDialog, setShowImageDialog] = useState(false);
-  const [isListening, setIsListening] = useState(false);
-  const audioRef = useRef<HTMLAudioElement | null>(null);
   
   const t = uiText[language] || uiText.en;
 
@@ -137,27 +133,6 @@ export const MorningMuseClient: FC = () => {
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
-  };
-
-  const handleListen = async () => {
-    if (!currentMessage.text || isListening) return;
-    setIsListening(true);
-    try {
-      const { audioDataUri } = await textToSpeech({ text: currentMessage.text, language });
-      if (audioRef.current) {
-        audioRef.current.src = audioDataUri;
-        audioRef.current.play();
-        audioRef.current.onended = () => setIsListening(false);
-      }
-    } catch (error) {
-      console.error("Error generating audio:", error);
-      toast({
-        title: "Audio Generation Failed",
-        description: "Could not generate audio. Please try again.",
-        variant: "destructive",
-      });
-      setIsListening(false);
-    }
   };
 
   if (!isMounted) {
@@ -237,14 +212,10 @@ export const MorningMuseClient: FC = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 w-full max-w-2xl">
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 w-full max-w-2xl">
           <Button onClick={handleCopy} size="lg" variant="outline" className="bg-card/50 backdrop-blur-sm" disabled={isLoading}>
             {isCopied ? <Check /> : <Copy />}
             {isCopied ? t.copied : t.copyText}
-          </Button>
-          <Button onClick={handleListen} size="lg" variant="outline" className="bg-card/50 backdrop-blur-sm" disabled={isLoading || isListening}>
-            {isListening ? <Loader className="animate-spin" /> : <Volume2 />}
-            {isListening ? t.listening : t.listen}
           </Button>
           <Button onClick={handleGenerateImage} size="lg" variant="default" disabled={isLoading || isImageGenerating}>
             {isImageGenerating ? <Loader className="animate-spin" /> : <ImageIcon />}
@@ -277,7 +248,6 @@ export const MorningMuseClient: FC = () => {
           </DialogFooter>
         </DialogContent>
       </Dialog>
-      <audio ref={audioRef} className="hidden" />
     </>
   );
 };

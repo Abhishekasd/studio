@@ -21,8 +21,6 @@ export const uiText: Record<string, Record<string, string>> = {
     generatedImageTitle: 'Your Inspired Art',
     close: 'Close',
     shareMessage: 'Get your daily inspiration from MorningMuse3D:',
-    listen: 'Listen',
-    listening: 'Listening...',
   },
   hi: {
     language: 'भाषा',
@@ -45,8 +43,6 @@ export const uiText: Record<string, Record<string, string>> = {
     generatedImageTitle: 'आपकी प्रेरित कला',
     close: 'बंद करें',
     shareMessage: 'MorningMuse3D से अपनी दैनिक प्रेरणा प्राप्त करें:',
-    listen: 'सुनो',
-    listening: 'सुन रहा है...',
   },
   es: {
     language: 'Idioma',
@@ -69,8 +65,6 @@ export const uiText: Record<string, Record<string, string>> = {
     generatedImageTitle: 'Tu arte inspirado',
     close: 'Cerrar',
     shareMessage: 'Obtén tu inspiración diaria de MorningMuse3D:',
-    listen: 'Escuchar',
-    listening: 'Escuchando...',
   },
   ur: {
     language: 'زبان',
@@ -93,8 +87,6 @@ export const uiText: Record<string, Record<string, string>> = {
     generatedImageTitle: 'آپ کا متاثر کن فن',
     close: 'بند کریں',
     shareMessage: 'MorningMuse3D سے اپنی روزانہ کی تحریک حاصل کریں:',
-    listen: 'سنیں',
-    listening: 'سن رہا ہے۔..',
   },
   sa: {
     language: 'भाषा',
@@ -117,7 +109,5 @@ export const uiText: Record<string, Record<string, string>> = {
     generatedImageTitle: 'भवतः प्रेरितं कला',
     close: 'पिदधातु',
     shareMessage: 'MorningMuse3D तः दैनिकप्रेरणां प्राप्नुवन्तु:',
-    listen: 'शृणोतु',
-    listening: 'शृणोति...',
   },
 };
