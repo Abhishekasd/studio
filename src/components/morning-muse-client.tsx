@@ -79,7 +79,9 @@ export const MorningMuseClient: FC = () => {
 
   const handleCopy = () => {
     if (currentMessage.text) {
-      navigator.clipboard.writeText(`${t.goodMorning}\n${currentMessage.text}\n${t.haveANiceDay}`);
+      const siteUrl = window.location.origin;
+      const shareText = `${t.goodMorning}\n${currentMessage.text}\n${t.haveANiceDay}\n\n${t.shareMessage} ${siteUrl}`;
+      navigator.clipboard.writeText(shareText);
       setIsCopied(true);
       toast({ title: t.copiedToClipboard, description: t.shareInspiration });
       setTimeout(() => setIsCopied(false), 2000);
@@ -131,7 +133,6 @@ export const MorningMuseClient: FC = () => {
     document.body.removeChild(link);
   };
   
-
   if (!isMounted) {
     return null; // Render nothing on the server
   }
@@ -247,5 +248,3 @@ export const MorningMuseClient: FC = () => {
       </Dialog>
     </>
   );
-
-    

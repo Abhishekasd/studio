@@ -20,6 +20,7 @@ export const uiText: Record<string, Record<string, string>> = {
     downloadImage: 'Download Image',
     generatedImageTitle: 'Your Inspired Art',
     close: 'Close',
+    shareMessage: 'Get your daily inspiration from MorningMuse3D:',
   },
   hi: {
     language: 'भाषा',
@@ -41,6 +42,7 @@ export const uiText: Record<string, Record<string, string>> = {
     downloadImage: 'छवि डाउनलोड करें',
     generatedImageTitle: 'आपकी प्रेरित कला',
     close: 'बंद करें',
+    shareMessage: 'MorningMuse3D से अपनी दैनिक प्रेरणा प्राप्त करें:',
   },
   es: {
     language: 'Idioma',
@@ -62,5 +64,6 @@ export const uiText: Record<string, Record<string, string>> = {
     downloadImage: 'Descargar imagen',
     generatedImageTitle: 'Tu arte inspirado',
     close: 'Cerrar',
+    shareMessage: 'Obtén tu inspiración diaria de MorningMuse3D:',
   },
 };
