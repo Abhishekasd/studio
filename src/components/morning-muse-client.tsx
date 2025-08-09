@@ -156,15 +156,17 @@ export const MorningMuseClient: FC = () => {
       });
        toast({ title: t.imageShared });
     } catch (error) {
-      // Don't show an error if the user simply closes the share dialog
-      if (error instanceof Error && error.name !== 'AbortError') {
-        console.error("Error sharing image:", error);
-        toast({
-          title: t.shareFailed,
-          description: "An error occurred while trying to share.",
-          variant: "destructive",
-        });
+      if (error instanceof Error && error.name === 'AbortError') {
+        // Silently ignore the error if the user cancels the share dialog
+        return;
       }
+      
+      console.error("Error sharing image:", error);
+      toast({
+        title: t.shareFailed,
+        description: "An error occurred while trying to share.",
+        variant: "destructive",
+      });
     }
   };
 
