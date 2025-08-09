@@ -42,7 +42,7 @@ const generateImageFlow = ai.defineFlow(
     
     const {media} = await ai.generate({
       model: 'googleai/gemini-2.0-flash-preview-image-generation',
-      prompt: `Generate a visually stunning, artistic, and abstract image that captures the essence of the following quote: "${input.prompt}". The style should be vibrant, ethereal, and inspiring, suitable for a motivational app. Do not include any text in the image.`,
+      prompt: `Generate a visually stunning, artistic, and abstract image that captures the essence of the following quote: "${input.prompt}". The style should be vibrant, ethereal, and inspiring, suitable for a motivational app. Also, add the text 'Morning Muse 3D' as a subtle watermark in a corner of the image.`,
       config: {
         responseModalities: ['TEXT', 'IMAGE'],
       },
