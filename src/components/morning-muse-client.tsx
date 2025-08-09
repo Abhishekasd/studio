@@ -42,6 +42,7 @@ const languages = [
   { value: "en", label: "English" },
   { value: "hi", label: "हिन्दी" },
   { value: "es", label: "Español" },
+  { value: "ur", label: "اردو" },
 ];
 
 export const MorningMuseClient: FC = () => {
