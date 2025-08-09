@@ -14,6 +14,7 @@ export const uiText: Record<string, Record<string, string>> = {
     showAnother: 'Show Another',
     goodMorning: '🌞 Good Morning! 🌸',
     haveANiceDay: '☕️ Have a beautiful day ahead!',
+    generatingMessage: 'Finding a festive greeting',
   },
   hi: {
     language: 'भाषा',
@@ -29,6 +30,7 @@ export const uiText: Record<string, Record<string, string>> = {
     showAnother: 'दूसरा दिखाओ',
     goodMorning: '🌞 सुप्रभात! 🌸',
     haveANiceDay: '☕️ आपका दिन सुंदर हो!',
+    generatingMessage: 'एक उत्सव की शुभकामना ढूंढ रहा हूँ',
   },
   es: {
     language: 'Idioma',
@@ -44,5 +46,6 @@ export const uiText: Record<string, Record<string, string>> = {
     showAnother: 'Mostrar otro',
     goodMorning: '🌞 ¡Buenos días! 🌸',
     haveANiceDay: '☕️ ¡Que tengas un hermoso día por delante!',
+    generatingMessage: 'Buscando un saludo festivo',
   },
 };

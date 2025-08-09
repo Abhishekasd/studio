@@ -7,6 +7,7 @@ import {
   Check,
   RefreshCw,
   Globe,
+  Loader,
 } from "lucide-react";
 
 import { useMessageGenerator } from "@/hooks/use-message-generator";
@@ -38,7 +39,7 @@ export const MorningMuseClient: FC = () => {
 
   const [language, setLanguage] = useState("en");
   const [category, setCategory] = useState("motivational");
-  const { currentMessage, getNewMessage } = useMessageGenerator(language, category);
+  const { currentMessage, getNewMessage, isLoading } = useMessageGenerator(language, category);
   const { toast } = useToast();
 
   const [isFlipped, setIsFlipped] = useState(false);
@@ -70,6 +71,20 @@ export const MorningMuseClient: FC = () => {
       setTimeout(() => setIsCopied(false), 2000);
     }
   };
+  
+  const handleCategoryChange = (newCategory: string) => {
+    if(category === newCategory && newCategory !== 'festival') return;
+    
+    if (newCategory !== 'festival') {
+      setIsFlipped(true);
+      setTimeout(() => {
+        setCategory(newCategory);
+        setIsFlipped(false);
+      }, 350)
+    } else {
+      setCategory(newCategory);
+    }
+  }
 
   if (!isMounted) {
     return null; // Render nothing on the server
@@ -104,10 +119,10 @@ export const MorningMuseClient: FC = () => {
           <Button
             key={cat.value}
             variant={category === cat.value ? "default" : "secondary"}
-            onClick={() => setCategory(cat.value)}
+            onClick={() => handleCategoryChange(cat.value)}
             className="transition-all hover:scale-105"
           >
-            {cat.label}
+            {cat.value === 'festival' && isLoading ? <Loader className="animate-spin"/> : cat.label}
           </Button>
         ))}
       </div>
@@ -119,11 +134,20 @@ export const MorningMuseClient: FC = () => {
         >
           <Card className="min-h-[200px] w-full backface-hidden flex items-center justify-center bg-card/30 backdrop-blur-md border-border/50 shadow-2xl shadow-primary/10">
             <CardContent className="p-6 text-center">
-              <p className="text-lg text-foreground/80">{t.goodMorning}</p>
-              <p className="my-4 text-xl md:text-2xl font-medium leading-relaxed text-foreground/90">
-                {currentMessage.text}
-              </p>
-              <p className="text-lg text-foreground/80">{t.haveANiceDay}</p>
+                {isLoading && category === 'festival' ? (
+                    <div className="flex items-center justify-center gap-2 text-lg text-foreground/80">
+                        <Loader className="animate-spin" />
+                        <span>{t.generatingMessage}...</span>
+                    </div>
+                ) : (
+                    <>
+                        <p className="text-lg text-foreground/80">{t.goodMorning}</p>
+                        <p className="my-4 text-xl md:text-2xl font-medium leading-relaxed text-foreground/90">
+                            {currentMessage.text}
+                        </p>
+                        <p className="text-lg text-foreground/80">{t.haveANiceDay}</p>
+                    </>
+                )}
             </CardContent>
           </Card>
           <Card className="absolute top-0 min-h-[200px] w-full rotate-y-180 backface-hidden flex items-center justify-center bg-card/30 backdrop-blur-md border-border/50 shadow-2xl shadow-primary/10">
@@ -139,12 +163,12 @@ export const MorningMuseClient: FC = () => {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full max-w-md">
-        <Button onClick={handleCopy} size="lg" variant="outline" className="bg-card/50 backdrop-blur-sm">
+        <Button onClick={handleCopy} size="lg" variant="outline" className="bg-card/50 backdrop-blur-sm" disabled={isLoading}>
           {isCopied ? <Check /> : <Copy />}
           {isCopied ? t.copied : t.copyText}
         </Button>
-        <Button onClick={handleNewMessage} size="lg" variant="secondary">
-          <RefreshCw className={cn(isFlipped && "animate-spin")} style={{animationDuration: '700ms'}}/>
+        <Button onClick={handleNewMessage} size="lg" variant="secondary" disabled={isLoading}>
+          <RefreshCw className={cn((isFlipped || (isLoading && category === 'festival')) && "animate-spin")} style={{animationDuration: '700ms'}}/>
           {t.showAnother}
         </Button>
       </div>
