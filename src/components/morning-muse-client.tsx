@@ -51,6 +51,7 @@ export const MorningMuseClient: FC = () => {
     { value: "joke", label: t.joke },
     { value: "motivational", label: t.motivational },
     { value: "spiritual", label: t.spiritual },
+    { value: "festival", label: t.festival },
   ];
 
   const handleNewMessage = () => {

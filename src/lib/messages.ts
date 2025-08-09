@@ -24,6 +24,12 @@ export const messages: Record<string, Record<string, string[]>> = {
       "Open your heart to the quiet miracles of a new day. 💖",
       "May your day be filled with light, love, and serenity. 🕊️",
     ],
+    festival: [
+      "May the festival of lights brighten your life. ✨",
+      "Wishing you a season of joy and festive cheer. 🎉",
+      "Let the spirit of the festival fill your heart with happiness. 💖",
+      "Celebrate the moments that make life a festival. 🎊",
+    ],
   },
   hi: {
     shayari: [
@@ -50,6 +56,12 @@ export const messages: Record<string, Record<string, string[]>> = {
       "एक नए दिन के शांत चमत्कारों के लिए अपना दिल खोलो। 💖",
       "आपका दिन प्रकाश, प्रेम और शांति से भरा हो। 🕊️",
     ],
+    festival: [
+      "रोशनी का त्योहार आपके जीवन को रोशन करे। ✨",
+      "आपको खुशी और उत्सव की शुभकामनाएँ। 🎉",
+      "त्योहार की भावना आपके दिल को खुशियों से भर दे। 💖",
+      "उन पलों का जश्न मनाएं जो जीवन को एक त्योहार बनाते हैं। 🎊",
+    ],
   },
   es: {
     shayari: [
@@ -75,6 +87,12 @@ export const messages: Record<string, Record<string, string[]>> = {
       "El universo está dentro de ti. Encuentra tu paz esta mañana. ☮️",
       "Abre tu corazón a los milagros silenciosos de un nuevo día. 💖",
       "Que tu día esté lleno de luz, amor y serenidad. 🕊️",
+    ],
+    festival: [
+      "Que el festival de las luces ilumine tu vida. ✨",
+      "Te deseo una temporada de alegría y alegría festiva. 🎉",
+      "Deja que el espíritu del festival llene tu corazón de felicidad. 💖",
+      "Celebra los momentos que hacen de la vida un festival. 🎊",
     ],
   },
 };
