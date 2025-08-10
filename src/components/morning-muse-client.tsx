@@ -110,7 +110,11 @@ export const MorningMuseClient: FC = () => {
     setShowImageDialog(true);
     setGeneratedImage(null);
     try {
-      const result = await generateImage({ prompt: currentMessage.text });
+      const result = await generateImage({ 
+        prompt: currentMessage.text,
+        language: language,
+        category: category,
+      });
       setGeneratedImage(result.imageDataUri);
     } catch (error) {
       console.error("Error generating image:", error);
