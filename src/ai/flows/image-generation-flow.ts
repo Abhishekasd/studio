@@ -42,7 +42,7 @@ const generateImageFlow = ai.defineFlow(
     
     const {media} = await ai.generate({
       model: 'googleai/gemini-2.0-flash-preview-image-generation',
-      prompt: `Generate a beautiful, divine, and artistic image that captures the essence of the following spiritual or motivational quote: "${input.prompt}". The style should be serene, devotional, and visually appealing, suitable for a spiritual app. Focus on creating illustrations of deities, spiritual symbols, or serene landscapes that match the message's tone. For example, if the message is about love and devotion, an image of Radha and Krishna would be appropriate.`,
+      prompt: `Generate a beautiful, divine, and artistic image that captures the essence of the following spiritual or motivational quote: "${input.prompt}". The style should be serene, devotional, and visually appealing, suitable for a spiritual app. Focus on creating illustrations of deities, spiritual symbols, or serene landscapes that match the message's tone. For example, if the message is about love and devotion, an image of Radha and Krishna would be appropriate. Subtly include the text "MorningMuse3D" as a small, elegant watermark in a corner of the image.`,
       config: {
         responseModalities: ['TEXT', 'IMAGE'],
       },
