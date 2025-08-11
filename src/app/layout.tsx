@@ -5,9 +5,9 @@ import Link from 'next/link';
 import { Separator } from '@/components/ui/separator';
 
 export const metadata: Metadata = {
-  title: 'MorningMuse3D - Daily Inspirational Quotes & AI Art',
-  description: 'Start your day with MorningMuse3D. Get unique, AI-generated inspirational, motivational, spiritual messages, shayari, and jokes in multiple languages. Generate beautiful, divine images to match your mood.',
-  keywords: ['inspirational quotes', 'motivational messages', 'daily spiritual messages', 'shayari', 'jokes', 'AI art generator', 'good morning quotes', 'hindi shayari', 'sanskrit quotes', 'urdu shayari'],
+  title: 'MorningMuse3D - AI-Powered Inspiration, Quotes & Art',
+  description: 'MorningMuse3D delivers AI-generated motivational messages and matching art in English, Hindi, Sanskrit, and Urdu to uplift your day.',
+  keywords: ['AI quotes', 'inspirational art', 'daily motivation', 'spiritual quotes', 'multilingual quotes'],
 };
 
 export default function RootLayout({
@@ -32,6 +32,9 @@ export default function RootLayout({
           <footer className="w-full bg-background/50 border-t border-border/30 mt-16">
             <div className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
               <div className="flex justify-center space-x-6">
+                 <Link href="/" className="text-foreground/70 hover:text-primary transition-colors">
+                  Home
+                </Link>
                 <Link href="/about" className="text-foreground/70 hover:text-primary transition-colors">
                   About Us
                 </Link>
@@ -43,7 +46,7 @@ export default function RootLayout({
                 </Link>
               </div>
               <div className="mt-6 text-center text-sm text-foreground/50">
-                <p>&copy; {new Date().getFullYear()} MorningMuse3D. All rights reserved.</p>
+                <p>&copy; {new Date().getFullYear()} MorningMuse3D. All rights reserved. Your daily sanctuary for AI-powered inspiration.</p>
               </div>
             </div>
           </footer>

@@ -20,12 +20,12 @@ export default function ContactPage() {
         <Separator className="my-12 bg-border/50" />
 
         <div className="max-w-xl mx-auto">
-            <div className="space-y-8 text-lg leading-relaxed text-foreground/90">
+            <div className="space-y-8 text-lg leading-relaxed text-foreground/90 text-justify">
                 <p>
-                    Your feedback is invaluable to us as we continue to improve and grow MorningMuse3D. If you've encountered an issue, have an idea for a new language or category, or simply want to share how our app has impacted your day, please use the contact information below.
+                    Your feedback is invaluable to us as we continue to improve and grow MorningMuse3D. We are passionate about creating a positive and inspiring experience, and your thoughts help us achieve that goal. If you've encountered an issue, have an idea for a new language or category, or simply want to share how our app has impacted your day, please use the contact information below.
                 </p>
                 <p>
-                    For all inquiries, partnership opportunities, or support questions, please email us at:
+                    For all inquiries, partnership opportunities, or support questions, please email us directly. We are a small team, but we are dedicated to our community and will do our best to respond to every message.
                 </p>
                 <p className="text-center">
                     <a href="mailto:support@morningmuse3d.com" className="text-xl font-bold text-primary hover:underline">
@@ -33,10 +33,10 @@ export default function ContactPage() {
                     </a>
                 </p>
                  <p>
-                    We do our best to respond to all messages within 48 business hours. Please note that at this time, we can only provide support in English. We appreciate your patience and understanding.
+                    We aim to respond to all messages within 48 business hours. Please note that at this time, we can only provide support in English. We appreciate your patience and understanding as we work to expand our support capabilities. You can also follow our journey on social media, though we do not actively have a presence yet, we plan to in the future.
                 </p>
                  <p>
-                    Thank you for being a part of our community and for helping us make mornings more inspirational for everyone.
+                    Thank you for being a part of our community and for helping us make mornings more inspirational for everyone. Your participation and feedback are what make this project special.
                 </p>
             </div>
         </div>
