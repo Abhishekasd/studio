@@ -3,8 +3,9 @@ import './globals.css';
 import { Toaster } from "@/components/ui/toaster"
 
 export const metadata: Metadata = {
-  title: 'MorningMuse3D',
-  description: 'Your daily dose of inspiration in 3D',
+  title: 'MorningMuse3D - Daily Inspirational Quotes & AI Art',
+  description: 'Start your day with MorningMuse3D. Get unique, AI-generated inspirational, motivational, spiritual messages, shayari, and jokes in multiple languages. Generate beautiful, divine images to match your mood.',
+  keywords: ['inspirational quotes', 'motivational messages', 'daily spiritual messages', 'shayari', 'jokes', 'AI art generator', 'good morning quotes', 'hindi shayari', 'sanskrit quotes', 'urdu shayari'],
 };
 
 export default function RootLayout({
