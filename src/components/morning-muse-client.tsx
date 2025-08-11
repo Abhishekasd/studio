@@ -35,6 +35,7 @@ import { SunIcon } from "@/components/icons";
 import { cn } from "@/lib/utils";
 import { uiText } from "@/lib/ui-text";
 import { generateImage } from "@/ai/flows/image-generation-flow";
+import { Separator } from "@/components/ui/separator";
 
 const languages = [
   { value: "en", label: "English" },
@@ -231,6 +232,72 @@ export const MorningMuseClient: FC = () => {
           </Button>
         </div>
       </div>
+      <div className="w-full max-w-4xl p-8 text-foreground/80 space-y-12 mt-12">
+        <Separator className="my-8 bg-border/50" />
+        <section>
+          <h2 className="text-3xl font-bold text-center text-primary mb-6">{t.welcomeTitle}</h2>
+          <p className="text-lg leading-relaxed text-center">
+            {t.welcomePara1}
+          </p>
+          <p className="text-lg leading-relaxed text-center mt-4">
+            {t.welcomePara2} <span className="font-semibold text-primary/90">{t.languageNames}</span>, {t.welcomePara3}
+          </p>
+        </section>
+
+        <Separator className="my-8 bg-border/50" />
+        
+          <section>
+          <h2 className="text-3xl font-bold text-center text-primary mb-6">{t.whyTitle}</h2>
+          <p className="text-lg leading-relaxed text-justify">
+            {t.whyPara1}
+          </p>
+            <p className="text-lg leading-relaxed text-justify mt-4">
+            {t.whyPara2}
+          </p>
+        </section>
+
+        <Separator className="my-8 bg-border/50" />
+
+        <section>
+          <h2 className="text-3xl font-bold text-center text-primary mb-6">{t.howTitle}</h2>
+          <div className="grid md:grid-cols-3 gap-8 text-center">
+            <div className="bg-card/30 p-6 rounded-lg border border-border/50">
+              <h3 className="text-xl font-semibold text-secondary mb-2">{t.howStep1Title}</h3>
+              <p>{t.howStep1Desc}</p>
+            </div>
+            <div className="bg-card/30 p-6 rounded-lg border border-border/50">
+              <h3 className="text-xl font-semibold text-secondary mb-2">{t.howStep2Title}</h3>
+              <p>{t.howStep2Desc}</p>
+            </div>
+            <div className="bg-card/30 p-6 rounded-lg border border-border/50">
+              <h3 className="text-xl font-semibold text-secondary mb-2">{t.howStep3Title}</h3>
+              <p>{t.howStep3Desc}</p>
+            </div>
+          </div>
+        </section>
+        
+        <Separator className="my-8 bg-border/50" />
+
+        <section>
+          <h2 className="text-3xl font-bold text-center text-primary mb-6">{t.categoriesTitle}</h2>
+          <div className="space-y-4 text-lg leading-relaxed">
+            <p><strong className="text-secondary">{t.catMotivationalTitle}</strong> {t.catMotivationalDesc}</p>
+            <p><strong className="text-secondary">{t.catSpiritualTitle}</strong> {t.catSpiritualDesc}</p>
+            <p><strong className="text-secondary">{t.catShayariTitle}</strong> {t.catShayariDesc}</p>
+            <p><strong className="text-secondary">{t.catJokeTitle}</strong> {t.catJokeDesc}</p>
+            <p><strong className="text-secondary">{t.catFestivalTitle}</strong> {t.catFestivalDesc}</p>
+          </div>
+        </section>
+
+        <Separator className="my-8 bg-border/50" />
+          <section>
+          <h2 className="text-3xl font-bold text-center text-primary mb-6">{t.uniqueTitle}</h2>
+          <p className="text-lg leading-relaxed text-center">
+            {t.uniquePara}
+          </p>
+        </section>
+      </div>
+
       <Dialog open={showImageDialog} onOpenChange={setShowImageDialog}>
         <DialogContent className="max-w-xl">
           <DialogHeader>
