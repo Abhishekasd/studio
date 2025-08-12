@@ -9,6 +9,9 @@ const ThreeBackground: React.FC = () => {
   const mountRef = useRef<HTMLDivElement>(null);
   const animationFrameId = useRef<number>();
   const [isMounted, setIsMounted] = useState(false);
+  const particlesRef = useRef<THREE.InstancedMesh>();
+  const dummy = useRef(new THREE.Object3D()).current;
+  const particlesData = useRef<any[]>([]);
 
   useEffect(() => {
     setIsMounted(true);
@@ -22,54 +25,102 @@ const ThreeBackground: React.FC = () => {
     const scene = new THREE.Scene();
 
     const camera = new THREE.PerspectiveCamera(75, currentMount.clientWidth / currentMount.clientHeight, 0.1, 1000);
-    camera.position.z = 2;
+    camera.position.z = 5;
 
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setSize(currentMount.clientWidth, currentMount.clientHeight);
     renderer.setPixelRatio(window.devicePixelRatio);
     currentMount.appendChild(renderer.domElement);
 
-    const particlesCount = 10000;
-    const positions = new Float32Array(particlesCount * 3);
-    const colors = new Float32Array(particlesCount * 3);
-
-    const color1 = new THREE.Color('hsl(45, 100%, 60%)'); // --primary
-    const color2 = new THREE.Color('hsl(270, 80%, 70%)'); // --accent
-
-    for (let i = 0; i < particlesCount; i++) {
-      const i3 = i * 3;
-      positions[i3] = (Math.random() - 0.5) * 10;
-      positions[i3 + 1] = (Math.random() - 0.5) * 10;
-      positions[i3 + 2] = (Math.random() - 0.5) * 10;
-      
-      const randomColor = Math.random() > 0.5 ? color1 : color2;
-      colors[i3] = randomColor.r;
-      colors[i3 + 1] = randomColor.g;
-      colors[i3 + 2] = randomColor.b;
-    }
-
-    const particlesGeometry = new THREE.BufferGeometry();
-    particlesGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-    particlesGeometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
-
-    const particlesMaterial = new THREE.PointsMaterial({
-      size: 0.015,
-      vertexColors: true,
-      transparent: true,
-      opacity: 0.6,
-      sizeAttenuation: true,
-    });
-
-    const particleSystem = new THREE.Points(particlesGeometry, particlesMaterial);
-    scene.add(particleSystem);
+    const particlesCount = 5000;
     
+    // Main golden squares
+    const squareGeometry = new THREE.BoxGeometry(0.05, 0.05, 0.05);
+    const squareMaterial = new THREE.MeshBasicMaterial({ color: 'hsl(45, 100%, 75%)' });
+    const squares = new THREE.InstancedMesh(squareGeometry, squareMaterial, particlesCount);
+    
+    particlesData.current = [];
+    for (let i = 0; i < particlesCount; i++) {
+        const x = (Math.random() - 0.5) * 20;
+        const y = (Math.random() - 0.5) * 20;
+        const z = (Math.random() - 0.5) * 20;
+
+        dummy.position.set(x, y, z);
+        dummy.rotation.set(
+            Math.random() * Math.PI,
+            Math.random() * Math.PI,
+            Math.random() * Math.PI
+        );
+        dummy.updateMatrix();
+        squares.setMatrixAt(i, dummy.matrix);
+
+        particlesData.current.push({
+            position: new THREE.Vector3(x, y, z),
+            rotation: new THREE.Euler(dummy.rotation.x, dummy.rotation.y, dummy.rotation.z),
+            velocity: new THREE.Vector3((Math.random() - 0.5) * 0.01, (Math.random() - 0.5) * 0.01, (Math.random() - 0.5) * 0.01),
+            rotationSpeed: new THREE.Vector3((Math.random() - 0.5) * 0.01, (Math.random() - 0.5) * 0.01, (Math.random() - 0.5) * 0.01)
+        });
+    }
+    squares.instanceMatrix.needsUpdate = true;
+    particlesRef.current = squares;
+    scene.add(squares);
+
+    // Starfield
+    const starVertices = [];
+    const starColors = [];
+    const starColor = new THREE.Color(0xffffff);
+    for (let i = 0; i < 5000; i++) {
+        const x = (Math.random() - 0.5) * 30;
+        const y = (Math.random() - 0.5) * 30;
+        const z = (Math.random() - 0.5) * 30;
+        starVertices.push(x, y, z);
+        starColors.push(starColor.r, starColor.g, starColor.b);
+    }
+    const starGeometry = new THREE.BufferGeometry();
+    starGeometry.setAttribute('position', new THREE.Float32BufferAttribute(starVertices, 3));
+    starGeometry.setAttribute('color', new THREE.Float32BufferAttribute(starColors, 3));
+    const starMaterial = new THREE.PointsMaterial({
+        size: 0.01,
+        vertexColors: true,
+        transparent: true,
+        opacity: 0.8
+    });
+    const stars = new THREE.Points(starGeometry, starMaterial);
+    scene.add(stars);
+
+
     const clock = new THREE.Clock();
 
     const animate = () => {
       const elapsedTime = clock.getElapsedTime();
       
-      particleSystem.rotation.y = elapsedTime * 0.05;
-      particleSystem.rotation.x = elapsedTime * 0.02;
+      // Animate golden squares
+      if (particlesRef.current) {
+        for (let i = 0; i < particlesCount; i++) {
+            const data = particlesData.current[i];
+            
+            data.position.add(data.velocity);
+            data.rotation.x += data.rotationSpeed.x;
+            data.rotation.y += data.rotationSpeed.y;
+            
+            if (data.position.x > 10 || data.position.x < -10) data.velocity.x *= -1;
+            if (data.position.y > 10 || data.position.y < -10) data.velocity.y *= -1;
+            if (data.position.z > 10 || data.position.z < -10) data.velocity.z *= -1;
+            
+            dummy.position.copy(data.position);
+            dummy.rotation.copy(data.rotation);
+            dummy.updateMatrix();
+            particlesRef.current.setMatrixAt(i, dummy.matrix);
+        }
+        particlesRef.current.instanceMatrix.needsUpdate = true;
+      }
+      
+      // Animate camera for parallax
+      camera.position.x = Math.sin(elapsedTime * 0.1) * 0.5;
+      camera.position.y = Math.cos(elapsedTime * 0.1) * 0.5;
+      camera.lookAt(scene.position);
+
+      stars.rotation.y = elapsedTime * 0.01;
 
       renderer.render(scene, camera);
       animationFrameId.current = requestAnimationFrame(animate);
@@ -91,12 +142,15 @@ const ThreeBackground: React.FC = () => {
       if (currentMount && renderer.domElement) {
         currentMount.removeChild(renderer.domElement);
       }
-      scene.remove(particleSystem);
-      particlesGeometry.dispose();
-      particlesMaterial.dispose();
+      scene.remove(squares);
+      scene.remove(stars);
+      squareGeometry.dispose();
+      squareMaterial.dispose();
+      starGeometry.dispose();
+      starMaterial.dispose();
       renderer.dispose();
     };
-  }, [isMounted]);
+  }, [isMounted, dummy]);
 
   if (!isMounted) {
     return null;
@@ -106,11 +160,8 @@ const ThreeBackground: React.FC = () => {
     <div className="fixed inset-0 -z-20 h-full w-full">
       <div className={cn(
         "absolute inset-0 transition-opacity duration-1000",
-        "bg-gradient-to-br from-[hsl(var(--background))] via-[hsl(var(--background)/0.9)] to-[hsl(var(--accent)/0.2)]"
+        "bg-gradient-to-b from-[hsl(220,40%,10%)] to-[hsl(220,40%,4%)]"
       )}/>
-       <div 
-        className="absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_-20%,hsl(var(--primary)/0.1),transparent)]"
-      />
       <div ref={mountRef} className="h-full w-full" />
     </div>
   );
