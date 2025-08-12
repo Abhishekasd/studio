@@ -12,6 +12,7 @@ import {
   Download,
   X,
   Share2,
+  Mail,
 } from "lucide-react";
 
 import { useMessageGenerator } from "@/hooks/use-message-generator";
@@ -30,6 +31,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogFooter,
+  DialogDescription,
 } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
 import { SunIcon } from "@/components/icons";
@@ -45,6 +47,22 @@ const languages = [
   { value: "ur", label: "اردو" },
   { value: "es", label: "Español" },
 ];
+
+function TelegramIcon(props: React.SVGProps<SVGSVGElement>) {
+    return (
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+            <path d="M22 2L11 13" />
+            <path d="M22 2L15 22L11 13L2 9L22 2z" />
+        </svg>
+    )
+}
+function WhatsAppIcon(props: React.SVGProps<SVGSVGElement>) {
+    return (
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" {...props}>
+            <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91C2.13 13.66 2.59 15.35 3.4 16.86L2.05 22L7.31 20.65C8.75 21.41 10.36 21.82 12.04 21.82C17.5 21.82 21.95 17.37 21.95 11.91C21.95 6.45 17.5 2 12.04 2ZM17.44 15.13C17.22 15.66 16.33 16.14 15.86 16.29C15.39 16.44 14.78 16.5 14.12 16.3C13.53 16.11 12.55 15.78 11.53 14.82C10.28 13.64 9.49 12.22 9.24 11.75C8.99 11.28 8.24 10.14 8.24 9.07C8.24 8 8.44 7.42 8.63 7.23C8.82 7.04 9.11 6.95 9.35 6.95C9.53 6.95 9.69 6.95 9.83 6.95C10.01 6.95 10.18 6.91 10.36 7.37C10.55 7.83 11.01 9.03 11.1 9.17C11.18 9.31 11.23 9.47 11.14 9.64C11.05 9.81 10.99 9.89 10.85 10.05C10.72 10.21 10.58 10.35 10.45 10.47C10.33 10.58 10.19 10.71 10.36 10.99C10.53 11.27 11.03 12.01 11.73 12.65C12.62 13.48 13.29 13.78 13.57 13.92C13.85 14.06 14.02 14.03 14.19 13.86C14.41 13.64 14.65 13.31 14.93 12.96C15.15 12.68 15.42 12.62 15.69 12.72C15.96 12.82 16.94 13.34 17.16 13.43C17.38 13.52 17.53 13.58 17.59 13.67C17.65 13.76 17.65 14.6 17.44 15.13Z" />
+        </svg>
+    );
+}
 
 export const MorningMuseClient: FC = () => {
   const [isMounted, setIsMounted] = useState(false);
@@ -62,6 +80,7 @@ export const MorningMuseClient: FC = () => {
   const [isImageGenerating, setIsImageGenerating] = useState(false);
   const [generatedImage, setGeneratedImage] = useState<string | null>(null);
   const [showImageDialog, setShowImageDialog] = useState(false);
+  const [showShareOptionsDialog, setShowShareOptionsDialog] = useState(false);
   const [canShare, setCanShare] = useState(false);
   
   const t = uiText[language] || uiText.en;
@@ -151,34 +170,51 @@ export const MorningMuseClient: FC = () => {
   const handleShareImage = async () => {
     if (!generatedImage) return;
 
+    const shareData = {
+      title: 'MorningMuse3D Art',
+      text: `${t.shareImageText} https://morningmuse.netlify.app/`,
+    };
+
     try {
       const response = await fetch(generatedImage);
       const blob = await response.blob();
       const file = new File([blob], 'morning-muse-art.png', { type: blob.type });
       
-      const shareData = {
-        files: [file],
-        title: 'MorningMuse3D Art',
-        text: `${t.shareImageText} https://morningmuse.netlify.app/`,
-      };
-
-      if (navigator.canShare && navigator.canShare(shareData)) {
-        await navigator.share(shareData);
-      } else {
-         toast({
-          title: "Sharing Not Supported",
-          description: "Your browser does not support sharing files.",
-          variant: "destructive",
+      if (navigator.canShare && navigator.canShare({ files: [file] })) {
+        await navigator.share({
+          ...shareData,
+          files: [file],
         });
+      } else {
+        setShowShareOptionsDialog(true);
       }
     } catch (error) {
       console.error('Error sharing image:', error);
       toast({
         title: "Sharing Failed",
-        description: "Could not share the image. Please try downloading it instead.",
+        description: "Could not share the image. Please try our fallback options.",
         variant: "destructive",
       });
+      setShowShareOptionsDialog(true);
     }
+  };
+
+  const handleFallbackShare = (platform: 'whatsapp' | 'telegram' | 'email') => {
+    if (!generatedImage) return;
+    const text = encodeURIComponent(`${t.shareImageText} https://morningmuse.netlify.app/`);
+    let url = '';
+    switch (platform) {
+      case 'whatsapp':
+        url = `https://web.whatsapp.com/send?text=${text}`;
+        break;
+      case 'telegram':
+        url = `https://t.me/share/url?url=${encodeURIComponent('https://morningmuse.netlify.app/')}&text=${text}`;
+        break;
+      case 'email':
+        url = `mailto:?subject=${encodeURIComponent(t.shareImageSubject)}&body=${text}`;
+        break;
+    }
+    window.open(url, '_blank');
   };
 
   if (!isMounted) {
@@ -351,11 +387,11 @@ export const MorningMuseClient: FC = () => {
             )}
           </div>
           <DialogFooter className="sm:justify-end gap-2">
-            {canShare && (
+            
               <Button type="button" onClick={handleShareImage} disabled={!generatedImage || isImageGenerating}>
                   <Share2 />{t.shareImage}
               </Button>
-            )}
+            
             <Button type="button" onClick={handleDownloadImage} disabled={!generatedImage || isImageGenerating}>
                 <Download />{t.downloadImage}
             </Button>
@@ -365,6 +401,31 @@ export const MorningMuseClient: FC = () => {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+      
+      <Dialog open={showShareOptionsDialog} onOpenChange={setShowShareOptionsDialog}>
+        <DialogContent className="max-w-sm">
+          <DialogHeader>
+            <DialogTitle>{t.shareTitle}</DialogTitle>
+            <DialogDescription>{t.shareDescription}</DialogDescription>
+          </DialogHeader>
+          <div className="flex flex-col gap-4 py-4">
+              <Button onClick={() => handleFallbackShare('whatsapp')} variant="outline" size="lg">
+                  <WhatsAppIcon className="mr-2 h-6 w-6"/>
+                  {t.shareOnWhatsApp}
+              </Button>
+              <Button onClick={() => handleFallbackShare('telegram')} variant="outline" size="lg">
+                  <TelegramIcon className="mr-2 h-6 w-6" />
+                  {t.shareOnTelegram}
+              </Button>
+              <Button onClick={() => handleFallbackShare('email')} variant="outline" size="lg">
+                  <Mail className="mr-2 h-6 w-6" />
+                  {t.shareOnEmail}
+              </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </>
   );
 };
+
+    
