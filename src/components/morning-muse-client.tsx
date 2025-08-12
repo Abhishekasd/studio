@@ -229,7 +229,9 @@ export const MorningMuseClient: FC = () => {
   };
 
   if (!isMounted) {
-    return null; // Render nothing on the server
+    return (
+      <div className="fixed inset-0 -z-20 h-full w-full bg-gradient-to-b from-[hsl(220,40%,10%)] to-[hsl(220,40%,4%)]" />
+    );
   }
 
   return (
@@ -439,5 +441,3 @@ export const MorningMuseClient: FC = () => {
     </>
   );
 };
-
-    
