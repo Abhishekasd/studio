@@ -22,7 +22,7 @@ const ThreeBackground: React.FC = () => {
 
     // Check if the tsParticles library is loaded
     if (window.tsParticles) {
-      window.tsParticles.load("tsparticles", {
+      window.tsParticles.load("particles-js", {
         background: { color: { value: "transparent" } },
         particles: {
           number: { value: 150 },
@@ -63,7 +63,7 @@ const ThreeBackground: React.FC = () => {
     }
   }, []);
 
-  return <div id="tsparticles" className="fixed inset-0 -z-10" />;
+  return <div id="particles-js" className="fixed inset-0 -z-10" />;
 };
 
 export default ThreeBackground;
