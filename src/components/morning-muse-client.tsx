@@ -39,6 +39,17 @@ import { cn } from "@/lib/utils";
 import { uiText } from "@/lib/ui-text";
 import { generateImage } from "@/ai/flows/image-generation-flow";
 import { Separator } from "@/components/ui/separator";
+import dynamic from "next/dynamic";
+
+const ThreeBackground = dynamic(
+  () => import('@/components/three-background'),
+  { 
+    ssr: false,
+    loading: () => (
+      <div className="fixed inset-0 -z-20 h-full w-full bg-gradient-to-b from-[hsl(220,40%,10%)] to-[hsl(220,40%,4%)]" />
+    )
+  }
+);
 
 const languages = [
   { value: "en", label: "English" },
@@ -223,6 +234,7 @@ export const MorningMuseClient: FC = () => {
 
   return (
     <>
+      <ThreeBackground />
       <div className="flex w-full max-w-2xl flex-col items-center gap-8">
         <header className="flex w-full flex-col items-center justify-between gap-4 sm:flex-row">
           <div className="flex items-center gap-3 text-3xl font-bold tracking-tight text-primary">
