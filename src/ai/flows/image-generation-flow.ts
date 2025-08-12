@@ -46,7 +46,24 @@ const generateImageFlow = ai.defineFlow(
 
     if (input.category === 'spiritual') {
       if (['en', 'hi', 'sa'].includes(input.language)) {
-        imagePrompt = `Generate a beautiful, divine, and artistic image of a Hindu deity that captures the essence of the following spiritual quote: "${input.prompt}". The style should be serene, devotional, and visually appealing. Create a variety of deities based on the message, such as Shiva and his family (Parvati, Ganesha, Kartikeya), Ganesh ji, Saraswati mata, Hanuman ji, or Radha and Krishna. The choice of deity should be inspired by the quote. Subtly include the text "MorningMuse3D" as a small, elegant watermark in a corner of the image.`;
+        imagePrompt = `Create a beautiful, divine, and artistic image of a Hindu deity.
+
+**Instructions:**
+1.  **Deity Selection:** Choose a deity inspired by the spiritual quote provided. Your options are:
+    *   Radha and Krishna
+    *   Shiva and his family (Parvati, Ganesha, Kartikeya)
+    *   Ganesh ji
+    *   Saraswati mata
+    *   Hanuman ji
+    *   Ram Darbar (Rama, Sita, Lakshmana, and Hanuman)
+2.  **Art Style:** The style must be serene, devotional, and visually appealing.
+3.  **Composition:**
+    *   The main artwork should feature the chosen deity or deities.
+    *   Include a relevant deity call or chant (e.g., "Radhe Radhe" for Krishna, "Jai Shri Ram" for Ram Darbar, "Om Namah Shivaya" for Shiva) as an artistic, integrated part of the image.
+    *   Place the full spiritual quote text clearly and legibly *below* the main deity artwork.
+    *   Place the text "MorningMuse3D" as a small, elegant watermark in the **bottom-right corner**.
+
+**Spiritual Quote:** "${input.prompt}"`;
       } else if (input.language === 'ur') {
         imagePrompt = `Generate a beautiful and serene image of Islamic art. This could be intricate calligraphy of a spiritual phrase from the quote "${input.prompt}", stunning mosque architecture, or an abstract geometric pattern that evokes peace and spirituality. Do not generate images of people or prophets. The style should be respectful and visually appealing. Subtly include the text "MorningMuse3D" as a small, elegant watermark in a corner of the image.`;
       }
