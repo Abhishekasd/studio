@@ -9,9 +9,6 @@ const ThreeBackground: React.FC = () => {
   const mountRef = useRef<HTMLDivElement>(null);
   const animationFrameId = useRef<number>();
   const [isMounted, setIsMounted] = useState(false);
-  const particlesRef = useRef<THREE.InstancedMesh>();
-  const dummy = useRef(new THREE.Object3D()).current;
-  const particlesData = useRef<any[]>([]);
 
   useEffect(() => {
     setIsMounted(true);
@@ -33,94 +30,41 @@ const ThreeBackground: React.FC = () => {
     currentMount.appendChild(renderer.domElement);
 
     const particlesCount = 5000;
-    
-    // Main golden squares
-    const squareGeometry = new THREE.BoxGeometry(0.05, 0.05, 0.05);
-    const squareMaterial = new THREE.MeshBasicMaterial({ color: 'hsl(45, 100%, 75%)' });
-    const squares = new THREE.InstancedMesh(squareGeometry, squareMaterial, particlesCount);
-    
-    particlesData.current = [];
-    for (let i = 0; i < particlesCount; i++) {
-        const x = (Math.random() - 0.5) * 20;
-        const y = (Math.random() - 0.5) * 20;
-        const z = (Math.random() - 0.5) * 20;
+    const positions = new Float32Array(particlesCount * 3);
+    const colors = new Float32Array(particlesCount * 3);
+    const goldColor = new THREE.Color('hsl(45, 100%, 75%)');
 
-        dummy.position.set(x, y, z);
-        dummy.rotation.set(
-            Math.random() * Math.PI,
-            Math.random() * Math.PI,
-            Math.random() * Math.PI
-        );
-        dummy.updateMatrix();
-        squares.setMatrixAt(i, dummy.matrix);
-
-        particlesData.current.push({
-            position: new THREE.Vector3(x, y, z),
-            rotation: new THREE.Euler(dummy.rotation.x, dummy.rotation.y, dummy.rotation.z),
-            velocity: new THREE.Vector3((Math.random() - 0.5) * 0.01, (Math.random() - 0.5) * 0.01, (Math.random() - 0.5) * 0.01),
-            rotationSpeed: new THREE.Vector3((Math.random() - 0.5) * 0.01, (Math.random() - 0.5) * 0.01, (Math.random() - 0.5) * 0.01)
-        });
+    for (let i = 0; i < particlesCount * 3; i++) {
+      positions[i] = (Math.random() - 0.5) * 10;
+      colors[i] = goldColor.r;
+      colors[i+1] = goldColor.g;
+      colors[i+2] = goldColor.b;
     }
-    squares.instanceMatrix.needsUpdate = true;
-    particlesRef.current = squares;
-    scene.add(squares);
 
-    // Starfield
-    const starVertices = [];
-    const starColors = [];
-    const starColor = new THREE.Color(0xffffff);
-    for (let i = 0; i < 5000; i++) {
-        const x = (Math.random() - 0.5) * 30;
-        const y = (Math.random() - 0.5) * 30;
-        const z = (Math.random() - 0.5) * 30;
-        starVertices.push(x, y, z);
-        starColors.push(starColor.r, starColor.g, starColor.b);
-    }
-    const starGeometry = new THREE.BufferGeometry();
-    starGeometry.setAttribute('position', new THREE.Float32BufferAttribute(starVertices, 3));
-    starGeometry.setAttribute('color', new THREE.Float32BufferAttribute(starColors, 3));
-    const starMaterial = new THREE.PointsMaterial({
-        size: 0.01,
-        vertexColors: true,
-        transparent: true,
-        opacity: 0.8
+    const particlesGeometry = new THREE.BufferGeometry();
+    particlesGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+    particlesGeometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+
+    const particlesMaterial = new THREE.PointsMaterial({
+      size: 0.02,
+      vertexColors: true,
+      transparent: true,
+      opacity: 0.8,
     });
-    const stars = new THREE.Points(starGeometry, starMaterial);
-    scene.add(stars);
-
+    
+    const particles = new THREE.Points(particlesGeometry, particlesMaterial);
+    scene.add(particles);
 
     const clock = new THREE.Clock();
 
     const animate = () => {
       const elapsedTime = clock.getElapsedTime();
+      particles.rotation.y = elapsedTime * 0.1;
       
-      // Animate golden squares
-      if (particlesRef.current) {
-        for (let i = 0; i < particlesCount; i++) {
-            const data = particlesData.current[i];
-            
-            data.position.add(data.velocity);
-            data.rotation.x += data.rotationSpeed.x;
-            data.rotation.y += data.rotationSpeed.y;
-            
-            if (data.position.x > 10 || data.position.x < -10) data.velocity.x *= -1;
-            if (data.position.y > 10 || data.position.y < -10) data.velocity.y *= -1;
-            if (data.position.z > 10 || data.position.z < -10) data.velocity.z *= -1;
-            
-            dummy.position.copy(data.position);
-            dummy.rotation.copy(data.rotation);
-            dummy.updateMatrix();
-            particlesRef.current.setMatrixAt(i, dummy.matrix);
-        }
-        particlesRef.current.instanceMatrix.needsUpdate = true;
-      }
-      
-      // Animate camera for parallax
+      // Add a subtle parallax effect
       camera.position.x = Math.sin(elapsedTime * 0.1) * 0.5;
       camera.position.y = Math.cos(elapsedTime * 0.1) * 0.5;
       camera.lookAt(scene.position);
-
-      stars.rotation.y = elapsedTime * 0.01;
 
       renderer.render(scene, camera);
       animationFrameId.current = requestAnimationFrame(animate);
@@ -142,15 +86,11 @@ const ThreeBackground: React.FC = () => {
       if (currentMount && renderer.domElement) {
         currentMount.removeChild(renderer.domElement);
       }
-      scene.remove(squares);
-      scene.remove(stars);
-      squareGeometry.dispose();
-      squareMaterial.dispose();
-      starGeometry.dispose();
-      starMaterial.dispose();
+      particlesGeometry.dispose();
+      particlesMaterial.dispose();
       renderer.dispose();
     };
-  }, [isMounted, dummy]);
+  }, [isMounted]);
 
   if (!isMounted) {
     return null;
