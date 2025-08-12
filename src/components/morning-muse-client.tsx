@@ -11,6 +11,7 @@ import {
   Image as ImageIcon,
   Download,
   X,
+  Share2,
 } from "lucide-react";
 
 import { useMessageGenerator } from "@/hooks/use-message-generator";
@@ -61,6 +62,7 @@ export const MorningMuseClient: FC = () => {
   const [isImageGenerating, setIsImageGenerating] = useState(false);
   const [generatedImage, setGeneratedImage] = useState<string | null>(null);
   const [showImageDialog, setShowImageDialog] = useState(false);
+  const [canShare, setCanShare] = useState(false);
   
   const t = uiText[language] || uiText.en;
 
@@ -71,6 +73,12 @@ export const MorningMuseClient: FC = () => {
     { value: "spiritual", label: t.spiritual },
     { value: "festival", label: t.festival },
   ];
+  
+  useEffect(() => {
+    if (navigator.share && navigator.canShare) {
+        setCanShare(true);
+    }
+  }, []);
 
   const handleNewMessage = () => {
     setIsFlipped(true);
@@ -138,6 +146,39 @@ export const MorningMuseClient: FC = () => {
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+  };
+  
+  const handleShareImage = async () => {
+    if (!generatedImage) return;
+
+    try {
+      const response = await fetch(generatedImage);
+      const blob = await response.blob();
+      const file = new File([blob], 'morning-muse-art.png', { type: blob.type });
+      
+      const shareData = {
+        files: [file],
+        title: 'MorningMuse3D Art',
+        text: `${t.shareImageText} https://morningmuse.netlify.app/`,
+      };
+
+      if (navigator.canShare && navigator.canShare(shareData)) {
+        await navigator.share(shareData);
+      } else {
+         toast({
+          title: "Sharing Not Supported",
+          description: "Your browser does not support sharing files.",
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      console.error('Error sharing image:', error);
+      toast({
+        title: "Sharing Failed",
+        description: "Could not share the image. Please try downloading it instead.",
+        variant: "destructive",
+      });
+    }
   };
 
   if (!isMounted) {
@@ -310,6 +351,11 @@ export const MorningMuseClient: FC = () => {
             )}
           </div>
           <DialogFooter className="sm:justify-end gap-2">
+            {canShare && (
+              <Button type="button" onClick={handleShareImage} disabled={!generatedImage || isImageGenerating}>
+                  <Share2 />{t.shareImage}
+              </Button>
+            )}
             <Button type="button" onClick={handleDownloadImage} disabled={!generatedImage || isImageGenerating}>
                 <Download />{t.downloadImage}
             </Button>
