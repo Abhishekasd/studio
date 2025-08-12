@@ -59,9 +59,9 @@ const generateImageFlow = ai.defineFlow(
 2.  **Art Style:** The style must be serene, devotional, and visually appealing.
 3.  **Composition:**
     *   The main artwork should feature the chosen deity or deities.
-    *   Include a relevant deity call or chant (e.g., "Radhe Radhe" for Krishna, "Jai Shri Ram" for Ram Darbar, "Om Namah Shivaya" for Shiva) as an artistic, integrated part of the image.
+    *   Include a relevant deity call or chant (e.g., "Radhe Radhe" for Krishna, "Jai Shri Ram" for Ram Darbar, "Om Namah Shivaya" for Shiva) as an artistic, integrated part of the image. Do not use the text "MorningMuse3D" for this.
     *   Place the full spiritual quote text clearly and legibly *below* the main deity artwork.
-    *   Place the text "MorningMuse3D" as a small, elegant watermark in the **bottom-right corner**.
+    *   Place the text "MorningMuse3D" as a small, elegant watermark in the **bottom-right corner ONLY**. Do not place this text anywhere else in the image.
 
 **Spiritual Quote:** "${input.prompt}"`;
       } else if (input.language === 'ur') {
