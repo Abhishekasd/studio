@@ -23,18 +23,29 @@ const ThreeBackground: React.FC = () => {
     // Check if the tsParticles library is loaded
     if (window.tsParticles) {
       window.tsParticles.load("tsparticles", {
+        background: { color: { value: "transparent" } },
         particles: {
-          number: { value: 120 },
-          size: { value: 3 },
-          move: { enable: true, speed: 1.5 },
-          opacity: { value: 0.7 },
-          color: { value: "#ffffff" },
-          shape: { type: "circle" }
+          number: { value: 150 },
+          size: { value: 2 },
+          move: { enable: true, speed: 0.6 },
+          opacity: { value: 0.8 },
+          color: {
+            value: ["#ff4b5c", "#ffca3a", "#8ac926", "#1982c4", "#6a4c93"]
+          },
+          shape: { type: "circle" },
+          links: { enable: false }
         },
         interactivity: {
-          events: { onhover: { enable: true, mode: "repulse" } },
-          modes: { repulse: { distance: 100 } }
-        }
+          events: {
+            onhover: { enable: true, mode: "repulse" },
+            onclick: { enable: true, mode: "push" }
+          },
+          modes: {
+            repulse: { distance: 100 },
+            push: { quantity: 4 }
+          }
+        },
+        detectRetina: true
       });
     } else {
       console.error('tsParticles not found on window. It might not have loaded correctly.');
