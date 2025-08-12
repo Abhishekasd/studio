@@ -27,6 +27,7 @@ export default function RootLayout({
         <Script src="https://cdn.jsdelivr.net/npm/tsparticles@3.0.0/tsparticles.bundle.min.js" strategy="beforeInteractive" />
       </head>
       <body className="font-body antialiased">
+        <div id="particles-js" />
         <div className="flex flex-col min-h-screen">
           <main className="flex-grow">
             {children}
@@ -54,6 +55,48 @@ export default function RootLayout({
           </footer>
         </div>
         <Toaster />
+        <Script id="particles-init" strategy="afterInteractive">
+          {`
+            if (typeof window !== 'undefined' && window.tsParticles) {
+              window.tsParticles.load("particles-js", {
+                background: { color: { value: "transparent" } },
+                particles: {
+                  number: { value: 150 },
+                  size: {
+                    value: 2,
+                    random: { enable: true, minimumValue: 1 }
+                  },
+                  move: { enable: true, speed: 0.5 },
+                  opacity: {
+                    value: 0.8,
+                    animation: {
+                      enable: true,
+                      speed: 0.8,
+                      minimumValue: 0.3,
+                      sync: false
+                    }
+                  },
+                  color: {
+                    value: ["#ff4b5c", "#ffca3a", "#8ac926", "#1982c4", "#6a4c93"]
+                  },
+                  shape: { type: "circle" },
+                  links: { enable: false }
+                },
+                interactivity: {
+                  events: {
+                    onhover: { enable: true, mode: "repulse" },
+                    onclick: { enable: true, mode: "push" }
+                  },
+                  modes: {
+                    repulse: { distance: 100 },
+                    push: { quantity: 4 }
+                  }
+                },
+                detectRetina: true
+              });
+            }
+          `}
+        </Script>
       </body>
     </html>
   );
