@@ -32,13 +32,17 @@ const ThreeBackground: React.FC = () => {
     const particlesCount = 5000;
     const positions = new Float32Array(particlesCount * 3);
     const colors = new Float32Array(particlesCount * 3);
-    const goldColor = new THREE.Color('hsl(45, 100%, 75%)');
+    
+    for (let i = 0; i < particlesCount; i++) {
+      const i3 = i * 3;
+      positions[i3] = (Math.random() - 0.5) * 10;
+      positions[i3 + 1] = (Math.random() - 0.5) * 10;
+      positions[i3 + 2] = (Math.random() - 0.5) * 10;
 
-    for (let i = 0; i < particlesCount * 3; i++) {
-      positions[i] = (Math.random() - 0.5) * 10;
-      colors[i] = goldColor.r;
-      colors[i+1] = goldColor.g;
-      colors[i+2] = goldColor.b;
+      const color = new THREE.Color(`hsl(${Math.random() * 360}, 70%, 70%)`);
+      colors[i3] = color.r;
+      colors[i3 + 1] = color.g;
+      colors[i3 + 2] = color.b;
     }
 
     const particlesGeometry = new THREE.BufferGeometry();
@@ -59,7 +63,7 @@ const ThreeBackground: React.FC = () => {
 
     const animate = () => {
       const elapsedTime = clock.getElapsedTime();
-      particles.rotation.y = elapsedTime * 0.1;
+      particles.rotation.y = elapsedTime * 0.05; // Slowed down rotation
       
       // Add a subtle parallax effect
       camera.position.x = Math.sin(elapsedTime * 0.1) * 0.5;
