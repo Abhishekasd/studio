@@ -1,14 +1,15 @@
 
 "use client";
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { messages } from '@/lib/messages';
 import { getFestivalMessage } from '@/ai/flows/festival-flow';
+import { getNewMessage as getNewAiMessage } from '@/ai/flows/message-generation-flow';
 import { useToast } from './use-toast';
 
 interface Message {
   text: string;
-  key: number;
+  key: string | number;
 }
 
 const getInitialMessage = (language: string, category: string): Message => {
@@ -16,71 +17,99 @@ const getInitialMessage = (language: string, category: string): Message => {
     if (messageList.length > 0) {
         return { text: messageList[0], key: 0 };
     }
-    return { text: 'Select a category to start your day!', key: -1 };
+    return { text: 'Select a category to start your day!', key: "initial" };
 };
 
 export const useMessageGenerator = (language: string, category: string) => {
   const [currentMessage, setCurrentMessage] = useState<Message>(() => getInitialMessage(language, category));
-  const [usedIndices, setUsedIndices] = useState(new Set<number>());
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
 
+  // Use a ref to store session messages to avoid re-renders and keep it persistent
+  const sessionMessagesRef = useRef<Record<string, Set<string>>>({});
+
+  // Function to get a unique message from the local fallback list
+  const getFallbackMessage = useCallback(() => {
+    const messageList = messages[language]?.[category] ?? ["Sorry, something went wrong. Please try again!"];
+    const sessionCategoryMessages = sessionMessagesRef.current[category] || new Set();
+
+    let availableMessages = messageList.filter(m => !sessionCategoryMessages.has(m));
+
+    if (availableMessages.length === 0) {
+      // All local messages for this category have been used, reset for this category
+      sessionCategoryMessages.clear();
+      availableMessages = messageList;
+    }
+
+    const randomIndex = Math.floor(Math.random() * availableMessages.length);
+    const newMessage = availableMessages[randomIndex];
+    
+    sessionCategoryMessages.add(newMessage);
+    sessionMessagesRef.current[category] = sessionCategoryMessages;
+    
+    setCurrentMessage({ text: newMessage, key: newMessage });
+  }, [language, category]);
+
+
   const getNewMessage = useCallback(async () => {
+    setIsLoading(true);
+
+    // Festival category has its own dedicated flow
     if (category === 'festival') {
-      setIsLoading(true);
       try {
         const result = await getFestivalMessage({ language });
-        setCurrentMessage({ text: result.message, key: Date.now() });
+        const newMessage = result.message;
+        setCurrentMessage({ text: newMessage, key: newMessage });
       } catch (error) {
         console.error("Error fetching festival message:", error);
         toast({
-            title: "Error",
-            description: "Could not fetch a festival greeting. Please try again.",
+            title: "Festival Message Error",
+            description: "Could not fetch a festive greeting, using a local one.",
             variant: "destructive",
         });
-        setCurrentMessage({ text: messages[language]?.festival[0] || "Wishing you a joyous day!", key: -1});
+        getFallbackMessage();
       } finally {
         setIsLoading(false);
       }
       return;
     }
 
-    const messageList = messages[language]?.[category] ?? [];
-    if (messageList.length === 0) {
-      setCurrentMessage({ text: 'No messages in this category yet. Stay tuned!', key: -1 });
-      setUsedIndices(new Set());
-      return;
+    // For other categories, try the new AI flow first
+    try {
+        const sessionCategoryMessages = sessionMessagesRef.current[category] || new Set();
+        const result = await getNewAiMessage({
+            language,
+            category,
+            existingMessages: Array.from(sessionCategoryMessages),
+        });
+
+        const newMessage = result.message;
+        sessionCategoryMessages.add(newMessage);
+        sessionMessagesRef.current[category] = sessionCategoryMessages;
+        setCurrentMessage({ text: newMessage, key: newMessage });
+
+    } catch (error) {
+        console.error("Error fetching dynamic message:", error);
+        toast({
+            title: "Dynamic Message Error",
+            description: "Could not generate a new message, using one from our library.",
+            variant: "destructive",
+        });
+        // Fallback to local list if AI fails
+        getFallbackMessage();
+    } finally {
+        setIsLoading(false);
     }
 
-    let availableIndices = Array.from(Array(messageList.length).keys()).filter(
-      i => !usedIndices.has(i)
-    );
-
-    if (availableIndices.length === 0) {
-      const newUsed = new Set<number>();
-      setUsedIndices(newUsed);
-      availableIndices = Array.from(Array(messageList.length).keys());
-    }
-    
-    const randomIndex = availableIndices[Math.floor(Math.random() * availableIndices.length)];
-    
-    setUsedIndices(prev => new Set(prev).add(randomIndex));
-    setCurrentMessage({ text: messageList[randomIndex], key: randomIndex });
-
-  }, [language, category, usedIndices, toast]);
+  }, [language, category, toast, getFallbackMessage]);
   
   useEffect(() => {
-    if (category === 'festival') {
-        getNewMessage();
-    } else {
-        const firstMessage = getInitialMessage(language, category);
-        setCurrentMessage(firstMessage);
-        const newUsedIndices = new Set<number>();
-        if (firstMessage.key !== -1) {
-            newUsedIndices.add(firstMessage.key);
-        }
-        setUsedIndices(newUsedIndices);
-    }
+    // When language or category changes, get a new message.
+    // Reset the session cache for that category if the language changes.
+    sessionMessagesRef.current = {};
+    getNewMessage();
+  // We only want this to run when language or category changes.
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [language, category]);
 
 
