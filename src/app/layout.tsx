@@ -3,6 +3,7 @@ import './globals.css';
 import { Toaster } from "@/components/ui/toaster"
 import Link from 'next/link';
 import { Separator } from '@/components/ui/separator';
+import Script from 'next/script';
 
 export const metadata: Metadata = {
   title: 'MorningMuse3D - AI-Powered Inspiration, Quotes & Art',
@@ -23,6 +24,7 @@ export default function RootLayout({
         <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
         <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2365487260750859"
      crossOrigin="anonymous"></script>
+        <Script src="https://cdn.jsdelivr.net/npm/tsparticles@3.0.0/tsparticles.bundle.min.js" strategy="beforeInteractive" />
       </head>
       <body className="font-body antialiased">
         <div className="flex flex-col min-h-screen">
