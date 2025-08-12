@@ -26,11 +26,22 @@ const ThreeBackground: React.FC = () => {
         background: { color: { value: "transparent" } },
         particles: {
           number: { value: 150 },
-          size: { value: 2 },
-          move: { enable: true, speed: 0.6 },
-          opacity: { value: 0.8 },
+          size: {
+            value: 2,
+            random: { enable: true, minimumValue: 1 }
+          },
+          move: { enable: true, speed: 0.5 }, // slow pace
+          opacity: {
+            value: 0.8,
+            animation: {
+              enable: true,
+              speed: 0.8,
+              minimumValue: 0.3,
+              sync: false
+            }
+          },
           color: {
-            value: ["#ff4b5c", "#ffca3a", "#8ac926", "#1982c4", "#6a4c93"]
+            value: ["#ff4b5c", "#ffca3a", "#8ac926", "#1982c4", "#6a4c93"] // colorful
           },
           shape: { type: "circle" },
           links: { enable: false }
