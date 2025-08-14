@@ -82,10 +82,11 @@ const generateImageFlow = ai.defineFlow(
     *   Ganesh ji (for auspicious beginnings)
     *   Radha and Krishna (for love and joy)
     *   A welcoming depiction of Ram Darbar.
-2.  **Art Style:** The style must be serene, devotional, and visually appealing, with a positive and welcoming feel.
-3.  **Composition:**
+2.  **Slogan Generation:** Based on the chosen deity, generate a relevant, traditional slogan (e.g., "Shri Ganeshaya Namah" for Ganesh, "Jai Shri Radhe" for Radha).
+3.  **Art Style:** The style must be serene, devotional, and visually appealing, with a positive and welcoming feel.
+4.  **Composition:**
     *   The main artwork must feature the chosen deity.
-    *   Integrate the greeting text "${input.prompt}" beautifully and clearly within the image.
+    *   Integrate BOTH the greeting text "${input.prompt}" and the slogan you generated beautifully and clearly within the image.
     *   **No Watermark:** Do not include any watermarks or extra text like "MorningMuse3D".`;
       } else {
         // Simple Greeting (No watermark, no deities)
