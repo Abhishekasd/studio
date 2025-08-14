@@ -14,6 +14,8 @@ import {
   Share2,
   Mail,
   Sparkles,
+  Palette,
+  Heart,
 } from "lucide-react";
 
 import { useMessageGenerator } from "@/hooks/use-message-generator";
@@ -73,6 +75,7 @@ export const MorningMuseClient: FC = () => {
 
   const [language, setLanguage] = useState("en");
   const [category, setCategory] = useState("motivational");
+  const [greetingSubCategory, setGreetingSubCategory] = useState("simple");
   const { currentMessage, getNewMessage, isLoading } = useMessageGenerator(language, category);
   const { toast } = useToast();
 
@@ -144,6 +147,7 @@ export const MorningMuseClient: FC = () => {
         prompt: currentMessage.text,
         language: language,
         category: category,
+        subCategory: category === 'greeting' ? greetingSubCategory : undefined,
       });
       setGeneratedImage(result.imageDataUri);
     } catch (error) {
@@ -263,6 +267,30 @@ export const MorningMuseClient: FC = () => {
             </Button>
           ))}
         </div>
+        
+        {category === 'greeting' && (
+            <div className="flex flex-wrap items-center justify-center gap-3 rounded-lg bg-card/30 backdrop-blur-md p-2 border-border/50">
+               <span className="text-sm font-medium text-foreground/80 mr-2">{t.imageTypePrompt}</span>
+                <Button
+                    variant={greetingSubCategory === 'simple' ? 'default' : 'outline'}
+                    onClick={() => setGreetingSubCategory('simple')}
+                    size="sm"
+                    className="transition-all"
+                >
+                    <Palette className="mr-2 h-4 w-4" />
+                    {t.subCategorySimple}
+                </Button>
+                <Button
+                    variant={greetingSubCategory === 'spiritual' ? 'default' : 'outline'}
+                    onClick={() => setGreetingSubCategory('spiritual')}
+                    size="sm"
+                    className="transition-all"
+                >
+                    <Heart className="mr-2 h-4 w-4" />
+                    {t.subCategorySpiritual}
+                </Button>
+            </div>
+        )}
 
         <div className="w-full perspective-1000">
           <div

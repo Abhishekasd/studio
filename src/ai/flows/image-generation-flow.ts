@@ -23,6 +23,7 @@ const GenerateImageInputSchema = z.object({
   prompt: z.string().describe('The text prompt to generate an image from.'),
   language: z.string().describe('The language of the prompt (e.g., "en", "ur").'),
   category: z.string().describe('The category of the prompt (e.g., "spiritual").'),
+  subCategory: z.string().optional().describe('An optional sub-category for more specific image generation (e.g., "simple", "spiritual").'),
 });
 export type GenerateImageInput = z.infer<typeof GenerateImageInputSchema>;
 
@@ -42,11 +43,12 @@ const generateImageFlow = ai.defineFlow(
       throw new Error('Server is not configured with a GEMINI_API_KEY.');
     }
     
-    const watermarkText = input.category === 'greeting' ? '' : 'Subtly include the text "MorningMuse3D" as a small, elegant watermark in a corner of the image.';
-    const watermarkTextSpiritual = input.category === 'greeting' ? '' : 'Place the text "MorningMuse3D" as a small, elegant watermark in the **bottom-right corner ONLY**. Do not place this text anywhere else in the image.';
+    const watermarkText = 'Subtly include the text "MorningMuse3D" as a small, elegant watermark in a corner of the image.';
+    const watermarkTextSpiritual = 'Place the text "MorningMuse3D" as a small, elegant watermark in the **bottom-right corner ONLY**. Do not place this text anywhere else in the image.';
 
     let imagePrompt = `Generate a beautiful, divine, and artistic image that captures the essence of the following spiritual or motivational quote: "${input.prompt}". The style should be serene, devotional, and visually appealing, suitable for a spiritual app. Focus on creating illustrations of deities, spiritual symbols, or serene landscapes that match the message's tone. For example, if the message is about love and devotion, an image of Radha and Krishna would be appropriate. ${watermarkText}`;
 
+    // Main spiritual category (with watermark)
     if (input.category === 'spiritual') {
       if (['en', 'hi', 'sa'].includes(input.language)) {
         imagePrompt = `Create a beautiful, divine, and artistic image of a Hindu deity.
@@ -71,13 +73,31 @@ const generateImageFlow = ai.defineFlow(
         imagePrompt = `Generate a beautiful and serene image of Islamic art. This could be intricate calligraphy of a spiritual phrase from the quote "${input.prompt}", stunning mosque architecture, or an abstract geometric pattern that evokes peace and spirituality. Do not generate images of people or prophets. The style should be respectful and visually appealing. ${watermarkText}`;
       }
     } else if (input.category === 'greeting') {
-       imagePrompt = `Generate a beautiful, traditional, and visually appealing "good morning" or "have a nice day" style greeting image. The image should feature the text "${input.prompt}" prominently and beautifully integrated.
+      // Greeting category (no watermark)
+      if (input.subCategory === 'spiritual') {
+         // Spiritual Greeting (Deity, no watermark)
+         imagePrompt = `Create a beautiful, divine, and artistic image of a Hindu deity suitable for a greeting card. The greeting text itself is "${input.prompt}".
+
+**Instructions:**
+1.  **Deity Selection:** Based on the general positive nature of the greeting, choose an appropriate, welcoming deity. Options include:
+    *   Ganesh ji (for auspicious beginnings)
+    *   Radha and Krishna (for love and joy)
+    *   A welcoming depiction of Ram Darbar.
+2.  **Art Style:** The style must be serene, devotional, and visually appealing, with a positive and welcoming feel.
+3.  **Composition:**
+    *   The main artwork should feature the chosen deity.
+    *   Integrate the greeting text "${input.prompt}" beautifully and clearly within the image.
+    *   **No Watermark:** Do not include any watermarks or extra text like "MorningMuse3D".`;
+      } else {
+        // Simple Greeting (No watermark)
+        imagePrompt = `Generate a beautiful, traditional, and visually appealing "good morning" or "have a nice day" style greeting image. The image should feature the text "${input.prompt}" prominently and beautifully integrated.
 
 **Instructions:**
 1.  **Theme:** The theme should be positive, serene, and suitable for a general audience. Think of floral patterns, beautiful landscapes, sunrises, or traditional motifs relevant to the language and culture of the greeting.
 2.  **Text Integration:** The text "${input.prompt}" should be the main focus, rendered in an elegant and readable font.
 3.  **No Watermark:** Do not include any watermarks or extra text like "MorningMuse3D". The image should only contain the greeting text and the background art.
 4.  **Style:** The style should be similar to popular digital greetings found on platforms like Pinterest or WhatsApp, often featuring vibrant colors and decorative elements.`;
+      }
     }
     
     const {media} = await ai.generate({
