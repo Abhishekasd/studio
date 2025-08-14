@@ -49,6 +49,7 @@ const languages = [
   { value: "sa", label: "संस्कृतम्" },
   { value: "ur", label: "اردو" },
   { value: "es", label: "Español" },
+  { value: "pt", label: "Português" },
 ];
 
 function TelegramIcon(props: React.SVGProps<SVGSVGElement>) {

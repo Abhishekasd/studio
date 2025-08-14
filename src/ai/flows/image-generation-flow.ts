@@ -21,7 +21,7 @@ if (!process.env.GEMINI_API_KEY) {
 
 const GenerateImageInputSchema = z.object({
   prompt: z.string().describe('The text prompt to generate an image from.'),
-  language: z.string().describe('The language of the prompt (e.g., "en", "ur").'),
+  language: z.string().describe('The language of the prompt (e.g., "en", "ur", "pt").'),
   category: z.string().describe('The category of the prompt (e.g., "spiritual").'),
   subCategory: z.string().optional().describe('An optional sub-category for more specific image generation (e.g., "simple", "spiritual").'),
 });
@@ -68,12 +68,27 @@ const generateImageFlow = ai.defineFlow(
 **Spiritual Quote:** "${input.prompt}"`;
       } else if (input.language === 'ur') {
         imagePrompt = `Generate a beautiful and serene image of Islamic art. This could be intricate calligraphy of a spiritual phrase from the quote "${input.prompt}", stunning mosque architecture, or an abstract geometric pattern that evokes peace and spirituality. Do not generate images of people or prophets. The style should be respectful and visually appealing. Do not include any watermarks.`;
+      } else if (input.language === 'pt') {
+        imagePrompt = `Create a beautiful, serene, and artistic image with a Christian theme, inspired by the spiritual quote provided.
+
+**Instructions:**
+1.  **Theme Selection:** The image should be inspired by Christian spirituality. Options include:
+    *   An artistic representation of Jesus Christ.
+    *   The Holy Family (Jesus, Mary, and Joseph).
+    *   A guardian angel.
+    *   Symbolic imagery like a cross, a dove (representing the Holy Spirit), or a lamb.
+2.  **Text Integration:** Artistically and clearly integrate the spiritual quote into the image. The text should complement the art.
+3.  **Art Style:** The style must be reverent, peaceful, and visually appealing, suitable for a spiritual message.
+4.  **No Watermark:** Do not include any watermarks or extra text.
+
+**Spiritual Quote:** "${input.prompt}"`;
       }
     } else if (input.category === 'greeting') {
       // Greeting category (no watermark)
       if (input.subCategory === 'spiritual') {
          // Spiritual Greeting (Deity, no watermark)
-         imagePrompt = `Create a beautiful, devotional greeting card image. The greeting text itself is "${input.prompt}".
+         if (['en', 'hi', 'sa'].includes(input.language)) {
+             imagePrompt = `Create a beautiful, devotional greeting card image. The greeting text itself is "${input.prompt}".
 
 **Instructions:**
 1.  **Greeting Text is Primary:** The main focus of the image MUST be the greeting text: "${input.prompt}". It should be prominent, artistic, and easy to read.
@@ -81,6 +96,24 @@ const generateImageFlow = ai.defineFlow(
     *   Choose an appropriate deity based on the greeting, such as Ganesh ji, Radha-Krishna, or Ram.
 3.  **Art Style:** The overall style should be similar to popular digital greetings, with vibrant colors and decorative elements like flowers, but with a clear spiritual theme.
 4.  **No Watermark:** Do not include any watermarks or extra text. The image should only contain the greeting text and the spiritual background art.`;
+         } else if (input.language === 'pt') {
+            imagePrompt = `Create a beautiful, devotional Christian greeting card image. The greeting text itself is "${input.prompt}".
+
+**Instructions:**
+1.  **Greeting Text is Primary:** The main focus of the image MUST be the greeting text: "${input.prompt}". It should be prominent, artistic, and easy to read.
+2.  **Background Art:** The background should be a beautiful, artistic, and serene depiction of a Christian theme or symbol. This could be a subtle image of Jesus, an angel, a cross, or a dove. The art should be a background element, not the main subject.
+3.  **Art Style:** The overall style should be similar to popular digital greetings, with soft colors and decorative elements like light rays or flowers, with a clear spiritual theme.
+4.  **No Watermark:** Do not include any watermarks or extra text. The image should only contain the greeting text and the spiritual background art.`;
+         } else {
+             // Fallback for other languages like Urdu for spiritual greetings
+             imagePrompt = `Generate a beautiful, traditional, and visually appealing greeting image with a spiritual but non-figurative theme. The image should feature the text "${input.prompt}" prominently and beautifully integrated.
+
+**Instructions:**
+1.  **Theme:** The theme must be positive and serene, suitable for a spiritual greeting. Think of beautiful calligraphy, geometric patterns, or mosque architecture.
+2.  **Strict Restriction:** You MUST NOT generate any images of deities, religious figures, or people. The image must be non-figurative.
+3.  **Text Integration:** The text "${input.prompt}" should be the main focus, rendered in an elegant and readable font.
+4.  **No Watermark:** Do not include any watermarks or extra text.`;
+         }
       } else {
         // Simple Greeting (No watermark, no deities)
         imagePrompt = `Generate a beautiful, traditional, and visually appealing "good morning" or "have a nice day" style greeting image. The image should feature the text "${input.prompt}" prominently and beautifully integrated.

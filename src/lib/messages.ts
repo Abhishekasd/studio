@@ -1,3 +1,4 @@
+
 export const messages: Record<string, Record<string, string[]>> = {
   en: {
     shayari: [
@@ -285,7 +286,7 @@ export const messages: Record<string, Record<string, string[]>> = {
         "साफल्यं न अन्तिमम्, असफलता न घातकम्, अपितु अग्रे गन्तुं धैर्यमेव महत्त्वपूर्णम्।",
         "घटिकां मा पश्य, सा यत् करोति तत् कुरु। निरन्तरं चल।",
         "यस्य कृते त्वं अधिकं श्रमं करोषि, तत् प्राप्य त्वं तावदेव अधिकं सुखं अनुभवसि।",
-        "महत् स्वप्नं पश्य। महत् कार्यं कुरु।",
+        "महत् स्वप्नं पश्य। महत् कार्यं कuru।",
         "तव मनोवृत्तिः तव दिशं निर्धारयति।"
     ],
     spiritual: [
@@ -312,6 +313,69 @@ export const messages: Record<string, Record<string, string[]>> = {
         "नमस्ते",
         "भवतः दिनं शुभं भूयात्",
         "प्रणामः"
+    ]
+  },
+  pt: {
+    shayari: [
+      "O sol sussurra um novo dia, deixe sua alma ouvir. ☀️",
+      "Na primeira luz da manhã, encontre a poesia do seu próprio coração. ✨",
+      "Um novo amanhecer, uma nova página, escreva uma bela história. 🌅",
+      "Deixe o nascer do sol pintar sua tela com as cores da esperança. 🎨",
+      "Como uma brisa suave, que a paz agracie sua manhã.",
+      "Na quietude do amanhecer, mil sonhos despertam.",
+      "O mundo é um poema, e você é seu verso mais belo.",
+      "Orvalho da manhã numa pétala, uma pequena joia de esperança.",
+      "A cada nascer do sol, o mundo escreve uma nova história de amor.",
+      "Deixe seu coração ser tão aberto quanto o céu da manhã."
+    ],
+    joke: [
+      "Por que os cientistas não confiam nos átomos? Porque eles compõem tudo! 😂",
+      "Eu disse à minha esposa que ela deveria abraçar seus erros. Ela me deu um abraço. 🤗",
+      "Por que o espantalho ganhou um prêmio? Porque ele era excepcional em seu campo! 🌾",
+      "Como se chama um macarrão falso? Um Impasta! 🍝",
+      "Por que a bicicleta caiu? Estava com dois pneus cansados!",
+      "Estou lendo um livro sobre antigravidade. É impossível largá-lo!",
+      "Como se chama um queijo que não é seu? Queijo Nacho!",
+      "Por que o pônei não conseguia cantar uma canção de ninar? Ele era um pouco cavalo.",
+      "O que você ganha quando cruza um boneco de neve com um vampiro? Queimadura de gelo.",
+      "Eu costumava ser padeiro, mas não conseguia ganhar dinheiro suficiente."
+    ],
+    motivational: [
+      "Acredite que você pode e você já está no meio do caminho. Você consegue! 💪",
+      "O segredo de progredir é começar. Vamos lá! 🚀",
+      "Seu único limite é sua mente. Pense grande hoje. 🧠",
+      "Toda manhã é uma nova chegada. Faça valer a pena. 🌟",
+      "O futuro pertence àqueles que acreditam na beleza de seus sonhos.",
+      "O sucesso não é final, o fracasso não é fatal: é a coragem de continuar que conta.",
+      "Não observe o relógio; faça o que ele faz. Continue.",
+      "Quanto mais você trabalha por algo, maior será a sensação ao alcançá-lo.",
+      "Sonhe mais alto. Faça maior.",
+      "Sua atitude determina sua direção."
+    ],
+    spiritual: [
+      "Que sua primeira respiração do dia seja de gratidão. 🙏",
+      "O universo está dentro de você. Encontre sua paz esta manhã. ☮️",
+      "Abra seu coração para os milagres silenciosos de um novo dia. 💖",
+      "Que seu dia seja preenchido com luz, amor e serenidade. 🕊️",
+      "A gratidão transforma o que temos em suficiente.",
+      "Seja um reflexo do que você gostaria de receber.",
+      "A alma sempre sabe o que fazer para se curar. O desafio é silenciar a mente.",
+      "Seu coração conhece o caminho. Corra nessa direção.",
+      "Quando você faz as coisas com a alma, sente um rio se movendo em você, uma alegria.",
+      "No silêncio da manhã, ouça sua alma."
+    ],
+    festival: [
+      "Que o festival das luzes ilumine sua vida. ✨",
+      "Desejando a você uma estação de alegria e comemoração. 🎉",
+      "Que o espírito do festival encha seu coração de felicidade. 💖",
+      "Celebre os momentos que fazem da vida um festival. 🎊",
+    ],
+    greeting: [
+        "Bom dia!",
+        "Tenha um dia maravilhoso!",
+        "Desejando a você um dia cheio de sol e sorrisos.",
+        "Que seu dia seja tão lindo quanto você.",
+        "Olá! Tenha um ótimo dia!"
     ]
   },
 };
