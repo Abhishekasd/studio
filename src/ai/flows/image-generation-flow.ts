@@ -43,10 +43,8 @@ const generateImageFlow = ai.defineFlow(
       throw new Error('Server is not configured with a GEMINI_API_KEY.');
     }
     
-    const watermarkText = 'Subtly include the text "MorningMuse3D" as a small, elegant watermark in a corner of the image.';
+    let imagePrompt = `Generate a beautiful and artistic image that captures the essence of the following quote: "${input.prompt}". The style should be visually appealing and match the message's tone. Do not include any watermark.`;
     
-    let imagePrompt = `Generate a beautiful, divine, and artistic image that captures the essence of the following spiritual or motivational quote: "${input.prompt}". The style should be serene, devotional, and visually appealing, suitable for a spiritual app. Focus on creating illustrations of deities, spiritual symbols, or serene landscapes that match the message's tone. For example, if the message is about love and devotion, an image of Radha and Krishna would be appropriate. ${watermarkText}`;
-
     // Main spiritual category (NO watermark)
     if (input.category === 'spiritual') {
       if (['en', 'hi', 'sa'].includes(input.language)) {
@@ -69,7 +67,7 @@ const generateImageFlow = ai.defineFlow(
 
 **Spiritual Quote:** "${input.prompt}"`;
       } else if (input.language === 'ur') {
-        imagePrompt = `Generate a beautiful and serene image of Islamic art. This could be intricate calligraphy of a spiritual phrase from the quote "${input.prompt}", stunning mosque architecture, or an abstract geometric pattern that evokes peace and spirituality. Do not generate images of people or prophets. The style should be respectful and visually appealing.`; // Watermark removed
+        imagePrompt = `Generate a beautiful and serene image of Islamic art. This could be intricate calligraphy of a spiritual phrase from the quote "${input.prompt}", stunning mosque architecture, or an abstract geometric pattern that evokes peace and spirituality. Do not generate images of people or prophets. The style should be respectful and visually appealing. Do not include any watermarks.`;
       }
     } else if (input.category === 'greeting') {
       // Greeting category (no watermark)
@@ -99,9 +97,6 @@ const generateImageFlow = ai.defineFlow(
 4.  **No Watermark:** Do not include any watermarks or extra text like "MorningMuse3D". The image should only contain the greeting text and the background art.
 5.  **Style:** The style should be similar to popular digital greetings found on platforms like Pinterest or WhatsApp, often featuring vibrant colors and decorative elements.`;
       }
-    } else {
-        // All other categories (motivational, joke, etc.) still get a watermark
-        imagePrompt = `Generate a beautiful and artistic image that captures the essence of the following quote: "${input.prompt}". The style should be visually appealing and match the message's tone. ${watermarkText}`;
     }
     
     const {media} = await ai.generate({
