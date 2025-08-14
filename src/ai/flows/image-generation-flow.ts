@@ -63,7 +63,7 @@ const generateImageFlow = ai.defineFlow(
 4.  **Composition:**
     *   The main artwork should feature the chosen deity or deities.
     *   Artistically and clearly integrate BOTH the spiritual quote and the slogan you generated into the image. For example, the slogan could be at the top and the quote at the bottom.
-    *   **No Watermark:** Do not include any watermarks or extra text like "MorningMuse3D".
+    *   **No Watermark:** Do not include any watermarks or extra text.
 
 **Spiritual Quote:** "${input.prompt}"`;
       } else if (input.language === 'ur') {
@@ -73,19 +73,14 @@ const generateImageFlow = ai.defineFlow(
       // Greeting category (no watermark)
       if (input.subCategory === 'spiritual') {
          // Spiritual Greeting (Deity, no watermark)
-         imagePrompt = `Create a beautiful, divine, and artistic image of a Hindu deity suitable for a greeting card. The greeting text itself is "${input.prompt}".
+         imagePrompt = `Create a beautiful, devotional greeting card image. The greeting text itself is "${input.prompt}".
 
 **Instructions:**
-1.  **Deity Selection:** Your task is to generate an image of a Hindu deity ONLY. Based on the general positive nature of the greeting, choose an appropriate, welcoming deity. Your options are:
-    *   Ganesh ji (for auspicious beginnings)
-    *   Radha and Krishna (for love and joy)
-    *   A welcoming depiction of Ram Darbar.
-2.  **Slogan Generation:** Based on the chosen deity, generate a relevant, traditional slogan (e.g., "Shri Ganeshaya Namah" for Ganesh, "Jai Shri Radhe" for Radha).
-3.  **Art Style:** The style must be serene, devotional, and visually appealing, with a positive and welcoming feel.
-4.  **Composition:**
-    *   The main artwork must feature the chosen deity.
-    *   Integrate BOTH the greeting text "${input.prompt}" and the slogan you generated beautifully and clearly within the image.
-    *   **No Watermark:** Do not include any watermarks or extra text like "MorningMuse3D".`;
+1.  **Greeting Text is Primary:** The main focus of the image MUST be the greeting text: "${input.prompt}". It should be prominent, artistic, and easy to read.
+2.  **Background Art:** The background should be a beautiful, artistic, and serene depiction of a Hindu deity or symbols associated with them. The deity should be part of the background art, not the main subject. For example, for a "Ram Ram Ji" greeting, the background could feature a subtle image of Ram, or a bow and arrow, or other related symbols.
+    *   Choose an appropriate deity based on the greeting, such as Ganesh ji, Radha-Krishna, or Ram.
+3.  **Art Style:** The overall style should be similar to popular digital greetings, with vibrant colors and decorative elements like flowers, but with a clear spiritual theme.
+4.  **No Watermark:** Do not include any watermarks or extra text. The image should only contain the greeting text and the spiritual background art.`;
       } else {
         // Simple Greeting (No watermark, no deities)
         imagePrompt = `Generate a beautiful, traditional, and visually appealing "good morning" or "have a nice day" style greeting image. The image should feature the text "${input.prompt}" prominently and beautifully integrated.
@@ -94,7 +89,7 @@ const generateImageFlow = ai.defineFlow(
 1.  **Theme:** The theme must be positive and serene, suitable for a general audience. Think of floral patterns, beautiful landscapes, sunrises, or traditional motifs.
 2.  **Strict Restriction:** You MUST NOT generate any images of deities, religious figures, or specific spiritual symbols. The image must be secular.
 3.  **Text Integration:** The text "${input.prompt}" should be the main focus, rendered in an elegant and readable font.
-4.  **No Watermark:** Do not include any watermarks or extra text like "MorningMuse3D". The image should only contain the greeting text and the background art.
+4.  **No Watermark:** Do not include any watermarks or extra text. The image should only contain the greeting text and the background art.
 5.  **Style:** The style should be similar to popular digital greetings found on platforms like Pinterest or WhatsApp, often featuring vibrant colors and decorative elements.`;
       }
     }
