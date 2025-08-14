@@ -74,7 +74,7 @@ export const MorningMuseClient: FC = () => {
   }, []);
 
   const [language, setLanguage] = useState("en");
-  const [category, setCategory] = useState("motivational");
+  const [category, setCategory] = useState("greeting");
   const [greetingSubCategory, setGreetingSubCategory] = useState("simple");
   const { currentMessage, getNewMessage, isLoading } = useMessageGenerator(language, category);
   const { toast } = useToast();
@@ -90,12 +90,12 @@ export const MorningMuseClient: FC = () => {
   const t = uiText[language] || uiText.en;
 
   const categories = [
+    { value: "greeting", label: t.greeting },
+    { value: "festival", label: t.festival },
     { value: "motivational", label: t.motivational },
     { value: "spiritual", label: t.spiritual },
-    { value: "greeting", label: t.greeting },
     { value: "shayari", label: t.shayari },
     { value: "joke", label: t.joke },
-    { value: "festival", label: t.festival },
   ];
   
   useEffect(() => {
@@ -391,12 +391,12 @@ export const MorningMuseClient: FC = () => {
         <section>
           <h2 className="text-3xl font-bold text-center text-primary mb-6">{t.categoriesTitle}</h2>
           <div className="space-y-4 text-lg leading-relaxed">
+            <p><strong className="text-secondary">{t.catGreetingTitle}</strong> {t.catGreetingDesc}</p>
+            <p><strong className="text-secondary">{t.catFestivalTitle}</strong> {t.catFestivalDesc}</p>
             <p><strong className="text-secondary">{t.catMotivationalTitle}</strong> {t.catMotivationalDesc}</p>
             <p><strong className="text-secondary">{t.catSpiritualTitle}</strong> {t.catSpiritualDesc}</p>
             <p><strong className="text-secondary">{t.catShayariTitle}</strong> {t.catShayariDesc}</p>
             <p><strong className="text-secondary">{t.catJokeTitle}</strong> {t.catJokeDesc}</p>
-            <p><strong className="text-secondary">{t.catGreetingTitle}</strong> {t.catGreetingDesc}</p>
-            <p><strong className="text-secondary">{t.catFestivalTitle}</strong> {t.catFestivalDesc}</p>
           </div>
         </section>
 
