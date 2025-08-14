@@ -63,6 +63,7 @@ const getNewMessageFlow = ai.defineFlow(
       - **spiritual:** A serene, insightful message about peace, gratitude, or inner connection.
       - **shayari:** An elegant, poetic couplet (two lines) that is emotional and beautiful.
       - **joke:** A light-hearted, clean, family-friendly joke that brings a smile.
+      - **greeting:** A simple, warm, and traditional greeting. Examples: "Good Morning", "Ram Ram", "Have a blessed day". Keep it very simple and popular.
 
       Your response MUST only be the message text itself. Do not add any extra commentary or labels.
       `,

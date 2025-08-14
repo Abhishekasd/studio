@@ -13,6 +13,7 @@ import {
   X,
   Share2,
   Mail,
+  Sparkles,
 } from "lucide-react";
 
 import { useMessageGenerator } from "@/hooks/use-message-generator";
@@ -90,6 +91,7 @@ export const MorningMuseClient: FC = () => {
     { value: "joke", label: t.joke },
     { value: "motivational", label: t.motivational },
     { value: "spiritual", label: t.spiritual },
+    { value: "greeting", label: t.greeting },
     { value: "festival", label: t.festival },
   ];
   
@@ -256,7 +258,8 @@ export const MorningMuseClient: FC = () => {
               onClick={() => handleCategoryChange(cat.value)}
               className="transition-all hover:scale-105"
             >
-              {cat.value === 'festival' && isLoading ? <Loader className="animate-spin"/> : cat.label}
+              {cat.value === 'festival' && isLoading ? <Loader className="animate-spin"/> : cat.value === 'greeting' ? <Sparkles /> : null}
+              {cat.label}
             </Button>
           ))}
         </div>
@@ -364,6 +367,7 @@ export const MorningMuseClient: FC = () => {
             <p><strong className="text-secondary">{t.catSpiritualTitle}</strong> {t.catSpiritualDesc}</p>
             <p><strong className="text-secondary">{t.catShayariTitle}</strong> {t.catShayariDesc}</p>
             <p><strong className="text-secondary">{t.catJokeTitle}</strong> {t.catJokeDesc}</p>
+            <p><strong className="text-secondary">{t.catGreetingTitle}</strong> {t.catGreetingDesc}</p>
             <p><strong className="text-secondary">{t.catFestivalTitle}</strong> {t.catFestivalDesc}</p>
           </div>
         </section>

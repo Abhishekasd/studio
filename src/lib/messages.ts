@@ -54,6 +54,13 @@ export const messages: Record<string, Record<string, string[]>> = {
       "Let the spirit of the festival fill your heart with happiness. 💖",
       "Celebrate the moments that make life a festival. 🎊",
     ],
+    greeting: [
+        "Good Morning!",
+        "Have a wonderful day!",
+        "Wishing you a day full of sunshine and smiles.",
+        "May your day be as beautiful as you are.",
+        "Hello! Have a great day!"
+    ]
   },
   hi: {
     shayari: [
@@ -110,6 +117,13 @@ export const messages: Record<string, Record<string, string[]>> = {
       "त्योहार की भावना आपके दिल को खुशियों से भर दे। 💖",
       "उन पलों का जश्न मनाएं जो जीवन को एक त्योहार बनाते हैं। 🎊",
     ],
+    greeting: [
+        "राम राम जी",
+        "आपका दिन मंगलमय हो",
+        "सुप्रभात",
+        "जय श्री कृष्ण",
+        "नमस्कार"
+    ]
   },
   es: {
     shayari: [
@@ -166,6 +180,13 @@ export const messages: Record<string, Record<string, string[]>> = {
       "Deja que el espíritu del festival llene tu corazón de felicidad. 💖",
       "Celebra los momentos que hacen de la vida un festival. 🎊",
     ],
+    greeting: [
+        "¡Buenos días!",
+        "¡Que tengas un día maravilloso!",
+        "Te deseo un día lleno de sol y sonrisas.",
+        "¡Hola! ¡Qué tengas un buen día!",
+        "¡Feliz día!"
+    ]
   },
   ur: {
     shayari: [
@@ -222,6 +243,13 @@ export const messages: Record<string, Record<string, string[]>> = {
       "تہوار کی روح آپ کے دل کو خوشیوں سے بھر دے۔ 💖",
       "ان لمحات کا جشن منائیں جو زندگی کو ایک تہوار بناتے ہیں۔ 🎊",
     ],
+    greeting: [
+        "صبح بخیر",
+        "آپ کا دن اچھا گزرے",
+        "السلام علیکم",
+        "خوش آمدید",
+        "ایک شاندار دن ہو"
+    ]
   },
   sa: {
     shayari: [
@@ -278,5 +306,12 @@ export const messages: Record<string, Record<string, string[]>> = {
       "उत्सवस्य आत्मा तव हृदयं हर्षेण पूरयतु। 💖",
       "तान् क्षणान् उत्सवं कुरु ये जीवनम् उत्सवं कुर्वन्ति। 🎊",
     ],
+    greeting: [
+        "सुप्रभातम्",
+        "शुभदिनमस्तु",
+        "नमस्ते",
+        "भवतः दिनं शुभं भूयात्",
+        "प्रणामः"
+    ]
   },
 };
