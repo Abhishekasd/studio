@@ -90,11 +90,11 @@ export const MorningMuseClient: FC = () => {
   const t = uiText[language] || uiText.en;
 
   const categories = [
-    { value: "shayari", label: t.shayari },
-    { value: "joke", label: t.joke },
     { value: "motivational", label: t.motivational },
     { value: "spiritual", label: t.spiritual },
     { value: "greeting", label: t.greeting },
+    { value: "shayari", label: t.shayari },
+    { value: "joke", label: t.joke },
     { value: "festival", label: t.festival },
   ];
   
