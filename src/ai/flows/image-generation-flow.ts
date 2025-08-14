@@ -60,10 +60,11 @@ const generateImageFlow = ai.defineFlow(
     *   Saraswati mata
     *   Hanuman ji
     *   Ram Darbar (Rama, Sita, Lakshmana, and Hanuman)
-2.  **Art Style:** The style must be serene, devotional, and visually appealing.
-3.  **Composition:**
+2.  **Slogan Generation:** Based on the chosen deity, generate a relevant, traditional slogan (e.g., "Har Har Mahadev" for Shiva, "Jai Shri Krishna" for Krishna).
+3.  **Art Style:** The style must be serene, devotional, and visually appealing.
+4.  **Composition:**
     *   The main artwork should feature the chosen deity or deities.
-    *   Place the full spiritual quote text clearly and legibly *below* the main deity artwork.
+    *   Artistically and clearly integrate BOTH the spiritual quote and the slogan you generated into the image. For example, the slogan could be at the top and the quote at the bottom.
     *   **No Watermark:** Do not include any watermarks or extra text like "MorningMuse3D".
 
 **Spiritual Quote:** "${input.prompt}"`;
