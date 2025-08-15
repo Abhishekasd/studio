@@ -106,11 +106,11 @@ export const useMessageGenerator = (language: string, category: string) => {
   useEffect(() => {
     // When language or category changes, get a new message.
     // Reset the session cache for that category if the language changes.
-    sessionMessagesRef.current = {};
+    if (sessionMessagesRef.current[category]) {
+      sessionMessagesRef.current[category]!.clear();
+    }
     getNewMessage();
-  // We only want this to run when language or category changes.
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [language, category]);
+  }, [language, category, getNewMessage]);
 
 
   return { currentMessage, getNewMessage, isLoading };
