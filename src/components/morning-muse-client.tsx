@@ -16,6 +16,8 @@ import {
   Sparkles,
   Palette,
   Heart,
+  Handshake,
+  Gift,
 } from "lucide-react";
 
 import { useMessageGenerator } from "@/hooks/use-message-generator";
@@ -91,12 +93,14 @@ export const MorningMuseClient: FC = () => {
   const t = uiText[language] || uiText.en;
 
   const categories = [
-    { value: "greeting", label: t.greeting },
-    { value: "festival", label: t.festival },
+    { value: "greeting", label: t.greeting, icon: Sparkles },
+    { value: "festival", label: t.festival, icon: Loader },
     { value: "motivational", label: t.motivational },
     { value: "spiritual", label: t.spiritual },
     { value: "shayari", label: t.shayari },
     { value: "joke", label: t.joke },
+    { value: "thankyou", label: t.thankyou, icon: Gift },
+    { value: "welcome", label: t.welcome, icon: Handshake },
   ];
   
   useEffect(() => {
@@ -116,7 +120,10 @@ export const MorningMuseClient: FC = () => {
   const handleCopy = () => {
     if (currentMessage.text) {
       const siteUrl = "https://morningmuse.netlify.app/";
-      const shareText = `${t.goodMorning}\n${currentMessage.text}\n${t.haveANiceDay}\n\n${t.shareMessage} ${siteUrl}`;
+      let shareText = `${currentMessage.text}\n\n${t.shareMessage} ${siteUrl}`;
+      if (category === 'greeting') {
+        shareText = `${t.goodMorning}\n${currentMessage.text}\n${t.haveANiceDay}\n\n${t.shareMessage} ${siteUrl}`;
+      }
       navigator.clipboard.writeText(shareText);
       setIsCopied(true);
       toast({ title: t.copiedToClipboard, description: t.shareInspiration });
@@ -223,6 +230,35 @@ export const MorningMuseClient: FC = () => {
     }
     window.open(url, '_blank');
   };
+  
+  const cardContent = () => {
+    if (isLoading && category === 'festival') {
+      return (
+        <div className="flex items-center justify-center gap-2 text-lg text-foreground/80">
+          <Loader className="animate-spin" />
+          <span>{t.generatingMessage}...</span>
+        </div>
+      );
+    }
+
+    if (category === 'greeting') {
+      return (
+        <>
+          <p className="text-lg text-foreground/80">{t.goodMorning}</p>
+          <p className="my-4 text-xl md:text-2xl font-medium leading-relaxed text-foreground/90">
+            {currentMessage.text}
+          </p>
+          <p className="text-lg text-foreground/80">{t.haveANiceDay}</p>
+        </>
+      );
+    }
+    
+    return (
+      <p className="my-4 text-xl md:text-2xl font-medium leading-relaxed text-foreground/90">
+        {currentMessage.text}
+      </p>
+    );
+  }
 
   if (!isMounted) {
     return (
@@ -263,7 +299,7 @@ export const MorningMuseClient: FC = () => {
               onClick={() => handleCategoryChange(cat.value)}
               className="transition-all hover:scale-105"
             >
-              {cat.value === 'festival' && isLoading ? <Loader className="animate-spin"/> : cat.value === 'greeting' ? <Sparkles /> : null}
+              {cat.icon && cat.value === 'festival' && isLoading ? <Loader className="animate-spin"/> : cat.icon ? <cat.icon/> : null}
               {cat.label}
             </Button>
           ))}
@@ -300,29 +336,12 @@ export const MorningMuseClient: FC = () => {
           >
             <Card className="min-h-[200px] w-full backface-hidden flex items-center justify-center bg-card/30 backdrop-blur-md border-border/50 shadow-2xl shadow-primary/10">
               <CardContent className="p-6 text-center">
-                  {isLoading && category === 'festival' ? (
-                      <div className="flex items-center justify-center gap-2 text-lg text-foreground/80">
-                          <Loader className="animate-spin" />
-                          <span>{t.generatingMessage}...</span>
-                      </div>
-                  ) : (
-                      <>
-                          <p className="text-lg text-foreground/80">{t.goodMorning}</p>
-                          <p className="my-4 text-xl md:text-2xl font-medium leading-relaxed text-foreground/90">
-                              {currentMessage.text}
-                          </p>
-                          <p className="text-lg text-foreground/80">{t.haveANiceDay}</p>
-                      </>
-                  )}
+                  {cardContent()}
               </CardContent>
             </Card>
             <Card className="absolute top-0 min-h-[200px] w-full rotate-y-180 backface-hidden flex items-center justify-center bg-card/30 backdrop-blur-md border-border/50 shadow-2xl shadow-primary/10">
                <CardContent className="p-6 text-center">
-                  <p className="text-lg text-foreground/80">{t.goodMorning}</p>
-                  <p className="my-4 text-xl md:text-2xl font-medium leading-relaxed text-foreground/90">
-                    {currentMessage.text}
-                  </p>
-                  <p className="text-lg text-foreground/80">{t.haveANiceDay}</p>
+                  {cardContent()}
               </CardContent>
             </Card>
           </div>
@@ -398,6 +417,8 @@ export const MorningMuseClient: FC = () => {
             <p><strong className="text-secondary">{t.catSpiritualTitle}</strong> {t.catSpiritualDesc}</p>
             <p><strong className="text-secondary">{t.catShayariTitle}</strong> {t.catShayariDesc}</p>
             <p><strong className="text-secondary">{t.catJokeTitle}</strong> {t.catJokeDesc}</p>
+            <p><strong className="text-secondary">{t.catThankYouTitle}</strong> {t.catThankYouDesc}</p>
+            <p><strong className="text-secondary">{t.catWelcomeTitle}</strong> {t.catWelcomeDesc}</p>
           </div>
         </section>
 

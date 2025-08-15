@@ -61,6 +61,20 @@ export const messages: Record<string, Record<string, string[]>> = {
         "Wishing you a day full of sunshine and smiles.",
         "May your day be as beautiful as you are.",
         "Hello! Have a great day!"
+    ],
+    thankyou: [
+      "Thank you for everything you do.",
+      "My heartfelt thanks to you.",
+      "I am so grateful for your support.",
+      "Thank you for being there for me.",
+      "Words are not enough to express my gratitude."
+    ],
+    welcome: [
+      "A warm welcome to you!",
+      "We are so happy to have you here.",
+      "Welcome aboard! We're excited to have you with us.",
+      "Welcome! We hope you feel right at home.",
+      "It's a pleasure to welcome you."
     ]
   },
   hi: {
@@ -127,6 +141,20 @@ export const messages: Record<string, Record<string, string[]>> = {
         "राम राम",
         "राम राम जी",
         "राम राम"
+    ],
+    thankyou: [
+      "आप जो कुछ भी करते हैं उसके लिए धन्यवाद।",
+      "आपको मेरा हार्दिक धन्यवाद।",
+      "मैं आपके समर्थन के लिए बहुत आभारी हूं।",
+      "मेरे लिए वहां रहने के लिए धन्यवाद।",
+      "मेरी कृतज्ञता व्यक्त करने के लिए शब्द पर्याप्त नहीं हैं।"
+    ],
+    welcome: [
+      "आपका हार्दिक स्वागत है!",
+      "हम आपको यहां पाकर बहुत खुश हैं।",
+      "आपका स्वागत है! हम आपके साथ होने के लिए उत्साहित हैं।",
+      "आपका स्वागत है! हमें उम्मीद है कि आप घर जैसा महसूस करेंगे।",
+      "आपका स्वागत करना एक खुशी की बात है।"
     ]
   },
   es: {
@@ -190,6 +218,20 @@ export const messages: Record<string, Record<string, string[]>> = {
         "Te deseo un día lleno de sol y sonrisas.",
         "¡Hola! ¡Qué tengas un buen día!",
         "¡Feliz día!"
+    ],
+    thankyou: [
+      "Gracias por todo lo que haces.",
+      "Mi más sincero agradecimiento para ti.",
+      "Estoy muy agradecido por tu apoyo.",
+      "Gracias por estar ahí para mí.",
+      "Las palabras no son suficientes para expresar mi gratitud."
+    ],
+    welcome: [
+      "¡Una cálida bienvenida para ti!",
+      "Estamos muy contentos de tenerte aquí.",
+      "¡Bienvenido a bordo! Estamos emocionados de tenerte con nosotros.",
+      "¡Bienvenido! Esperamos que te sientas como en casa.",
+      "Es un placer darte la bienvenida."
     ]
   },
   ur: {
@@ -253,6 +295,20 @@ export const messages: Record<string, Record<string, string[]>> = {
         "السلام علیکم",
         "خوش آمدید",
         "ایک شاندار دن ہو"
+    ],
+    thankyou: [
+      "آپ جو کچھ بھی کرتے ہیں اس کے لئے آپ کا شکریہ۔",
+      "آپ کا تہہ دل سے شکریہ۔",
+      "میں آپ کی حمایت کے لئے بہت شکر گزار ہوں۔",
+      "میرے لئے وہاں ہونے کے لئے آپ کا شکریہ۔",
+      "میرے شکریہ کا اظہار کرنے کے لئے الفاظ کافی نہیں ہیں۔"
+    ],
+    welcome: [
+      "آپ کا پرتپاک استقبال ہے!",
+      "ہم آپ کو یہاں پا کر بہت خوش ہیں۔",
+      "خوش آمدید! ہم آپ کو اپنے ساتھ رکھنے کے لئے پرجوش ہیں۔",
+      "خوش آمدید! ہمیں امید ہے کہ آپ گھر جیسا محسوس کریں گے۔",
+      "آپ کا استقبال کرنا ایک خوشی کی بات ہے۔"
     ]
   },
   sa: {
@@ -316,6 +372,20 @@ export const messages: Record<string, Record<string, string[]>> = {
         "नमस्ते",
         "भवतः दिनं शुभं भूयात्",
         "प्रणामः"
+    ],
+    thankyou: [
+      "भवान् यत्किमपि करोति तदर्थं धन्यवादः।",
+      "भवते मम हार्दिकधन्यवादः।",
+      "अहं भवतः साहाय्यार्थं अतीव आभारी अस्मि।",
+      "मम कृते तत्र उपस्थितये धन्यवादः।",
+      "मम कृतज्ञतां प्रकटयितुं शब्दाः अपर्याप्ताः सन्ति।"
+    ],
+    welcome: [
+      "भवतः हार्दिकं स्वागतम्!",
+      "वयं भवन्तम् अत्र प्राप्य अतीव प्रसन्नाः स्मः।",
+      "स्वागतम्! वयं भवता सह भवितुम् उत्सुकाः स्मः।",
+      "स्वागतम्! वयं आशास्महे यत् भवान् गृहवत् अनुभवति।",
+      "भवतः स्वागतं कर्तुं हर्षः भवति।"
     ]
   },
   pt: {
@@ -379,6 +449,20 @@ export const messages: Record<string, Record<string, string[]>> = {
         "Desejando a você um dia cheio de sol e sorrisos.",
         "Que seu dia seja tão lindo quanto você.",
         "Olá! Tenha um ótimo dia!"
+    ],
+    thankyou: [
+      "Obrigado por tudo que você faz.",
+      "Meus sinceros agradecimentos a você.",
+      "Sou muito grato pelo seu apoio.",
+      "Obrigado por estar lá para mim.",
+      "As palavras não são suficientes para expressar minha gratidão."
+    ],
+    welcome: [
+      "Uma calorosa boas-vindas para você!",
+      "Estamos muito felizes em tê-lo aqui.",
+      "Bem-vindo a bordo! Estamos animados por tê-lo conosco.",
+      "Bem-vindo! Esperamos que você se sinta em casa.",
+      "É um prazer recebê-lo."
     ]
   },
 };
