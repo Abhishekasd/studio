@@ -11,49 +11,24 @@ interface Message {
   key: string | number;
 }
 
-interface GeneratorOptions {
-    messageSubCategory?: string;
-}
-
-const getInitialMessage = (language: string, category: string, options?: GeneratorOptions): Message => {
-    let messageList: string[] = [];
-    if (category === 'greeting' && options?.messageSubCategory) {
-        messageList = messages[language]?.[options.messageSubCategory] ?? [];
-    } else {
-        messageList = messages[language]?.[category] ?? [];
-    }
-
+const getInitialMessage = (language: string, category: string): Message => {
+    const messageList: string[] = messages[language]?.[category] ?? [];
     if (messageList.length > 0) {
         return { text: messageList[0], key: 0 };
     }
     return { text: 'Select a category to start your day!', key: "initial" };
 };
 
-export const useMessageGenerator = (language: string, category: string, options?: GeneratorOptions) => {
-  const [currentMessage, setCurrentMessage] = useState<Message>(() => getInitialMessage(language, category, options));
+export const useMessageGenerator = (language: string, category: string) => {
+  const [currentMessage, setCurrentMessage] = useState<Message>(() => getInitialMessage(language, category));
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
 
   const sessionMessagesRef = useRef<Record<string, Set<string>>>({});
   
-  const getMessageKey = useCallback(() => {
-    if (category === 'greeting' && options?.messageSubCategory) {
-      return `${category}-${options.messageSubCategory}`;
-    }
-    return category;
-  }, [category, options]);
-
-
   const getFallbackMessage = useCallback(() => {
-    const messageKey = getMessageKey();
-    
-    let listKey = category;
-    if (category === 'greeting' && options?.messageSubCategory) {
-        listKey = options.messageSubCategory;
-    }
-
-    const messageList = messages[language]?.[listKey] ?? ["Sorry, something went wrong. Please try again!"];
-    const sessionCategoryMessages = sessionMessagesRef.current[messageKey] || new Set();
+    const messageList = messages[language]?.[category] ?? ["Sorry, something went wrong. Please try again!"];
+    const sessionCategoryMessages = sessionMessagesRef.current[category] || new Set();
 
     let availableMessages = messageList.filter(m => !sessionCategoryMessages.has(m));
 
@@ -66,10 +41,10 @@ export const useMessageGenerator = (language: string, category: string, options?
     const newMessage = availableMessages[randomIndex];
     
     sessionCategoryMessages.add(newMessage);
-    sessionMessagesRef.current[messageKey] = sessionCategoryMessages;
+    sessionMessagesRef.current[category] = sessionCategoryMessages;
     
     setCurrentMessage({ text: newMessage, key: newMessage });
-  }, [language, category, options, getMessageKey]);
+  }, [language, category]);
 
 
   const getNewMessage = useCallback(async () => {
@@ -95,19 +70,17 @@ export const useMessageGenerator = (language: string, category: string, options?
     }
 
     try {
-        const messageKey = getMessageKey();
-        const sessionCategoryMessages = sessionMessagesRef.current[messageKey] || new Set();
+        const sessionCategoryMessages = sessionMessagesRef.current[category] || new Set();
         
         const result = await getNewAiMessage({
             language,
             category,
-            subCategory: category === 'greeting' ? options?.messageSubCategory : undefined,
             existingMessages: Array.from(sessionCategoryMessages),
         });
 
         const newMessage = result.message;
         sessionCategoryMessages.add(newMessage);
-        sessionMessagesRef.current[messageKey] = sessionCategoryMessages;
+        sessionMessagesRef.current[category] = sessionCategoryMessages;
         setCurrentMessage({ text: newMessage, key: newMessage });
 
     } catch (error) {
@@ -122,15 +95,14 @@ export const useMessageGenerator = (language: string, category: string, options?
         setIsLoading(false);
     }
 
-  }, [language, category, options, toast, getFallbackMessage, getMessageKey]);
+  }, [language, category, toast, getFallbackMessage]);
   
   useEffect(() => {
-    const messageKey = getMessageKey();
-    if (sessionMessagesRef.current[messageKey]) {
-      sessionMessagesRef.current[messageKey]!.clear();
+    if (sessionMessagesRef.current[category]) {
+      sessionMessagesRef.current[category]!.clear();
     }
     getNewMessage();
-  }, [language, category, options?.messageSubCategory, getNewMessage, getMessageKey]);
+  }, [language, category, getNewMessage]);
 
 
   return { currentMessage, getNewMessage, isLoading };
