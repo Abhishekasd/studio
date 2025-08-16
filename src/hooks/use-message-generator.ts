@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState, useEffect, useCallback, useRef } from 'react';
@@ -12,31 +11,51 @@ interface Message {
   key: string | number;
 }
 
-const getInitialMessage = (language: string, category: string): Message => {
-    const messageList = messages[language]?.[category] ?? [];
+interface GeneratorOptions {
+    messageSubCategory?: string;
+}
+
+const getInitialMessage = (language: string, category: string, options?: GeneratorOptions): Message => {
+    let messageList = messages[language]?.[category] ?? [];
+    if (category === 'greeting' && options?.messageSubCategory && options.messageSubCategory !== 'morning') {
+        messageList = messages[language]?.[options.messageSubCategory] ?? [];
+    }
+
     if (messageList.length > 0) {
         return { text: messageList[0], key: 0 };
     }
     return { text: 'Select a category to start your day!', key: "initial" };
 };
 
-export const useMessageGenerator = (language: string, category: string) => {
-  const [currentMessage, setCurrentMessage] = useState<Message>(() => getInitialMessage(language, category));
+export const useMessageGenerator = (language: string, category: string, options?: GeneratorOptions) => {
+  const [currentMessage, setCurrentMessage] = useState<Message>(() => getInitialMessage(language, category, options));
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
 
-  // Use a ref to store session messages to avoid re-renders and keep it persistent
   const sessionMessagesRef = useRef<Record<string, Set<string>>>({});
+  
+  const getMessageKey = useCallback(() => {
+    if (category === 'greeting' && options?.messageSubCategory) {
+      return `${category}-${options.messageSubCategory}`;
+    }
+    return category;
+  }, [category, options]);
 
-  // Function to get a unique message from the local fallback list
+
   const getFallbackMessage = useCallback(() => {
-    const messageList = messages[language]?.[category] ?? ["Sorry, something went wrong. Please try again!"];
-    const sessionCategoryMessages = sessionMessagesRef.current[category] || new Set();
+    const messageKey = getMessageKey();
+    
+    let listKey = category;
+    if (category === 'greeting' && options?.messageSubCategory && options.messageSubCategory !== 'morning') {
+        listKey = options.messageSubCategory;
+    }
+
+    const messageList = messages[language]?.[listKey] ?? ["Sorry, something went wrong. Please try again!"];
+    const sessionCategoryMessages = sessionMessagesRef.current[messageKey] || new Set();
 
     let availableMessages = messageList.filter(m => !sessionCategoryMessages.has(m));
 
     if (availableMessages.length === 0) {
-      // All local messages for this category have been used, reset for this category
       sessionCategoryMessages.clear();
       availableMessages = messageList;
     }
@@ -45,16 +64,15 @@ export const useMessageGenerator = (language: string, category: string) => {
     const newMessage = availableMessages[randomIndex];
     
     sessionCategoryMessages.add(newMessage);
-    sessionMessagesRef.current[category] = sessionCategoryMessages;
+    sessionMessagesRef.current[messageKey] = sessionCategoryMessages;
     
     setCurrentMessage({ text: newMessage, key: newMessage });
-  }, [language, category]);
+  }, [language, category, options, getMessageKey]);
 
 
   const getNewMessage = useCallback(async () => {
     setIsLoading(true);
 
-    // Festival category has its own dedicated flow
     if (category === 'festival') {
       try {
         const result = await getFestivalMessage({ language });
@@ -74,18 +92,20 @@ export const useMessageGenerator = (language: string, category: string) => {
       return;
     }
 
-    // For other categories, try the new AI flow first
     try {
-        const sessionCategoryMessages = sessionMessagesRef.current[category] || new Set();
+        const messageKey = getMessageKey();
+        const sessionCategoryMessages = sessionMessagesRef.current[messageKey] || new Set();
+        
         const result = await getNewAiMessage({
             language,
             category,
+            subCategory: category === 'greeting' ? options?.messageSubCategory : undefined,
             existingMessages: Array.from(sessionCategoryMessages),
         });
 
         const newMessage = result.message;
         sessionCategoryMessages.add(newMessage);
-        sessionMessagesRef.current[category] = sessionCategoryMessages;
+        sessionMessagesRef.current[messageKey] = sessionCategoryMessages;
         setCurrentMessage({ text: newMessage, key: newMessage });
 
     } catch (error) {
@@ -95,22 +115,20 @@ export const useMessageGenerator = (language: string, category: string) => {
             description: "Could not generate a new message, using one from our library.",
             variant: "destructive",
         });
-        // Fallback to local list if AI fails
         getFallbackMessage();
     } finally {
         setIsLoading(false);
     }
 
-  }, [language, category, toast, getFallbackMessage]);
+  }, [language, category, options, toast, getFallbackMessage, getMessageKey]);
   
   useEffect(() => {
-    // When language or category changes, get a new message.
-    // Reset the session cache for that category if the language changes.
-    if (sessionMessagesRef.current[category]) {
-      sessionMessagesRef.current[category]!.clear();
+    const messageKey = getMessageKey();
+    if (sessionMessagesRef.current[messageKey]) {
+      sessionMessagesRef.current[messageKey]!.clear();
     }
     getNewMessage();
-  }, [language, category, getNewMessage]);
+  }, [language, category, options?.messageSubCategory, getNewMessage, getMessageKey]);
 
 
   return { currentMessage, getNewMessage, isLoading };

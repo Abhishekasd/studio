@@ -1,4 +1,3 @@
-
 'use server';
 /**
  * @fileOverview A flow for generating dynamic, category-specific messages.
@@ -22,6 +21,7 @@ if (!process.env.GEMINI_API_KEY) {
 const MessageInputSchema = z.object({
   language: z.string().describe('The language for the message (e.g., "en", "hi", "es").'),
   category: z.string().describe('The category of the message (e.g., "shayari", "joke").'),
+  subCategory: z.string().optional().describe('An optional sub-category for more specific message generation (e.g., "morning", "thankyou").'),
   existingMessages: z.array(z.string()).describe('A list of messages already shown to the user in this session to avoid repetition.'),
 });
 export type MessageInput = z.infer<typeof MessageInputSchema>;
@@ -50,11 +50,12 @@ const getNewMessageFlow = ai.defineFlow(
       Your task is to generate a short, engaging, and unique message for the user.
 
       **Instructions:**
-      1.  **Category:** {{{category}}}
-      2.  **Language:** {{{language}}}
-      3.  **Tone:** Cheerful, positive, and safe for all audiences.
-      4.  **Length:** Maximum 1-2 lines. It must be short and impactful.
-      5.  **Uniqueness:** The message must be completely new and different from the following messages that have already been shown to the user in this session:
+      1.  **Main Category:** {{{category}}}
+      2.  **Sub-Category (if applicable):** {{{subCategory}}}
+      3.  **Language:** {{{language}}}
+      4.  **Tone:** Cheerful, positive, and safe for all audiences.
+      5.  **Length:** Maximum 1-2 lines. It must be short and impactful.
+      6.  **Uniqueness:** The message must be completely new and different from the following messages that have already been shown to the user in this session:
           {{#each existingMessages}}
           - "{{{this}}}"
           {{/each}}
@@ -64,9 +65,10 @@ const getNewMessageFlow = ai.defineFlow(
       - **spiritual:** A serene, insightful message about peace, gratitude, or inner connection.
       - **shayari:** An elegant, poetic couplet (two lines) that is emotional and beautiful.
       - **joke:** A light-hearted, clean, family-friendly joke that brings a smile.
-      - **greeting:** A simple, warm, and traditional greeting. Examples: "Good Morning", "Ram Ram", "Have a blessed day". Keep it very simple and popular.
-      - **thankyou:** A heartfelt, sincere message of gratitude. It can be for a person, a situation, or a general feeling of thanks.
-      - **welcome:** A warm and inviting message to welcome someone to a new place, group, or experience.
+      - **greeting:** 
+          - If subCategory is "morning": A simple, warm, and traditional greeting. Examples: "Good Morning", "Ram Ram", "Have a blessed day". Keep it very simple and popular.
+          - If subCategory is "thankyou": A heartfelt, sincere message of gratitude. It can be for a person, a situation, or a general feeling of thanks.
+          - If subCategory is "welcome": A warm and inviting message to welcome someone to a new place, group, or experience.
 
       Your response MUST only be the message text itself. Do not add any extra commentary or labels.
       `,

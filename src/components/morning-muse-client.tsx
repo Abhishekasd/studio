@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState, type FC, useEffect, useRef } from "react";
@@ -18,6 +17,7 @@ import {
   Heart,
   Handshake,
   Gift,
+  MessageCircle,
 } from "lucide-react";
 
 import { useMessageGenerator } from "@/hooks/use-message-generator";
@@ -78,8 +78,11 @@ export const MorningMuseClient: FC = () => {
 
   const [language, setLanguage] = useState("en");
   const [category, setCategory] = useState("greeting");
-  const [greetingSubCategory, setGreetingSubCategory] = useState("simple");
-  const { currentMessage, getNewMessage, isLoading } = useMessageGenerator(language, category);
+  const [greetingImageSubCategory, setGreetingImageSubCategory] = useState("simple");
+  const [greetingMessageSubCategory, setGreetingMessageSubCategory] = useState("morning");
+  const { currentMessage, getNewMessage, isLoading } = useMessageGenerator(language, category, { 
+    messageSubCategory: greetingMessageSubCategory
+  });
   const { toast } = useToast();
 
   const [isFlipped, setIsFlipped] = useState(false);
@@ -94,13 +97,11 @@ export const MorningMuseClient: FC = () => {
 
   const categories = [
     { value: "greeting", label: t.greeting, icon: Sparkles },
-    { value: "festival", label: t.festival, icon: Loader },
+    { value: "festival", label: t.festival, icon: Gift },
     { value: "motivational", label: t.motivational },
     { value: "spiritual", label: t.spiritual },
     { value: "shayari", label: t.shayari },
     { value: "joke", label: t.joke },
-    { value: "thankyou", label: t.thankyou, icon: Gift },
-    { value: "welcome", label: t.welcome, icon: Handshake },
   ];
   
   useEffect(() => {
@@ -121,7 +122,7 @@ export const MorningMuseClient: FC = () => {
     if (currentMessage.text) {
       const siteUrl = "https://morningmuse.netlify.app/";
       let shareText = `${currentMessage.text}\n\n${t.shareMessage} ${siteUrl}`;
-      if (category === 'greeting') {
+      if (category === 'greeting' && greetingMessageSubCategory === 'morning') {
         shareText = `${t.goodMorning}\n${currentMessage.text}\n${t.haveANiceDay}\n\n${t.shareMessage} ${siteUrl}`;
       }
       navigator.clipboard.writeText(shareText);
@@ -134,15 +135,11 @@ export const MorningMuseClient: FC = () => {
   const handleCategoryChange = (newCategory: string) => {
     if(category === newCategory && newCategory !== 'festival') return;
     
-    if (newCategory !== 'festival') {
-      setIsFlipped(true);
-      setTimeout(() => {
-        setCategory(newCategory);
-        setIsFlipped(false);
-      }, 350)
-    } else {
+    setIsFlipped(true);
+    setTimeout(() => {
       setCategory(newCategory);
-    }
+      setIsFlipped(false);
+    }, 350)
   }
 
   const handleGenerateImage = async () => {
@@ -155,7 +152,7 @@ export const MorningMuseClient: FC = () => {
         prompt: currentMessage.text,
         language: language,
         category: category,
-        subCategory: category === 'greeting' ? greetingSubCategory : undefined,
+        subCategory: category === 'greeting' ? greetingImageSubCategory : undefined,
       });
       setGeneratedImage(result.imageDataUri);
     } catch (error) {
@@ -232,16 +229,25 @@ export const MorningMuseClient: FC = () => {
   };
   
   const cardContent = () => {
-    if (isLoading && category === 'festival') {
-      return (
+    if (isLoading && category !== 'festival') {
+       return (
         <div className="flex items-center justify-center gap-2 text-lg text-foreground/80">
           <Loader className="animate-spin" />
           <span>{t.generatingMessage}...</span>
         </div>
       );
     }
+    
+    if (isLoading && category === 'festival') {
+      return (
+        <div className="flex items-center justify-center gap-2 text-lg text-foreground/80">
+          <Loader className="animate-spin" />
+          <span>{t.generatingFestivalMessage}...</span>
+        </div>
+      );
+    }
 
-    if (category === 'greeting') {
+    if (category === 'greeting' && greetingMessageSubCategory === 'morning') {
       return (
         <>
           <p className="text-lg text-foreground/80">{t.goodMorning}</p>
@@ -299,18 +305,49 @@ export const MorningMuseClient: FC = () => {
               onClick={() => handleCategoryChange(cat.value)}
               className="transition-all hover:scale-105"
             >
-              {cat.icon && cat.value === 'festival' && isLoading ? <Loader className="animate-spin"/> : cat.icon ? <cat.icon/> : null}
+              {cat.icon && isLoading && category === 'festival' ? <Loader className="animate-spin mr-2 h-4 w-4"/> : cat.icon ? <cat.icon className="mr-2 h-4 w-4"/> : null}
               {cat.label}
             </Button>
           ))}
         </div>
         
         {category === 'greeting' && (
+          <div className="w-full space-y-4">
+            <div className="flex flex-wrap items-center justify-center gap-3 rounded-lg bg-card/30 backdrop-blur-md p-2 border-border/50">
+              <span className="text-sm font-medium text-foreground/80 mr-2">{t.greetingTypePrompt}</span>
+              <Button
+                  variant={greetingMessageSubCategory === 'morning' ? 'default' : 'outline'}
+                  onClick={() => setGreetingMessageSubCategory('morning')}
+                  size="sm"
+                  className="transition-all"
+              >
+                  <MessageCircle className="mr-2 h-4 w-4" />
+                  {t.subCategoryMorning}
+              </Button>
+              <Button
+                  variant={greetingMessageSubCategory === 'thankyou' ? 'default' : 'outline'}
+                  onClick={() => setGreetingMessageSubCategory('thankyou')}
+                  size="sm"
+                  className="transition-all"
+              >
+                  <Gift className="mr-2 h-4 w-4" />
+                  {t.subCategoryThankyou}
+              </Button>
+              <Button
+                  variant={greetingMessageSubCategory === 'welcome' ? 'default' : 'outline'}
+                  onClick={() => setGreetingMessageSubCategory('welcome')}
+                  size="sm"
+                  className="transition-all"
+              >
+                  <Handshake className="mr-2 h-4 w-4" />
+                  {t.subCategoryWelcome}
+              </Button>
+            </div>
             <div className="flex flex-wrap items-center justify-center gap-3 rounded-lg bg-card/30 backdrop-blur-md p-2 border-border/50">
                <span className="text-sm font-medium text-foreground/80 mr-2">{t.imageTypePrompt}</span>
                 <Button
-                    variant={greetingSubCategory === 'simple' ? 'default' : 'outline'}
-                    onClick={() => setGreetingSubCategory('simple')}
+                    variant={greetingImageSubCategory === 'simple' ? 'default' : 'outline'}
+                    onClick={() => setGreetingImageSubCategory('simple')}
                     size="sm"
                     className="transition-all"
                 >
@@ -318,8 +355,8 @@ export const MorningMuseClient: FC = () => {
                     {t.subCategorySimple}
                 </Button>
                 <Button
-                    variant={greetingSubCategory === 'spiritual' ? 'default' : 'outline'}
-                    onClick={() => setGreetingSubCategory('spiritual')}
+                    variant={greetingImageSubCategory === 'spiritual' ? 'default' : 'outline'}
+                    onClick={() => setGreetingImageSubCategory('spiritual')}
                     size="sm"
                     className="transition-all"
                 >
@@ -327,6 +364,7 @@ export const MorningMuseClient: FC = () => {
                     {t.subCategorySpiritual}
                 </Button>
             </div>
+          </div>
         )}
 
         <div className="w-full perspective-1000">
@@ -357,7 +395,7 @@ export const MorningMuseClient: FC = () => {
             {isImageGenerating ? t.generatingImage : t.generateImage}
           </Button>
           <Button onClick={handleNewMessage} size="lg" variant="secondary" disabled={isLoading}>
-            <RefreshCw className={cn((isFlipped || (isLoading && category === 'festival')) && "animate-spin")} style={{animationDuration: '700ms'}}/>
+            <RefreshCw className={cn(isFlipped || isLoading && "animate-spin")} style={{animationDuration: '700ms'}}/>
             {t.showAnother}
           </Button>
         </div>
@@ -417,8 +455,6 @@ export const MorningMuseClient: FC = () => {
             <p><strong className="text-secondary">{t.catSpiritualTitle}</strong> {t.catSpiritualDesc}</p>
             <p><strong className="text-secondary">{t.catShayariTitle}</strong> {t.catShayariDesc}</p>
             <p><strong className="text-secondary">{t.catJokeTitle}</strong> {t.catJokeDesc}</p>
-            <p><strong className="text-secondary">{t.catThankYouTitle}</strong> {t.catThankYouDesc}</p>
-            <p><strong className="text-secondary">{t.catWelcomeTitle}</strong> {t.catWelcomeDesc}</p>
           </div>
         </section>
 
