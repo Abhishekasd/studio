@@ -81,8 +81,7 @@ const getNewMessageFlow = ai.defineFlow(
           { category: 'HARM_CATEGORY_HARASSMENT', threshold: 'BLOCK_ONLY_HIGH' },
           { category: 'HARM_CATEGORY_SEXUALLY_EXPLICIT', threshold: 'BLOCK_MEDIUM_AND_ABOVE' },
         ],
-        // Add a random temperature to ensure varied responses
-        temperature: 0.9 + Math.random() * 0.2, 
+        temperature: 1.0,
       },
     });
 
