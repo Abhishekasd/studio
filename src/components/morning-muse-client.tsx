@@ -20,6 +20,7 @@ import {
   Gift,
   Cake,
   PartyPopper,
+  Upload,
 } from "lucide-react";
 
 import { useMessageGenerator } from "@/hooks/use-message-generator";
@@ -85,6 +86,7 @@ export const MorningMuseClient: FC = () => {
   const [category, setCategory] = useState("greeting");
   const [personName, setPersonName] = useState("");
   const [personCharacteristics, setPersonCharacteristics] = useState("");
+  const [personImage, setPersonImage] = useState<string | null>(null);
   const [greetingImageSubCategory, setGreetingImageSubCategory] = useState("simple");
   const { currentMessage, getNewMessage, isLoading, isPersonalizedCategory } = useMessageGenerator(language, category);
   const { toast } = useToast();
@@ -160,9 +162,21 @@ export const MorningMuseClient: FC = () => {
       setCategory(newCategory);
       setPersonName("");
       setPersonCharacteristics("");
+      setPersonImage(null);
       setIsFlipped(false);
     }, 350)
   }
+
+  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPersonImage(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
   const handleGenerateImage = async () => {
     if (!currentMessage.text) return;
@@ -176,6 +190,7 @@ export const MorningMuseClient: FC = () => {
         category: category,
         subCategory: category === 'greeting' ? greetingImageSubCategory : undefined,
         name: isPersonalizedCategory ? personName : undefined,
+        photoDataUri: isPersonalizedCategory ? personImage : undefined,
       });
       setGeneratedImage(result.imageDataUri);
     } catch (error) {
@@ -366,6 +381,29 @@ export const MorningMuseClient: FC = () => {
                     />
                 </div>
               )}
+
+              <div className="w-full space-y-2">
+                <Label htmlFor="personImage" className="text-foreground/80">{t.uploadImageLabel}</Label>
+                <div className="flex items-center gap-2">
+                  <Input 
+                    id="personImage"
+                    type="file" 
+                    accept="image/*"
+                    onChange={handleImageUpload}
+                    className="bg-card/50 backdrop-blur-sm flex-grow"
+                  />
+                  {personImage && (
+                    <Button variant="ghost" size="icon" onClick={() => setPersonImage(null)} aria-label="Remove image">
+                      <X className="h-5 w-5 text-destructive"/>
+                    </Button>
+                  )}
+                </div>
+                {personImage && (
+                  <div className="mt-2 relative w-24 h-24 rounded-md overflow-hidden border border-border">
+                    <img src={personImage} alt="Preview" className="w-full h-full object-cover"/>
+                  </div>
+                )}
+              </div>
 
               <Button onClick={handlePersonalizedMessage} disabled={isLoading || !personName.trim()} className="w-full">
                 {isLoading ? <Loader className="animate-spin" /> : <Sparkles />}

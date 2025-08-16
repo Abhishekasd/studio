@@ -25,6 +25,7 @@ const GenerateImageInputSchema = z.object({
   category: z.string().describe('The category of the prompt (e.g., "spiritual").'),
   subCategory: z.string().optional().describe('An optional sub-category for more specific image generation (e.g., "simple", "spiritual").'),
   name: z.string().optional().describe('An optional name of a person for personalized images.'),
+  photoDataUri: z.string().optional().describe("An optional photo of a person, as a data URI that must include a MIME type and use Base64 encoding. Expected format: 'data:<mimetype>;base64,<encoded_data>'."),
 });
 export type GenerateImageInput = z.infer<typeof GenerateImageInputSchema>;
 
@@ -44,11 +45,27 @@ const generateImageFlow = ai.defineFlow(
       throw new Error('Server is not configured with a GEMINI_API_KEY.');
     }
     
-    let imagePrompt = `Generate a beautiful and artistic image that captures the essence of the following quote: "${input.prompt}". The style should be visually appealing and match the message's tone. Do not include any watermark.`;
+    let imagePrompt: string | (string | { media: { url: string; }; })[] = `Generate a beautiful and artistic image that captures the essence of the following quote: "${input.prompt}". The style should be visually appealing and match the message's tone. Do not include any watermark.`;
     
     if (input.category === 'birthday' || input.category === 'anniversary') {
       const occasion = input.category === 'birthday' ? 'Birthday' : 'Anniversary';
-      imagePrompt = `Create a beautiful, celebratory greeting card image for a ${occasion}.
+      if (input.photoDataUri) {
+          imagePrompt = [
+            { media: { url: input.photoDataUri } },
+            `Create a beautiful, celebratory greeting card using the provided photo.
+
+**Instructions:**
+1.  **Occasion:** ${occasion}
+2.  **Recipient's Name:** ${input.name}
+3.  **Message:** "${input.prompt}"
+4.  **Art Style:** Frame the photo with festive, elegant, and visually appealing elements suitable for a celebration. Use elements like flowers, confetti, artistic patterns, or celebratory symbols that complement the photo.
+5.  **Text Integration:** Artistically and clearly integrate BOTH the recipient's name ("${input.name}") and the message ("${input.prompt}") onto the image. The text should be a beautiful overlay on or around the photo, not covering the main subject.
+6.  **Do Not Alter Photo:** Do not change the person or the main subject in the photo.
+7.  **No Watermark:** Do not include any watermarks.
+`
+          ];
+      } else {
+        imagePrompt = `Create a beautiful, celebratory greeting card image for a ${occasion}.
 
 **Instructions:**
 1.  **Occasion:** ${occasion}
@@ -57,6 +74,7 @@ const generateImageFlow = ai.defineFlow(
 4.  **Art Style:** The style must be festive, elegant, and visually appealing, suitable for a celebration. Use elements like flowers, confetti, artistic patterns, or celebratory symbols.
 5.  **Text Integration:** Artistically and clearly integrate BOTH the recipient's name ("${input.name}") and the message ("${input.prompt}") into the image. The name and message should be the main focus.
 6.  **No Watermark:** Do not include any watermarks.`;
+      }
     } else if (input.category === 'spiritual') {
       // Main spiritual category (NO watermark)
       if (['en', 'hi', 'sa'].includes(input.language)) {
