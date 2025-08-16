@@ -24,6 +24,7 @@ const MessageInputSchema = z.object({
   category: z.string().describe('The category of the message (e.g., "shayari", "joke").'),
   existingMessages: z.array(z.string()).describe('A list of messages already shown to the user in this session to avoid repetition.'),
   name: z.string().optional().describe('An optional name of a person for personalized messages.'),
+  characteristics: z.string().optional().describe('Optional characteristics of the person for a more personalized birthday message.'),
 });
 export type MessageInput = z.infer<typeof MessageInputSchema>;
 
@@ -58,6 +59,9 @@ const messagePrompt = ai.definePrompt({
   - **thankyou:** A heartfelt, sincere message of gratitude. It can be for a person, a situation, or a general feeling of thanks.
   - **welcome:** A warm and inviting message to welcome someone to a new place, group, or experience.
   - **birthday:** A cheerful and celebratory birthday wish for **{{{name}}}**. The message must include the name.
+    {{#if characteristics}}
+    **Personalization:** Use these characteristics to make the wish more personal and special: {{{characteristics}}}.
+    {{/if}}
   - **anniversary:** A warm and loving anniversary message, suitable for couples. If a name **{{{name}}}** is provided, it should be for that person/couple. The message must include the name if provided.
 
   Your response MUST only be the message text itself. Do not add any extra commentary or labels.

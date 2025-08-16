@@ -55,7 +55,7 @@ export const useMessageGenerator = (language: string, category: string) => {
   }, [language, category]);
 
 
-  const getNewMessage = useCallback(async (name?: string) => {
+  const getNewMessage = useCallback(async (name?: string, characteristics?: string) => {
     if (isPersonalizedCategory && !name) {
       setCurrentMessage({ text: '', key: 'initial-personalized' });
       return;
@@ -90,6 +90,7 @@ export const useMessageGenerator = (language: string, category: string) => {
             category,
             existingMessages: Array.from(sessionCategoryMessages),
             name: name,
+            characteristics: characteristics,
         });
 
         const newMessage = result.message;

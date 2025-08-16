@@ -48,6 +48,7 @@ import { generateImage } from "@/ai/flows/image-generation-flow";
 import { Separator } from "@/components/ui/separator";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 
 const languages = [
   { value: "en", label: "English" },
@@ -83,6 +84,7 @@ export const MorningMuseClient: FC = () => {
   const [language, setLanguage] = useState("en");
   const [category, setCategory] = useState("greeting");
   const [personName, setPersonName] = useState("");
+  const [personCharacteristics, setPersonCharacteristics] = useState("");
   const [greetingImageSubCategory, setGreetingImageSubCategory] = useState("simple");
   const { currentMessage, getNewMessage, isLoading, isPersonalizedCategory } = useMessageGenerator(language, category);
   const { toast } = useToast();
@@ -116,10 +118,10 @@ export const MorningMuseClient: FC = () => {
     }
   }, []);
 
-  const handleNewMessage = (name?: string) => {
+  const handleNewMessage = (name?: string, characteristics?: string) => {
     setIsFlipped(true);
     setTimeout(() => {
-      getNewMessage(name);
+      getNewMessage(name, characteristics);
       setIsFlipped(false);
     }, 350);
   };
@@ -133,7 +135,7 @@ export const MorningMuseClient: FC = () => {
       });
       return;
     }
-    handleNewMessage(personName);
+    handleNewMessage(personName, personCharacteristics);
   }
 
   const handleCopy = () => {
@@ -157,6 +159,7 @@ export const MorningMuseClient: FC = () => {
     setTimeout(() => {
       setCategory(newCategory);
       setPersonName("");
+      setPersonCharacteristics("");
       setIsFlipped(false);
     }, 350)
   }
@@ -338,9 +341,9 @@ export const MorningMuseClient: FC = () => {
         </div>
         
         {isPersonalizedCategory && (
-            <div className="w-full max-w-sm space-y-2 flex flex-col items-center">
-              <Label htmlFor="personName" className="text-foreground/80">{t.enterNameLabel}</Label>
-              <div className="flex w-full gap-2">
+            <div className="w-full max-w-sm space-y-4 flex flex-col items-center">
+              <div className="w-full space-y-2">
+                <Label htmlFor="personName" className="text-foreground/80">{t.enterNameLabel}</Label>
                 <Input 
                   id="personName"
                   type="text" 
@@ -349,11 +352,25 @@ export const MorningMuseClient: FC = () => {
                   placeholder={t.namePlaceholder}
                   className="bg-card/50 backdrop-blur-sm"
                 />
-                <Button onClick={handlePersonalizedMessage} disabled={isLoading || !personName.trim()}>
-                  {isLoading ? <Loader className="animate-spin" /> : <Sparkles />}
-                  {t.generateButton}
-                </Button>
               </div>
+
+              {category === 'birthday' && (
+                <div className="w-full space-y-2">
+                    <Label htmlFor="personCharacteristics" className="text-foreground/80">{t.characteristicsLabel}</Label>
+                    <Textarea 
+                        id="personCharacteristics"
+                        value={personCharacteristics}
+                        onChange={(e) => setPersonCharacteristics(e.target.value)}
+                        placeholder={t.characteristicsPlaceholder}
+                        className="bg-card/50 backdrop-blur-sm"
+                    />
+                </div>
+              )}
+
+              <Button onClick={handlePersonalizedMessage} disabled={isLoading || !personName.trim()} className="w-full">
+                {isLoading ? <Loader className="animate-spin" /> : <Sparkles />}
+                {t.generateButton}
+              </Button>
             </div>
         )}
 
@@ -410,7 +427,7 @@ export const MorningMuseClient: FC = () => {
             {isImageGenerating ? <Loader className="animate-spin" /> : <ImageIcon />}
             {isImageGenerating ? t.generatingImage : t.generateImage}
           </Button>
-          <Button onClick={() => handleNewMessage(isPersonalizedCategory ? personName : undefined)} size="lg" variant="secondary" disabled={isLoading || (isPersonalizedCategory && !personName.trim())}>
+          <Button onClick={() => handleNewMessage(isPersonalizedCategory ? personName : undefined, isPersonalizedCategory ? personCharacteristics : undefined)} size="lg" variant="secondary" disabled={isLoading || (isPersonalizedCategory && !personName.trim())}>
             <RefreshCw className={cn(isFlipped || (isLoading && !isPersonalizedCategory) && "animate-spin")} style={{animationDuration: '700ms'}}/>
             {t.showAnother}
           </Button>

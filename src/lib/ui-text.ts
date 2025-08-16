@@ -83,6 +83,8 @@ export const uiText: Record<string, Record<string, string>> = {
     enterNamePrompt: 'Please enter a name above to generate a personalized message.',
     nameRequiredTitle: 'Name Required',
     nameRequiredDesc: 'Please enter a name to generate a personalized wish.',
+    characteristicsLabel: 'Characteristics (Optional)',
+    characteristicsPlaceholder: 'e.g., "kind, funny, loves dogs"',
   },
   hi: {
     language: 'भाषा',
@@ -167,6 +169,8 @@ export const uiText: Record<string, Record<string, string>> = {
     enterNamePrompt: 'एक व्यक्तिगत संदेश बनाने के लिए कृपया ऊपर एक नाम दर्ज करें।',
     nameRequiredTitle: 'नाम आवश्यक है',
     nameRequiredDesc: 'एक व्यक्तिगत शुभकामना बनाने के लिए कृपया एक नाम दर्ज करें।',
+    characteristicsLabel: 'विशेषताएँ (वैकल्पिक)',
+    characteristicsPlaceholder: 'जैसे, "दयालु, मजाकिया, कुत्तों से प्यार करता है"',
   },
   es: {
     language: 'Idioma',
@@ -251,6 +255,8 @@ export const uiText: Record<string, Record<string, string>> = {
     enterNamePrompt: 'Por favor ingrese un nombre arriba para generar un mensaje personalizado.',
     nameRequiredTitle: 'Nombre requerido',
     nameRequiredDesc: 'Por favor ingrese un nombre para generar un deseo personalizado.',
+    characteristicsLabel: 'Características (Opcional)',
+    characteristicsPlaceholder: 'p.ej., "amable, divertido, ama a los perros"',
   },
   ur: {
     language: 'زبان',
@@ -335,6 +341,8 @@ export const uiText: Record<string, Record<string, string>> = {
     enterNamePrompt: 'ایک ذاتی پیغام بنانے کے لیے براہ کرم اوپر ایک نام درج کریں۔',
     nameRequiredTitle: 'نام درکار ہے',
     nameRequiredDesc: 'ایک ذاتی خواہش پیدا کرنے کے لیے براہ کرم ایک نام درج کریں۔',
+    characteristicsLabel: 'خصوصیات (اختیاری)',
+    characteristicsPlaceholder: 'مثال کے طور پر، "مہربان، مضحکہ خیز، کتوں سے محبت کرتا ہے"',
   },
   sa: {
     language: 'भाषा',
@@ -419,6 +427,8 @@ export const uiText: Record<string, Record<string, string>> = {
     enterNamePrompt: 'व्यक्तिगतसन्देशं जनयितुं कृपया उपरि नाम प्रविशतु।',
     nameRequiredTitle: 'नाम आवश्यकम्',
     nameRequiredDesc: 'व्यक्तिगतशुभकामनां जनयितुं कृपया नाम प्रविशतु।',
+    characteristicsLabel: 'विशेषताः (वैकल्पिकम्)',
+    characteristicsPlaceholder: 'उदा., "दयालुः, हास्यप्रियः, शुनकेषु स्निह्यति"',
   },
   pt: {
     language: 'Idioma',
@@ -503,5 +513,7 @@ export const uiText: Record<string, Record<string, string>> = {
     enterNamePrompt: 'Por favor, digite um nome acima para gerar uma mensagem personalizada.',
     nameRequiredTitle: 'Nome Obrigatório',
     nameRequiredDesc: 'Por favor, digite um nome para gerar um desejo personalizado.',
+    characteristicsLabel: 'Características (Opcional)',
+    characteristicsPlaceholder: 'ex., "gentil, engraçado, adora cães"',
   },
 };
