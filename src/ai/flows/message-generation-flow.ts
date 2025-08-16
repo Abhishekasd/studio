@@ -10,6 +10,7 @@
 
 import {ai} from '@/ai/genkit';
 import {z} from 'zod';
+import {messages} from '@/lib/messages';
 
 if (!process.env.GEMINI_API_KEY) {
   // This error will be caught by the client and displayed to the user.
@@ -24,7 +25,7 @@ const MessageInputSchema = z.object({
   category: z.string().describe('The category of the message (e.g., "shayari", "joke").'),
   existingMessages: z.array(z.string()).describe('A list of messages already shown to the user in this session to avoid repetition.'),
   name: z.string().optional().describe('An optional name of a person for personalized messages.'),
-  characteristics: z.string().optional().describe('Optional characteristics of the person for a more personalized birthday message.'),
+  characteristics: z.string().optional().describe('Optional characteristics of the person for a more personalized birthday or anniversary message.'),
 });
 export type MessageInput = z.infer<typeof MessageInputSchema>;
 
@@ -70,12 +71,6 @@ const messagePrompt = ai.definePrompt({
   Your response MUST only be the message text itself. Do not add any extra commentary or labels.
   `,
    config: {
-    safetySettings: [
-      { category: 'HARM_CATEGORY_HATE_SPEECH', threshold: 'BLOCK_NONE' },
-      { category: 'HARM_CATEGORY_DANGEROUS_CONTENT', threshold: 'BLOCK_NONE' },
-      { category: 'HARM_CATEGORY_HARASSMENT', threshold: 'BLOCK_NONE' },
-      { category: 'HARM_CATEGORY_SEXUALLY_EXPLICIT', threshold: 'BLOCK_NONE' },
-    ],
     temperature: 1.0,
   },
 });
@@ -91,8 +86,24 @@ const getNewMessageFlow = ai.defineFlow(
       throw new Error('Server is not configured with a GEMINI_API_KEY.');
     }
     
-    const {output} = await messagePrompt(input);
-    return output!;
+    try {
+      const {output} = await messagePrompt(input);
+      if (output?.message) {
+        return output;
+      }
+    } catch (e) {
+        console.error("AI message generation failed, using fallback.", e);
+    }
+    
+    // Fallback logic if AI fails or returns empty response
+    const fallbackMessages = messages[input.language]?.[input.category] ?? ["Have a wonderful day!"];
+    let fallbackMessage = fallbackMessages[Math.floor(Math.random() * fallbackMessages.length)];
+
+    if (input.name && (input.category === 'birthday' || input.category === 'anniversary')) {
+        fallbackMessage = fallbackMessage.replace('{{name}}', input.name);
+    }
+    
+    return { message: fallbackMessage };
   }
 );
 
