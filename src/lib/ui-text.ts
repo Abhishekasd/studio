@@ -67,6 +67,8 @@ export const uiText: Record<string, Record<string, string>> = {
     subCategoryMorning: 'Good Morning',
     subCategoryThankyou: 'Thank You',
     subCategoryWelcome: 'Welcome',
+    subCategoryBirthday: 'Birthday',
+    subCategoryAnniversary: 'Anniversary',
   },
   hi: {
     language: 'भाषा',
@@ -136,6 +138,8 @@ export const uiText: Record<string, Record<string, string>> = {
     subCategoryMorning: 'सुप्रभात',
     subCategoryThankyou: 'धन्यवाद',
     subCategoryWelcome: 'स्वागत है',
+    subCategoryBirthday: 'जन्मदिन',
+    subCategoryAnniversary: 'सालगिरह',
   },
   es: {
     language: 'Idioma',
@@ -205,6 +209,8 @@ export const uiText: Record<string, Record<string, string>> = {
     subCategoryMorning: 'Buenos días',
     subCategoryThankyou: 'Gracias',
     subCategoryWelcome: 'Bienvenido',
+    subCategoryBirthday: 'Cumpleaños',
+    subCategoryAnniversary: 'Aniversario',
   },
   ur: {
     language: 'زبان',
@@ -274,6 +280,8 @@ export const uiText: Record<string, Record<string, string>> = {
     subCategoryMorning: 'صبح بخیر',
     subCategoryThankyou: 'شکریہ',
     subCategoryWelcome: 'خوش آمدید',
+    subCategoryBirthday: 'سالگرہ',
+    subCategoryAnniversary: 'شادی کی سالگرہ',
   },
   sa: {
     language: 'भाषा',
@@ -343,6 +351,8 @@ export const uiText: Record<string, Record<string, string>> = {
     subCategoryMorning: 'सुप्रभातम्',
     subCategoryThankyou: 'धन्यवादः',
     subCategoryWelcome: 'स्वागतम्',
+    subCategoryBirthday: 'जन्मदिनम्',
+    subCategoryAnniversary: 'वर्षगाँठ',
   },
   pt: {
     language: 'Idioma',
@@ -412,5 +422,7 @@ export const uiText: Record<string, Record<string, string>> = {
     subCategoryMorning: 'Bom dia',
     subCategoryThankyou: 'Obrigado',
     subCategoryWelcome: 'Bem-vindo',
+    subCategoryBirthday: 'Aniversário',
+    subCategoryAnniversary: 'Aniversário de Casamento',
   },
 };

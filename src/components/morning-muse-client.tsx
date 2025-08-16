@@ -18,6 +18,8 @@ import {
   Handshake,
   Gift,
   MessageCircle,
+  Cake,
+  PartyPopper,
 } from "lucide-react";
 
 import { useMessageGenerator } from "@/hooks/use-message-generator";
@@ -323,6 +325,24 @@ export const MorningMuseClient: FC = () => {
               >
                   <MessageCircle className="mr-2 h-4 w-4" />
                   {t.subCategoryMorning}
+              </Button>
+               <Button
+                  variant={greetingMessageSubCategory === 'birthday' ? 'default' : 'outline'}
+                  onClick={() => setGreetingMessageSubCategory('birthday')}
+                  size="sm"
+                  className="transition-all"
+              >
+                  <Cake className="mr-2 h-4 w-4" />
+                  {t.subCategoryBirthday}
+              </Button>
+               <Button
+                  variant={greetingMessageSubCategory === 'anniversary' ? 'default' : 'outline'}
+                  onClick={() => setGreetingMessageSubCategory('anniversary')}
+                  size="sm"
+                  className="transition-all"
+              >
+                  <PartyPopper className="mr-2 h-4 w-4" />
+                  {t.subCategoryAnniversary}
               </Button>
               <Button
                   variant={greetingMessageSubCategory === 'thankyou' ? 'default' : 'outline'}

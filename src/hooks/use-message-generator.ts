@@ -16,9 +16,11 @@ interface GeneratorOptions {
 }
 
 const getInitialMessage = (language: string, category: string, options?: GeneratorOptions): Message => {
-    let messageList = messages[language]?.[category] ?? [];
-    if (category === 'greeting' && options?.messageSubCategory && options.messageSubCategory !== 'morning') {
+    let messageList: string[] = [];
+    if (category === 'greeting' && options?.messageSubCategory) {
         messageList = messages[language]?.[options.messageSubCategory] ?? [];
+    } else {
+        messageList = messages[language]?.[category] ?? [];
     }
 
     if (messageList.length > 0) {
@@ -46,7 +48,7 @@ export const useMessageGenerator = (language: string, category: string, options?
     const messageKey = getMessageKey();
     
     let listKey = category;
-    if (category === 'greeting' && options?.messageSubCategory && options.messageSubCategory !== 'morning') {
+    if (category === 'greeting' && options?.messageSubCategory) {
         listKey = options.messageSubCategory;
     }
 

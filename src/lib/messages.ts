@@ -75,7 +75,21 @@ export const messages: Record<string, Record<string, string[]>> = {
       "Welcome aboard! We're excited to have you with us.",
       "Welcome! We hope you feel right at home.",
       "It's a pleasure to welcome you."
-    ]
+    ],
+    birthday: [
+        "Happy Birthday! Wishing you a day as special as you are.",
+        "May all your birthday wishes and dreams come true.",
+        "Happy Birthday! Hope you have a great day.",
+        "Wishing you a very Happy Birthday and a year filled with joy.",
+        "Happy Birthday! Enjoy your special day."
+    ],
+    anniversary: [
+        "Happy Anniversary! Wishing you both a lifetime of happiness.",
+        "Happy Anniversary to a beautiful couple.",
+        "Wishing you both another year of love and happiness.",
+        "Happy Anniversary! May your love continue to grow.",
+        "Happy Anniversary! Cheers to another year together."
+    ],
   },
   hi: {
     shayari: [
@@ -155,6 +169,20 @@ export const messages: Record<string, Record<string, string[]>> = {
       "आपका स्वागत है! हम आपके साथ होने के लिए उत्साहित हैं।",
       "आपका स्वागत है! हमें उम्मीद है कि आप घर जैसा महसूस करेंगे।",
       "आपका स्वागत करना एक खुशी की बात है।"
+    ],
+    birthday: [
+        "जन्मदिन मुबारक! आपके लिए यह दिन आपके जैसा ही खास हो।",
+        "आपकी जन्मदिन की सभी शुभकामनाएं और सपने सच हों।",
+        "जन्मदिन मुबारक! आशा है आपका दिन शानदार हो।",
+        "आपको जन्मदिन की बहुत-बहुत शुभकामनाएं और खुशियों से भरा साल।",
+        "जन्मदिन मुबारक! अपने खास दिन का आनंद लें।"
+    ],
+    anniversary: [
+        "शादी की सालगिरह मुबारक! आप दोनों को जीवन भर खुशियों की शुभकामनाएं।",
+        "एक खूबसूरत जोड़े को शादी की सालगिरह मुबारक।",
+        "आप दोनों को प्यार और खुशियों से भरे एक और साल की शुभकामनाएं।",
+        "शादी की सालगिरह मुबारक! आपका प्यार बढ़ता रहे।",
+        "शादी की सालगिरह मुबारक! एक और साल साथ रहने की खुशी में।"
     ]
   },
   es: {
@@ -232,6 +260,20 @@ export const messages: Record<string, Record<string, string[]>> = {
       "¡Bienvenido a bordo! Estamos emocionados de tenerte con nosotros.",
       "¡Bienvenido! Esperamos que te sientas como en casa.",
       "Es un placer darte la bienvenida."
+    ],
+    birthday: [
+        "¡Feliz cumpleaños! Te deseo un día tan especial como tú.",
+        "Que todos tus deseos y sueños de cumpleaños se hagan realidad.",
+        "¡Feliz cumpleaños! Espero que tengas un gran día.",
+        "Te deseo un muy feliz cumpleaños y un año lleno de alegría.",
+        "¡Feliz cumpleaños! Disfruta de tu día especial."
+    ],
+    anniversary: [
+        "¡Feliz aniversario! Les deseo a ambos una vida de felicidad.",
+        "Feliz aniversario a una hermosa pareja.",
+        "Les deseo a ambos otro año de amor y felicidad.",
+        "¡Feliz aniversario! Que su amor siga creciendo.",
+        "¡Feliz aniversario! Brindemos por otro año juntos."
     ]
   },
   ur: {
@@ -309,6 +351,20 @@ export const messages: Record<string, Record<string, string[]>> = {
       "خوش آمدید! ہم آپ کو اپنے ساتھ رکھنے کے لئے پرجوش ہیں۔",
       "خوش آمدید! ہمیں امید ہے کہ آپ گھر جیسا محسوس کریں گے۔",
       "آپ کا استقبال کرنا ایک خوشی کی بات ہے۔"
+    ],
+    birthday: [
+        "سالگرہ مبارک! آپ کے لیے یہ دن آپ جیسا ہی خاص ہو۔",
+        "آپ کی سالگرہ کی تمام خواہشات اور خواب پورے ہوں۔",
+        "سالگرہ مبارک! امید ہے آپ کا دن اچھا گزرے۔",
+        "آپ کو سالگرہ کی بہت بہت مبارکباد اور خوشیوں سے بھرا سال۔",
+        "سالگرہ مبارک! اپنے خاص دن کا لطف اٹھائیں۔"
+    ],
+    anniversary: [
+        "شادی کی سالگرہ مبارک! آپ دونوں کو زندگی بھر خوشیوں کی خواہش۔",
+        "ایک خوبصورت جوڑے کو شادی کی سالگرہ مبارک۔",
+        "آپ دونوں کو محبت اور خوشیوں سے بھرے ایک اور سال کی خواہش۔",
+        "شادی کی سالگرہ مبارک! آپ کی محبت بڑھتی رہے۔",
+        "شادی کی سالگرہ مبارک! ایک اور سال ساتھ رہنے کی خوشی میں۔"
     ]
   },
   sa: {
@@ -386,6 +442,20 @@ export const messages: Record<string, Record<string, string[]>> = {
       "स्वागतम्! वयं भवता सह भवितुम् उत्सुकाः स्मः।",
       "स्वागतम्! वयं आशास्महे यत् भवान् गृहवत् अनुभवति।",
       "भवतः स्वागतं कर्तुं हर्षः भवति।"
+    ],
+    birthday: [
+        "जन्मदिनस्य शुभकामनाः! भवतः दिवसः भवतः इव विशेषः भवतु।",
+        "भवतः जन्मदिनस्य सर्वाः शुभकामनाः स्वप्नाः च सफलाः भवन्तु।",
+        "जन्मदिनस्य शुभकामनाः! आशासे यत् भवतः दिनं उत्तमं गच्छतु।",
+        "भवते जन्मदिनस्य हार्दिक्यः शुभकामनाः तथा च आनन्दपूर्णवर्षस्य कामना।",
+        "जन्मदिनस्य शुभकामनाः! स्वस्य विशेषदिनस्य आनन्दं लभताम्।"
+    ],
+    anniversary: [
+        "विवाहस्य वर्षगांठस्य शुभकामनाः! युवाभ्यां जीवनभरं सुखस्य कामना।",
+        "सुन्दराय दम्पतये विवाहस्य वर्षगांठस्य शुभकामनाः।",
+        "युवाभ्यां प्रेमणः सुखस्य च अन्यस्य वर्षस्य कामना।",
+        "विवाहस्य वर्षगांठस्य शुभकामनाः! युवयोः प्रेम वर्धताम्।",
+        "विवाहस्य वर्षगांठस्य शुभकामनाः! अन्यस्य वर्षस्य एकत्र उत्सवः।"
     ]
   },
   pt: {
@@ -463,6 +533,20 @@ export const messages: Record<string, Record<string, string[]>> = {
       "Bem-vindo a bordo! Estamos animados por tê-lo conosco.",
       "Bem-vindo! Esperamos que você se sinta em casa.",
       "É um prazer recebê-lo."
+    ],
+    birthday: [
+        "Feliz Aniversário! Desejo a você um dia tão especial quanto você.",
+        "Que todos os seus desejos e sonhos de aniversário se realizem.",
+        "Feliz Aniversário! Espero que você tenha um ótimo dia.",
+        "Desejando a você um feliz aniversário e um ano cheio de alegria.",
+        "Feliz Aniversário! Aproveite o seu dia especial."
+    ],
+    anniversary: [
+        "Feliz Aniversário! Desejando a ambos uma vida inteira de felicidade.",
+        "Feliz Aniversário para um casal lindo.",
+        "Desejando a ambos mais um ano de amor e felicidade.",
+        "Feliz Aniversário! Que o amor de vocês continue a crescer.",
+        "Feliz Aniversário! Um brinde a mais um ano juntos."
     ]
   },
 };

@@ -69,6 +69,8 @@ const getNewMessageFlow = ai.defineFlow(
           - If subCategory is "morning": A simple, warm, and traditional greeting. Examples: "Good Morning", "Ram Ram", "Have a blessed day". Keep it very simple and popular.
           - If subCategory is "thankyou": A heartfelt, sincere message of gratitude. It can be for a person, a situation, or a general feeling of thanks.
           - If subCategory is "welcome": A warm and inviting message to welcome someone to a new place, group, or experience.
+          - If subCategory is "birthday": A cheerful and celebratory birthday wish.
+          - If subCategory is "anniversary": A warm and loving anniversary message, suitable for couples.
 
       Your response MUST only be the message text itself. Do not add any extra commentary or labels.
       `,
