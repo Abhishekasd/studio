@@ -24,6 +24,7 @@ const GenerateImageInputSchema = z.object({
   language: z.string().describe('The language of the prompt (e.g., "en", "ur", "pt").'),
   category: z.string().describe('The category of the prompt (e.g., "spiritual").'),
   subCategory: z.string().optional().describe('An optional sub-category for more specific image generation (e.g., "simple", "spiritual").'),
+  name: z.string().optional().describe('An optional name of a person for personalized images.'),
 });
 export type GenerateImageInput = z.infer<typeof GenerateImageInputSchema>;
 
@@ -45,8 +46,19 @@ const generateImageFlow = ai.defineFlow(
     
     let imagePrompt = `Generate a beautiful and artistic image that captures the essence of the following quote: "${input.prompt}". The style should be visually appealing and match the message's tone. Do not include any watermark.`;
     
-    // Main spiritual category (NO watermark)
-    if (input.category === 'spiritual') {
+    if (input.category === 'birthday' || input.category === 'anniversary') {
+      const occasion = input.category === 'birthday' ? 'Birthday' : 'Anniversary';
+      imagePrompt = `Create a beautiful, celebratory greeting card image for a ${occasion}.
+
+**Instructions:**
+1.  **Occasion:** ${occasion}
+2.  **Recipient's Name:** ${input.name}
+3.  **Message:** "${input.prompt}"
+4.  **Art Style:** The style must be festive, elegant, and visually appealing, suitable for a celebration. Use elements like flowers, confetti, artistic patterns, or celebratory symbols.
+5.  **Text Integration:** Artistically and clearly integrate BOTH the recipient's name ("${input.name}") and the message ("${input.prompt}") into the image. The name and message should be the main focus.
+6.  **No Watermark:** Do not include any watermarks.`;
+    } else if (input.category === 'spiritual') {
+      // Main spiritual category (NO watermark)
       if (['en', 'hi', 'sa'].includes(input.language)) {
         imagePrompt = `Create a beautiful, divine, and artistic image of a Hindu deity.
 

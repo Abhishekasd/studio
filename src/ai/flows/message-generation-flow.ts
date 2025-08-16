@@ -1,3 +1,4 @@
+
 'use server';
 /**
  * @fileOverview A flow for generating dynamic, category-specific messages.
@@ -22,6 +23,7 @@ const MessageInputSchema = z.object({
   language: z.string().describe('The language for the message (e.g., "en", "hi", "es").'),
   category: z.string().describe('The category of the message (e.g., "shayari", "joke").'),
   existingMessages: z.array(z.string()).describe('A list of messages already shown to the user in this session to avoid repetition.'),
+  name: z.string().optional().describe('An optional name of a person for personalized messages.'),
 });
 export type MessageInput = z.infer<typeof MessageInputSchema>;
 
@@ -55,17 +57,17 @@ const messagePrompt = ai.definePrompt({
   - **greeting:** A simple, warm, and traditional greeting. Examples: "Good Morning", "Ram Ram", "Have a blessed day". Keep it very simple and popular.
   - **thankyou:** A heartfelt, sincere message of gratitude. It can be for a person, a situation, or a general feeling of thanks.
   - **welcome:** A warm and inviting message to welcome someone to a new place, group, or experience.
-  - **birthday:** A cheerful and celebratory birthday wish.
-  - **anniversary:** A warm and loving anniversary message, suitable for couples.
+  - **birthday:** A cheerful and celebratory birthday wish for **{{{name}}}**. The message must include the name.
+  - **anniversary:** A warm and loving anniversary message, suitable for couples. If a name **{{{name}}}** is provided, it should be for that person/couple. The message must include the name if provided.
 
   Your response MUST only be the message text itself. Do not add any extra commentary or labels.
   `,
    config: {
     safetySettings: [
-      { category: 'HARM_CATEGORY_HATE_SPEECH', threshold: 'BLOCK_ONLY_HIGH' },
+      { category: 'HARM_CATEGORY_HATE_SPEECH', threshold: 'BLOCK_NONE' },
       { category: 'HARM_CATEGORY_DANGEROUS_CONTENT', threshold: 'BLOCK_NONE' },
-      { category: 'HARM_CATEGORY_HARASSMENT', threshold: 'BLOCK_MEDIUM_AND_ABOVE' },
-      { category: 'HARM_CATEGORY_SEXUALLY_EXPLICIT', threshold: 'BLOCK_LOW_AND_ABOVE' },
+      { category: 'HARM_CATEGORY_HARASSMENT', threshold: 'BLOCK_NONE' },
+      { category: 'HARM_CATEGORY_SEXUALLY_EXPLICIT', threshold: 'BLOCK_NONE' },
     ],
     temperature: 1.0,
   },

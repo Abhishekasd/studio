@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, useEffect, useCallback, useRef } from 'react';
@@ -12,6 +13,9 @@ interface Message {
 }
 
 const getInitialMessage = (language: string, category: string): Message => {
+    if (['birthday', 'anniversary'].includes(category)) {
+      return { text: '', key: 'initial-personalized' };
+    }
     const messageList: string[] = messages[language]?.[category] ?? [];
     if (messageList.length > 0) {
         return { text: messageList[0], key: 0 };
@@ -23,11 +27,15 @@ export const useMessageGenerator = (language: string, category: string) => {
   const [currentMessage, setCurrentMessage] = useState<Message>(() => getInitialMessage(language, category));
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
+  const isPersonalizedCategory = ['birthday', 'anniversary'].includes(category);
 
   const sessionMessagesRef = useRef<Record<string, Set<string>>>({});
   
-  const getFallbackMessage = useCallback(() => {
-    const messageList = messages[language]?.[category] ?? ["Sorry, something went wrong. Please try again!"];
+  const getFallbackMessage = useCallback((name?: string) => {
+    let messageList = messages[language]?.[category] ?? ["Sorry, something went wrong. Please try again!"];
+    if (name && (category === 'birthday' || category === 'anniversary')) {
+        messageList = messageList.map(m => m.replace('{{name}}', name));
+    }
     const sessionCategoryMessages = sessionMessagesRef.current[category] || new Set();
 
     let availableMessages = messageList.filter(m => !sessionCategoryMessages.has(m));
@@ -47,7 +55,12 @@ export const useMessageGenerator = (language: string, category: string) => {
   }, [language, category]);
 
 
-  const getNewMessage = useCallback(async () => {
+  const getNewMessage = useCallback(async (name?: string) => {
+    if (isPersonalizedCategory && !name) {
+      setCurrentMessage({ text: '', key: 'initial-personalized' });
+      return;
+    }
+
     setIsLoading(true);
 
     if (category === 'festival') {
@@ -76,6 +89,7 @@ export const useMessageGenerator = (language: string, category: string) => {
             language,
             category,
             existingMessages: Array.from(sessionCategoryMessages),
+            name: name,
         });
 
         const newMessage = result.message;
@@ -90,20 +104,25 @@ export const useMessageGenerator = (language: string, category: string) => {
             description: "Could not generate a new message, using one from our library.",
             variant: "destructive",
         });
-        getFallbackMessage();
+        getFallbackMessage(name);
     } finally {
         setIsLoading(false);
     }
 
-  }, [language, category, toast, getFallbackMessage]);
+  }, [language, category, toast, getFallbackMessage, isPersonalizedCategory]);
   
   useEffect(() => {
     if (sessionMessagesRef.current[category]) {
       sessionMessagesRef.current[category]!.clear();
     }
-    getNewMessage();
-  }, [language, category, getNewMessage]);
+    // For personalized categories, don't fetch on category change, wait for user input.
+    if (!isPersonalizedCategory) {
+      getNewMessage();
+    } else {
+      setCurrentMessage({ text: '', key: 'initial-personalized' });
+    }
+  }, [language, category, getNewMessage, isPersonalizedCategory]);
 
 
-  return { currentMessage, getNewMessage, isLoading };
+  return { currentMessage, getNewMessage, isLoading, isPersonalizedCategory };
 };
