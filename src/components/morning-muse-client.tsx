@@ -278,7 +278,7 @@ export const MorningMuseClient: FC = () => {
 
     if (isPersonalizedCategory && !currentMessage.text) {
       return (
-        <p className="text-lg text-foreground/80">{t.enterNamePrompt}</p>
+        <p className="text-lg text-center text-foreground/80">{t.enterNamePrompt}</p>
       )
     }
 
@@ -294,11 +294,11 @@ export const MorningMuseClient: FC = () => {
     if (category === 'greeting') {
       return (
         <>
-          <p className="text-lg text-foreground/80">{t.goodMorning}</p>
+          <p className="text-lg md:text-xl text-foreground/80">{t.goodMorning}</p>
           <p className="my-4 text-xl md:text-2xl font-medium leading-relaxed text-foreground/90">
             {currentMessage.text}
           </p>
-          <p className="text-lg text-foreground/80">{t.haveANiceDay}</p>
+          <p className="text-lg md:text-xl text-foreground/80">{t.haveANiceDay}</p>
         </>
       );
     }
@@ -318,10 +318,10 @@ export const MorningMuseClient: FC = () => {
 
   return (
     <>
-      <div className="flex w-full max-w-2xl flex-col items-center gap-8">
+      <div className="flex w-full max-w-2xl flex-col items-center gap-6 md:gap-8 px-4">
         <header className="flex w-full flex-col items-center justify-between gap-4 sm:flex-row">
-          <div className="flex items-center gap-3 text-3xl font-bold tracking-tight text-primary">
-            <SunIcon className="h-8 w-8 animate-spin [animation-duration:15s]" />
+          <div className="flex items-center gap-3 text-2xl sm:text-3xl font-bold tracking-tight text-primary">
+            <SunIcon className="h-7 w-7 sm:h-8 sm:w-8 animate-spin [animation-duration:15s]" />
             <h1 className="bg-gradient-to-r from-primary via-amber-200 to-primary bg-clip-text text-transparent">
               MorningMuse3D
             </h1>
@@ -348,6 +348,7 @@ export const MorningMuseClient: FC = () => {
               variant={category === cat.value ? "default" : "secondary"}
               onClick={() => handleCategoryChange(cat.value)}
               className="transition-all hover:scale-105"
+              size="sm"
             >
               {cat.icon && isLoading && category === 'festival' ? <Loader className="animate-spin mr-2 h-4 w-4"/> : cat.icon ? <cat.icon className="mr-2 h-4 w-4"/> : null}
               {cat.label}
@@ -356,7 +357,7 @@ export const MorningMuseClient: FC = () => {
         </div>
         
         {isPersonalizedCategory && (
-            <div className="w-full max-w-sm space-y-4 flex flex-col items-center">
+            <div className="w-full max-w-md space-y-4 flex flex-col items-center">
               <div className="w-full space-y-2">
                 <Label htmlFor="personName" className="text-foreground/80">{t.enterNameLabel}</Label>
                 <Input 
@@ -390,7 +391,7 @@ export const MorningMuseClient: FC = () => {
                     type="file" 
                     accept="image/*"
                     onChange={handleImageUpload}
-                    className="bg-card/50 backdrop-blur-sm flex-grow"
+                    className="bg-card/50 backdrop-blur-sm flex-grow file:text-xs"
                   />
                   {personImage && (
                     <Button variant="ghost" size="icon" onClick={() => setPersonImage(null)} aria-label="Remove image">
@@ -414,13 +415,13 @@ export const MorningMuseClient: FC = () => {
 
         {category === 'greeting' && (
           <div className="w-full space-y-4">
-            <div className="flex flex-wrap items-center justify-center gap-3 rounded-lg bg-card/30 backdrop-blur-md p-2 border-border/50">
+            <div className="flex flex-wrap items-center justify-center gap-2 rounded-lg bg-card/30 backdrop-blur-md p-2 border-border/50">
                <span className="text-sm font-medium text-foreground/80 mr-2">{t.imageTypePrompt}</span>
                 <Button
                     variant={greetingImageSubCategory === 'simple' ? 'default' : 'outline'}
                     onClick={() => setGreetingImageSubCategory('simple')}
                     size="sm"
-                    className="transition-all"
+                    className="transition-all text-xs"
                 >
                     <Palette className="mr-2 h-4 w-4" />
                     {t.subCategorySimple}
@@ -429,7 +430,7 @@ export const MorningMuseClient: FC = () => {
                     variant={greetingImageSubCategory === 'spiritual' ? 'default' : 'outline'}
                     onClick={() => setGreetingImageSubCategory('spiritual')}
                     size="sm"
-                    className="transition-all"
+                    className="transition-all text-xs"
                 >
                     <Heart className="mr-2 h-4 w-4" />
                     {t.subCategorySpiritual}
@@ -456,29 +457,29 @@ export const MorningMuseClient: FC = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 w-full max-w-2xl">
-          <Button onClick={handleCopy} size="lg" variant="outline" className="bg-card/50 backdrop-blur-sm" disabled={isLoading || !currentMessage.text}>
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-4 w-full max-w-2xl">
+          <Button onClick={handleCopy} size="lg" variant="outline" className="bg-card/50 backdrop-blur-sm text-xs sm:text-sm" disabled={isLoading || !currentMessage.text}>
             {isCopied ? <Check /> : <Copy />}
             {isCopied ? t.copied : t.copyText}
           </Button>
-          <Button onClick={handleGenerateImage} size="lg" variant="default" disabled={isLoading || isImageGenerating || !currentMessage.text}>
+          <Button onClick={handleGenerateImage} size="lg" variant="default" className="text-xs sm:text-sm" disabled={isLoading || isImageGenerating || !currentMessage.text}>
             {isImageGenerating ? <Loader className="animate-spin" /> : <ImageIcon />}
             {isImageGenerating ? t.generatingImage : t.generateImage}
           </Button>
-          <Button onClick={() => handleNewMessage(isPersonalizedCategory ? personName : undefined, isPersonalizedCategory ? personCharacteristics : undefined)} size="lg" variant="secondary" disabled={isLoading || (isPersonalizedCategory && !personName.trim())}>
+          <Button onClick={() => handleNewMessage(isPersonalizedCategory ? personName : undefined, isPersonalizedCategory ? personCharacteristics : undefined)} size="lg" variant="secondary" className="col-span-2 sm:col-span-1 text-xs sm:text-sm" disabled={isLoading || (isPersonalizedCategory && !personName.trim())}>
             <RefreshCw className={cn(isFlipped || (isLoading && !isPersonalizedCategory) && "animate-spin")} style={{animationDuration: '700ms'}}/>
             {t.showAnother}
           </Button>
         </div>
       </div>
-      <div className="w-full max-w-4xl p-8 text-foreground/80 space-y-12 mt-12">
+      <div className="w-full max-w-4xl p-4 sm:p-8 text-foreground/80 space-y-12 mt-12">
         <Separator className="my-8 bg-border/50" />
         <section>
-          <h2 className="text-3xl font-bold text-center text-primary mb-6">{t.welcomeTitle}</h2>
-          <p className="text-lg leading-relaxed text-center">
+          <h2 className="text-2xl sm:text-3xl font-bold text-center text-primary mb-6">{t.welcomeTitle}</h2>
+          <p className="text-base sm:text-lg leading-relaxed text-center">
             {t.welcomePara1}
           </p>
-          <p className="text-lg leading-relaxed text-center mt-4">
+          <p className="text-base sm:text-lg leading-relaxed text-center mt-4">
             {t.welcomePara2} <span className="font-semibold text-primary/90">{t.languageNames}</span>, {t.welcomePara3}
           </p>
         </section>
@@ -486,11 +487,11 @@ export const MorningMuseClient: FC = () => {
         <Separator className="my-8 bg-border/50" />
         
           <section>
-          <h2 className="text-3xl font-bold text-center text-primary mb-6">{t.whyTitle}</h2>
-          <p className="text-lg leading-relaxed text-justify">
+          <h2 className="text-2xl sm:text-3xl font-bold text-center text-primary mb-6">{t.whyTitle}</h2>
+          <p className="text-base sm:text-lg leading-relaxed text-justify">
             {t.whyPara1}
           </p>
-            <p className="text-lg leading-relaxed text-justify mt-4">
+            <p className="text-base sm:text-lg leading-relaxed text-justify mt-4">
             {t.whyPara2}
           </p>
         </section>
@@ -498,19 +499,19 @@ export const MorningMuseClient: FC = () => {
         <Separator className="my-8 bg-border/50" />
 
         <section>
-          <h2 className="text-3xl font-bold text-center text-primary mb-6">{t.howTitle}</h2>
+          <h2 className="text-2xl sm:text-3xl font-bold text-center text-primary mb-6">{t.howTitle}</h2>
           <div className="grid md:grid-cols-3 gap-8 text-center">
             <div className="bg-card/30 p-6 rounded-lg border border-border/50">
-              <h3 className="text-xl font-semibold text-secondary mb-2">{t.howStep1Title}</h3>
-              <p>{t.howStep1Desc}</p>
+              <h3 className="text-lg sm:text-xl font-semibold text-secondary mb-2">{t.howStep1Title}</h3>
+              <p className="text-sm sm:text-base">{t.howStep1Desc}</p>
             </div>
             <div className="bg-card/30 p-6 rounded-lg border border-border/50">
-              <h3 className="text-xl font-semibold text-secondary mb-2">{t.howStep2Title}</h3>
-              <p>{t.howStep2Desc}</p>
+              <h3 className="text-lg sm:text-xl font-semibold text-secondary mb-2">{t.howStep2Title}</h3>
+              <p className="text-sm sm:text-base">{t.howStep2Desc}</p>
             </div>
             <div className="bg-card/30 p-6 rounded-lg border border-border/50">
-              <h3 className="text-xl font-semibold text-secondary mb-2">{t.howStep3Title}</h3>
-              <p>{t.howStep3Desc}</p>
+              <h3 className="text-lg sm:text-xl font-semibold text-secondary mb-2">{t.howStep3Title}</h3>
+              <p className="text-sm sm:text-base">{t.howStep3Desc}</p>
             </div>
           </div>
         </section>
@@ -518,8 +519,8 @@ export const MorningMuseClient: FC = () => {
         <Separator className="my-8 bg-border/50" />
 
         <section>
-          <h2 className="text-3xl font-bold text-center text-primary mb-6">{t.categoriesTitle}</h2>
-          <div className="space-y-4 text-lg leading-relaxed">
+          <h2 className="text-2xl sm:text-3xl font-bold text-center text-primary mb-6">{t.categoriesTitle}</h2>
+          <div className="space-y-4 text-base sm:text-lg leading-relaxed">
             <p><strong className="text-secondary">{t.catGreetingTitle}</strong> {t.catGreetingDesc}</p>
             <p><strong className="text-secondary">{t.catFestivalTitle}</strong> {t.catFestivalDesc}</p>
             <p><strong className="text-secondary">{t.catMotivationalTitle}</strong> {t.catMotivationalDesc}</p>
@@ -535,15 +536,15 @@ export const MorningMuseClient: FC = () => {
 
         <Separator className="my-8 bg-border/50" />
           <section>
-          <h2 className="text-3xl font-bold text-center text-primary mb-6">{t.uniqueTitle}</h2>
-          <p className="text-lg leading-relaxed text-center">
+          <h2 className="text-2xl sm:text-3xl font-bold text-center text-primary mb-6">{t.uniqueTitle}</h2>
+          <p className="text-base sm:text-lg leading-relaxed text-center">
             {t.uniquePara}
           </p>
         </section>
       </div>
 
       <Dialog open={showImageDialog} onOpenChange={setShowImageDialog}>
-        <DialogContent className="max-w-xl">
+        <DialogContent className="max-w-md sm:max-w-xl">
           <DialogHeader>
             <DialogTitle>{t.generatedImageTitle}</DialogTitle>
           </DialogHeader>
@@ -553,7 +554,7 @@ export const MorningMuseClient: FC = () => {
               <img src={generatedImage} alt="Generated art" className="rounded-md max-h-[70vh] object-contain" />
             )}
           </div>
-          <DialogFooter className="sm:justify-end gap-2">
+          <DialogFooter className="flex flex-row sm:justify-end gap-2">
             
               <Button type="button" onClick={handleShareImage} disabled={!generatedImage || isImageGenerating}>
                   <Share2 />{t.shareImage}
@@ -594,3 +595,5 @@ export const MorningMuseClient: FC = () => {
     </>
   );
 };
+
+    

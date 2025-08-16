@@ -34,7 +34,7 @@ export default function RootLayout({
           </main>
           <footer className="w-full bg-background/50 border-t border-border/30 mt-16">
             <div className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
-              <div className="flex justify-center space-x-6">
+              <div className="flex flex-col sm:flex-row justify-center items-center space-y-4 sm:space-y-0 sm:space-x-6">
                  <Link href="/" className="text-foreground/70 hover:text-primary transition-colors">
                   Home
                 </Link>
@@ -48,7 +48,7 @@ export default function RootLayout({
                   Privacy Policy
                 </Link>
               </div>
-              <div className="mt-6 text-center text-sm text-foreground/50">
+              <div className="mt-6 text-center text-xs sm:text-sm text-foreground/50">
                 <p>&copy; {new Date().getFullYear()} MorningMuse3D. All rights reserved. Your daily sanctuary for AI-powered inspiration.</p>
               </div>
             </div>
@@ -61,12 +61,12 @@ export default function RootLayout({
               window.tsParticles.load("particles-js", {
                 background: { color: { value: "transparent" } },
                 particles: {
-                  number: { value: 150 },
+                  number: { value: 100, density: { enable: true, value_area: 800 } },
                   size: {
                     value: 2,
                     random: { enable: true, minimumValue: 1 }
                   },
-                  move: { enable: true, speed: 0.5 },
+                  move: { enable: true, speed: 0.5, direction: "none", random: false, straight: false, out_mode: "out" },
                   opacity: {
                     value: 0.8,
                     animation: {
@@ -88,8 +88,8 @@ export default function RootLayout({
                     onclick: { enable: true, mode: "push" }
                   },
                   modes: {
-                    repulse: { distance: 100 },
-                    push: { quantity: 4 }
+                    repulse: { distance: 80 },
+                    push: { quantity: 2 }
                   }
                 },
                 detectRetina: true
@@ -101,3 +101,5 @@ export default function RootLayout({
     </html>
   );
 }
+
+    
