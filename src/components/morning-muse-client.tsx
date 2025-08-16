@@ -369,7 +369,7 @@ export const MorningMuseClient: FC = () => {
                 />
               </div>
 
-              {category === 'birthday' && (
+              {(category === 'birthday' || category === 'anniversary') && (
                 <div className="w-full space-y-2">
                     <Label htmlFor="personCharacteristics" className="text-foreground/80">{t.characteristicsLabel}</Label>
                     <Textarea 
