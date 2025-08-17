@@ -26,8 +26,8 @@ export default function RootLayout({
      crossOrigin="anonymous"></script>
         <Script src="https://cdn.jsdelivr.net/npm/tsparticles@3.0.0/tsparticles.bundle.min.js" strategy="beforeInteractive" />
       </head>
-      <body className="font-body antialiased bg-background">
-        <div id="particles-js" />
+      <body className="font-body antialiased">
+        <div id="particles-js" className="bg-background" />
         <div className="relative z-10 flex flex-col min-h-screen">
           <main className="flex-grow">
             {children}
@@ -59,9 +59,6 @@ export default function RootLayout({
           {`
             if (typeof window !== 'undefined' && window.tsParticles) {
               window.tsParticles.load("particles-js", {
-                background: {
-                  color: { value: "transparent" }
-                },
                 particles: {
                   number: {
                     value: 80,
