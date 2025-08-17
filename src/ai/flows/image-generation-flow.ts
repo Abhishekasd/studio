@@ -50,7 +50,7 @@ const generateImageFlow = ai.defineFlow(
     if (input.category === 'birthday' || input.category === 'anniversary') {
       const occasion = input.category === 'birthday' ? 'Birthday' : 'Anniversary';
       if (input.photoDataUri) {
-         const mimeTypeMatch = input.photoDataUri.match(/data:(image\/[^;]+);base64,/);
+         const mimeTypeMatch = input.photoDataUri.match(/^data:(image\/[a-zA-Z0-9-.+]+);base64,/);
          const mimeType = mimeTypeMatch ? mimeTypeMatch[1] : 'application/octet-stream';
         
          prompt = [
