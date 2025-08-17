@@ -26,7 +26,7 @@ export default function RootLayout({
      crossOrigin="anonymous"></script>
         <Script src="https://cdn.jsdelivr.net/npm/tsparticles@3.0.0/tsparticles.bundle.min.js" strategy="beforeInteractive" />
       </head>
-      <body className="font-body antialiased bg-transparent">
+      <body className="font-body antialiased bg-background">
         <div id="particles-js" />
         <div className="relative z-10 flex flex-col min-h-screen">
           <main className="flex-grow">
