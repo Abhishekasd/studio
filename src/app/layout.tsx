@@ -64,27 +64,27 @@ export default function RootLayout({
                 },
                 particles: {
                   number: {
-                    value: 150,
+                    value: 100,
                     density: { enable: true, value_area: 800 }
                   },
                   size: {
-                    value: 1.5,
+                    value: 2,
                     random: { enable: true, minimumValue: 1 }
                   },
                   move: {
                     enable: true,
-                    speed: 0.8,
+                    speed: 0.5,
                     direction: "none",
-                    random: true,
+                    random: false,
                     straight: false,
                     out_mode: "out"
                   },
                   opacity: {
-                    value: 0.7,
+                    value: 0.8,
                     animation: {
                       enable: true,
-                      speed: 1,
-                      minimumValue: 0.1,
+                      speed: 0.8,
+                      minimumValue: 0.3,
                       sync: false
                     }
                   },
@@ -92,21 +92,15 @@ export default function RootLayout({
                     value: ["#ff4b5c", "#ffca3a", "#8ac926", "#1982c4", "#6a4c93"]
                   },
                   shape: { type: "circle" },
-                  links: { 
-                    enable: true,
-                    distance: 120,
-                    color: "#ffffff",
-                    opacity: 0.2,
-                    width: 1
-                  }
+                  links: { enable: false }
                 },
                 interactivity: {
                   events: {
-                    onhover: { enable: true, mode: "grab" },
+                    onhover: { enable: true, mode: "repulse" },
                     onclick: { enable: true, mode: "push" }
                   },
                   modes: {
-                    grab: { distance: 140, links: { opacity: 0.5 } },
+                    repulse: { distance: 80 },
                     push: { quantity: 2 }
                   }
                 },
