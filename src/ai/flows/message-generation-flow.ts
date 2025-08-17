@@ -68,7 +68,7 @@ const messagePrompt = ai.definePrompt({
     **Personalization:** Use these characteristics about the couple/person to make the wish more personal and special: {{{characteristics}}}.
     {{/if}}
 
-  Your response MUST only be the message text itself. Do not add any extra commentary or labels.
+  Your response MUST only be the message text itself, ending with one or two relevant emojis. Do not add any extra commentary or labels.
   `,
    config: {
     temperature: 1.0,
