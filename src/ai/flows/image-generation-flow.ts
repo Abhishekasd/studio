@@ -45,13 +45,18 @@ const generateImageFlow = ai.defineFlow(
       throw new Error('Server is not configured with a GEMINI_API_KEY. Please set it in your .env file.');
     }
     
-    let imagePrompt: string | (string | { media: { url: string; }; })[] = `Generate a beautiful and artistic image that captures the essence of the following quote: "${input.prompt}". The style should be visually appealing and match the message's tone. Do not include any watermark.`;
-    
+    let imagePrompt: string | (string | { media: { url: string; contentType?: string; }; })[] = `Generate a beautiful and artistic image that captures the essence of the following quote: "${input.prompt}". The style should be visually appealing and match the message's tone. Do not include any watermark.`;
+    let imagePromptWithMedia: any = null;
+
     if (input.category === 'birthday' || input.category === 'anniversary') {
       const occasion = input.category === 'birthday' ? 'Birthday' : 'Anniversary';
       if (input.photoDataUri) {
-          imagePrompt = [
-            { media: { url: input.photoDataUri } },
+          const mimeTypeMatch = input.photoDataUri.match(/data:([a-zA-Z0-9]+\/[a-zA-Z0-9-.+]+);base64,/);
+          const mimeType = mimeTypeMatch ? mimeTypeMatch[1] : 'application/octet-stream';
+
+          imagePromptWithMedia = [
+            { media: { url: input.photoDataUri, contentType: mimeType } },
+            { text:
 `Create a beautiful, celebratory greeting card using the provided photo.
 
 **Instructions:**
@@ -60,6 +65,7 @@ const generateImageFlow = ai.defineFlow(
 3.  **Text Integration:** Artistically and legibly integrate BOTH the recipient's name ("${input.name}") and the message ("${input.prompt}") onto the image. The text should be placed on or around the frame, but NOT covering the main subject of the photo.
 4.  **No Watermark:** Do not include any watermarks.
 `
+            }
           ];
       } else {
         imagePrompt = `Create a beautiful, celebratory greeting card image for a ${occasion}.
@@ -156,7 +162,7 @@ const generateImageFlow = ai.defineFlow(
     
     const {media} = await ai.generate({
       model: 'googleai/gemini-2.0-flash-preview-image-generation',
-      prompt: imagePrompt,
+      prompt: imagePromptWithMedia || imagePrompt,
       config: {
         responseModalities: ['TEXT', 'IMAGE'],
       },
