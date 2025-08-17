@@ -45,7 +45,7 @@ const generateImageFlow = ai.defineFlow(
       throw new Error('Server is not configured with a GEMINI_API_KEY. Please set it in your .env file.');
     }
     
-    let prompt: string | (string | { media: { url: string; contentType?: string; }; })[];
+    let prompt: any;
 
     if ((input.category === 'birthday' || input.category === 'anniversary') && input.photoDataUri) {
         const mimeTypeMatch = input.photoDataUri.match(/data:([a-zA-Z0-9]+\/[a-zA-Z0-9-.+]+);base64,/);
@@ -176,5 +176,3 @@ const generateImageFlow = ai.defineFlow(
 export async function generateImage(input: GenerateImageInput): Promise<GenerateImageOutput> {
   return generateImageFlow(input);
 }
-
-    

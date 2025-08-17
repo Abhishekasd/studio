@@ -98,7 +98,7 @@ const getNewMessageFlow = ai.defineFlow(
     }
     
     // Fallback logic if AI fails or returns empty response
-    const fallbackMessages = messages[input.language]?.[input.category] ?? ["Have a wonderful day!"];
+    const fallbackMessages = messages[input.language]?.[input.category] ?? ["Have a wonderful day! 👋"];
     let fallbackMessage = fallbackMessages[Math.floor(Math.random() * fallbackMessages.length)];
 
     if (input.name && (input.category === 'birthday' || input.category === 'anniversary')) {
