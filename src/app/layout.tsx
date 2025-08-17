@@ -64,47 +64,57 @@ export default function RootLayout({
                 },
                 particles: {
                   number: {
-                    value: 100,
-                    density: { enable: true, value_area: 800 }
+                    value: 80,
+                    density: { enable: true, area: 800 }
+                  },
+                  color: {
+                    value: ["#ffffff", "#ff4b5c", "#ffca3a", "#8ac926", "#1982c4", "#6a4c93"]
+                  },
+                  shape: {
+                    type: "circle",
+                  },
+                  opacity: {
+                    value: 0.5,
+                    random: true,
                   },
                   size: {
-                    value: 2,
-                    random: { enable: true, minimumValue: 1 }
+                    value: 3,
+                    random: true,
+                  },
+                  links: {
+                    enable: false,
                   },
                   move: {
                     enable: true,
                     speed: 0.5,
                     direction: "none",
-                    random: false,
-                    straight: false,
-                    out_mode: "out"
+                    outModes: {
+                      default: "out",
+                    },
                   },
-                  opacity: {
-                    value: 0.8,
-                    animation: {
-                      enable: true,
-                      speed: 0.8,
-                      minimumValue: 0.3,
-                      sync: false
-                    }
-                  },
-                  color: {
-                    value: ["#ff4b5c", "#ffca3a", "#8ac926", "#1982c4", "#6a4c93"]
-                  },
-                  shape: { type: "circle" },
-                  links: { enable: false }
                 },
                 interactivity: {
+                  detectsOn: "canvas",
                   events: {
-                    onhover: { enable: true, mode: "repulse" },
-                    onclick: { enable: true, mode: "push" }
+                    onHover: {
+                      enable: true,
+                      mode: "repulse",
+                    },
+                    onClick: {
+                      enable: true,
+                      mode: "push",
+                    },
                   },
                   modes: {
-                    repulse: { distance: 80 },
-                    push: { quantity: 2 }
-                  }
+                    repulse: {
+                      distance: 100,
+                    },
+                    push: {
+                      quantity: 4,
+                    },
+                  },
                 },
-                detectRetina: true
+                detectRetina: true,
               });
             }
           `}
