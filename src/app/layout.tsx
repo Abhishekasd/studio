@@ -26,13 +26,13 @@ export default function RootLayout({
      crossOrigin="anonymous"></script>
         <Script src="https://cdn.jsdelivr.net/npm/tsparticles@3.0.0/tsparticles.bundle.min.js" strategy="beforeInteractive" />
       </head>
-      <body className="font-body antialiased">
+      <body className="font-body antialiased bg-transparent">
         <div id="particles-js" />
         <div className="flex flex-col min-h-screen">
           <main className="flex-grow">
             {children}
           </main>
-          <footer className="w-full bg-background/50 border-t border-border/30 mt-16">
+          <footer className="w-full bg-background/50 border-t border-border/30 mt-16 backdrop-blur-sm">
             <div className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
               <div className="flex flex-col sm:flex-row justify-center items-center space-y-4 sm:space-y-0 sm:space-x-6">
                  <Link href="/" className="text-foreground/70 hover:text-primary transition-colors">
@@ -60,39 +60,71 @@ export default function RootLayout({
             if (typeof window !== 'undefined' && window.tsParticles) {
               window.tsParticles.load("particles-js", {
                 background: {
-                  color: { value: "transparent" }
+                    color: {
+                        value: '#0d1117'
+                    },
+                },
+                fpsLimit: 60,
+                interactivity: {
+                    events: {
+                        onClick: {
+                            enable: true,
+                            mode: 'push'
+                        },
+                        onHover: {
+                            enable: true,
+                            mode: 'repulse'
+                        },
+                    },
+                    modes: {
+                        push: {
+                            quantity: 4
+                        },
+                        repulse: {
+                            distance: 200,
+                            duration: 0.4
+                        }
+                    }
                 },
                 particles: {
-                  number: { value: 100, density: { enable: true } },
-                  size: {
-                    value: 2,
-                    random: { enable: true, minimumValue: 1 }
-                  },
-                  move: { enable: true, speed: 0.5, direction: "none", random: false, straight: false, outModes: "out" },
-                  opacity: {
-                    value: 0.8,
-                    animation: {
-                      enable: true,
-                      speed: 0.8,
-                      minimumValue: 0.3,
-                      sync: false
+                    color: {
+                        value: '#ffffff'
+                    },
+                    links: {
+                        color: '#ffffff',
+                        distance: 150,
+                        enable: true,
+                        opacity: 0.5,
+                        width: 1
+                    },
+                    collisions: {
+                        enable: true
+                    },
+                    move: {
+                        direction: 'none',
+                        enable: true,
+                        outModes: {
+                            default: 'bounce'
+                        },
+                        random: false,
+                        speed: 2,
+                        straight: false
+                    },
+                    number: {
+                        density: {
+                            enable: true,
+                        },
+                        value: 80
+                    },
+                    opacity: {
+                        value: 0.5
+                    },
+                    shape: {
+                        type: 'circle'
+                    },
+                    size: {
+                        value: { min: 1, max: 5 }
                     }
-                  },
-                  color: {
-                    value: ["#ff4b5c", "#ffca3a", "#8ac926", "#1982c4", "#6a4c93"]
-                  },
-                  shape: { type: "circle" },
-                  links: { enable: false }
-                },
-                interactivity: {
-                  events: {
-                    onHover: { enable: true, mode: "repulse" },
-                    onClick: { enable: true, mode: "push" }
-                  },
-                  modes: {
-                    repulse: { distance: 80 },
-                    push: { quantity: 2 }
-                  }
                 },
                 detectRetina: true
               });
