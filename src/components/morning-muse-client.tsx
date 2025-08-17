@@ -190,7 +190,7 @@ export const MorningMuseClient: FC = () => {
         category: category,
         subCategory: category === 'greeting' ? greetingImageSubCategory : undefined,
         name: isPersonalizedCategory ? personName : undefined,
-        photoDataUri: isPersonalizedCategory ? personImage : undefined,
+        photoDataUri: isPersonalizedCategory ? personImage || undefined : undefined,
       });
       setGeneratedImage(result.imageDataUri);
     } catch (error: any) {
