@@ -2,6 +2,7 @@
 "use client";
 
 import { useState, type FC, useEffect, useRef } from "react";
+import heic2any from "heic2any";
 import {
   Copy,
   Check,
@@ -92,6 +93,7 @@ export const MorningMuseClient: FC = () => {
   const [personName, setPersonName] = useState("");
   const [personCharacteristics, setPersonCharacteristics] = useState("");
   const [personImage, setPersonImage] = useState<string | null>(null);
+  const [isConvertingImage, setIsConvertingImage] = useState(false);
 
   const { currentMessage, getNewMessage, isLoading } = useMessageGenerator(
     language,
@@ -200,14 +202,44 @@ export const MorningMuseClient: FC = () => {
     document.body.removeChild(link);
   };
   
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setPersonImage(reader.result as string);
-      };
-      reader.readAsDataURL(file);
+      // Check if the file is a HEIC file
+      if (file.type === 'image/heic' || file.name.toLowerCase().endsWith('.heic')) {
+        setIsConvertingImage(true);
+        toast({ title: "Converting HEIC file...", description: "Please wait while we convert your image to a supported format." });
+        try {
+          const conversionResult = await heic2any({
+            blob: file,
+            toType: "image/jpeg",
+            quality: 0.8,
+          });
+          const convertedBlob = Array.isArray(conversionResult) ? conversionResult[0] : conversionResult;
+          const reader = new FileReader();
+          reader.onloadend = () => {
+            setPersonImage(reader.result as string);
+             toast({ title: "Conversion Successful!", description: "Your image is ready to be used." });
+          };
+          reader.readAsDataURL(convertedBlob as Blob);
+        } catch (error) {
+          console.error("Error converting HEIC file:", error);
+          toast({
+            title: "HEIC Conversion Failed",
+            description: "Could not convert the HEIC file. Please try a different image.",
+            variant: "destructive",
+          });
+          setPersonImage(null);
+        } finally {
+          setIsConvertingImage(false);
+        }
+      } else {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          setPersonImage(reader.result as string);
+        };
+        reader.readAsDataURL(file);
+      }
     }
   };
   
@@ -368,9 +400,10 @@ export const MorningMuseClient: FC = () => {
                         <Input
                             id="personPhoto"
                             type="file"
-                            accept="image/*"
+                            accept="image/*,.heic,.heif"
                             onChange={handleImageUpload}
                             className="text-xs"
+                            disabled={isConvertingImage}
                         />
                     </div>
                 </div>
@@ -444,9 +477,9 @@ export const MorningMuseClient: FC = () => {
             {isCopied ? <Check /> : <Copy />}
             {isCopied ? t.copied : t.copyText}
           </Button>
-          <Button onClick={handleGenerateImage} size="lg" variant="default" className="text-xs sm:text-sm" disabled={isLoading || isImageGenerating || !currentMessage.text}>
-            {isImageGenerating ? <Loader className="animate-spin" /> : <ImageIcon />}
-            {isImageGenerating ? t.generatingImage : t.generateImage}
+          <Button onClick={handleGenerateImage} size="lg" variant="default" className="text-xs sm:text-sm" disabled={isLoading || isImageGenerating || !currentMessage.text || isConvertingImage}>
+            {isImageGenerating || isConvertingImage ? <Loader className="animate-spin" /> : <ImageIcon />}
+            {isImageGenerating ? t.generatingImage : (isConvertingImage ? "Converting..." : t.generateImage)}
           </Button>
           <Button onClick={handleNewMessage} size="lg" variant="secondary" className="col-span-2 sm:col-span-1 text-xs sm:text-sm" disabled={isLoading}>
             <RefreshCw className={cn(isFlipped || isLoading && "animate-spin")} style={{animationDuration: '700ms'}}/>
