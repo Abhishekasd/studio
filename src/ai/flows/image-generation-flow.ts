@@ -24,8 +24,6 @@ const GenerateImageInputSchema = z.object({
   language: z.string().describe('The language of the prompt (e.g., "en", "ur", "pt").'),
   category: z.string().describe('The category of the prompt (e.g., "spiritual").'),
   subCategory: z.string().optional().describe('An optional sub-category for more specific image generation (e.g., "simple", "spiritual").'),
-  name: z.string().optional().describe('An optional name of a person for personalized images.'),
-  photoDataUri: z.string().optional().describe("An optional photo of a person, as a data URI that must include a MIME type and use Base64 encoding. Expected format: 'data:<mimetype>;base64,<encoded_data>'."),
 });
 export type GenerateImageInput = z.infer<typeof GenerateImageInputSchema>;
 
@@ -47,36 +45,7 @@ const generateImageFlow = ai.defineFlow(
     
     let prompt: any;
 
-    if ((input.category === 'birthday' || input.category === 'anniversary') && input.photoDataUri) {
-        const mimeTypeMatch = input.photoDataUri.match(/data:([a-zA-Z0-9]+\/[a-zA-Z0-9-.+]+);base64,/);
-        const mimeType = mimeTypeMatch ? mimeTypeMatch[1] : 'application/octet-stream';
-        const occasion = input.category === 'birthday' ? 'Birthday' : 'Anniversary';
-
-        prompt = [
-          { media: { url: input.photoDataUri, contentType: mimeType } },
-          { text:
-`Create a beautiful, celebratory greeting card using the provided photo.
-
-**Instructions:**
-1.  **Do Not Alter Photo:** You MUST NOT change, modify, or distort the person or the main subject in the provided photo. The photo should be treated as the centerpiece of the greeting card.
-2.  **Frame the Photo:** Your task is to design a beautiful, decorative frame around the photo. Use festive, elegant, and visually appealing elements suitable for a ${occasion} celebration. This can include flowers, confetti, artistic patterns, or other celebratory symbols.
-3.  **Text Integration:** Artistically and legibly integrate BOTH the recipient's name ("${input.name}") and the message ("${input.prompt}") onto the image. The text should be placed on or around the frame, but NOT covering the main subject of the photo.
-4.  **No Watermark:** Do not include any watermarks.
-`
-          }
-        ];
-    } else if (input.category === 'birthday' || input.category === 'anniversary') {
-        const occasion = input.category === 'birthday' ? 'Birthday' : 'Anniversary';
-        prompt = `Create a beautiful, celebratory greeting card image for a ${occasion}.
-
-**Instructions:**
-1.  **Occasion:** ${occasion}
-2.  **Recipient's Name:** ${input.name}
-3.  **Message:** "${input.prompt}"
-4.  **Art Style:** The style must be festive, elegant, and visually appealing, suitable for a celebration. Use elements like flowers, confetti, artistic patterns, or celebratory symbols.
-5.  **Text Integration:** Artistically and clearly integrate BOTH the recipient's name ("${input.name}") and the message ("${input.prompt}") into the image. The name and message should be the main focus.
-6.  **No Watermark:** Do not include any watermarks.`;
-    } else if (input.category === 'spiritual') {
+    if (input.category === 'spiritual') {
       if (['en', 'hi', 'sa'].includes(input.language)) {
         prompt = `Create a beautiful, divine, and artistic image of a Hindu deity.
 

@@ -4,7 +4,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { messages } from '@/lib/messages';
 import { getFestivalMessage } from '@/ai/flows/festival-flow';
-import { getNewMessage as getNewAiMessage } from '@/ai/flows/message-generation-flow';
+import { getNewMessage as getNewAiMessage, MessageInput } from '@/ai/flows/message-generation-flow';
 import { useToast } from './use-toast';
 
 interface Message {
@@ -13,9 +13,6 @@ interface Message {
 }
 
 const getInitialMessage = (language: string, category: string): Message => {
-    if (['birthday', 'anniversary'].includes(category)) {
-      return { text: '', key: 'initial-personalized' };
-    }
     const messageList: string[] = messages[language]?.[category] ?? [];
     if (messageList.length > 0) {
         return { text: messageList[0], key: 0 };
@@ -27,15 +24,11 @@ export const useMessageGenerator = (language: string, category: string) => {
   const [currentMessage, setCurrentMessage] = useState<Message>(() => getInitialMessage(language, category));
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
-  const isPersonalizedCategory = ['birthday', 'anniversary'].includes(category);
 
   const sessionMessagesRef = useRef<Record<string, Set<string>>>({});
   
-  const getFallbackMessage = useCallback((name?: string) => {
+  const getFallbackMessage = useCallback(() => {
     let messageList = messages[language]?.[category] ?? ["Sorry, something went wrong. Please try again!"];
-    if (name && (category === 'birthday' || category === 'anniversary')) {
-        messageList = messageList.map(m => m.replace('{{name}}', name));
-    }
     const sessionCategoryMessages = sessionMessagesRef.current[category] || new Set();
 
     let availableMessages = messageList.filter(m => !sessionCategoryMessages.has(m));
@@ -55,12 +48,7 @@ export const useMessageGenerator = (language: string, category: string) => {
   }, [language, category]);
 
 
-  const getNewMessage = useCallback(async (name?: string, characteristics?: string) => {
-    if (isPersonalizedCategory && !name) {
-      setCurrentMessage({ text: '', key: 'initial-personalized' });
-      return;
-    }
-
+  const getNewMessage = useCallback(async () => {
     setIsLoading(true);
 
     if (category === 'festival') {
@@ -85,13 +73,13 @@ export const useMessageGenerator = (language: string, category: string) => {
     try {
         const sessionCategoryMessages = sessionMessagesRef.current[category] || new Set();
         
-        const result = await getNewAiMessage({
+        const input: MessageInput = {
             language,
             category,
             existingMessages: Array.from(sessionCategoryMessages),
-            name: name,
-            characteristics: characteristics,
-        });
+        };
+
+        const result = await getNewAiMessage(input);
 
         const newMessage = result.message;
         sessionCategoryMessages.add(newMessage);
@@ -105,25 +93,20 @@ export const useMessageGenerator = (language: string, category: string) => {
             description: "Could not generate a new message, using one from our library.",
             variant: "destructive",
         });
-        getFallbackMessage(name);
+        getFallbackMessage();
     } finally {
         setIsLoading(false);
     }
 
-  }, [language, category, toast, getFallbackMessage, isPersonalizedCategory]);
+  }, [language, category, toast, getFallbackMessage]);
   
   useEffect(() => {
     if (sessionMessagesRef.current[category]) {
       sessionMessagesRef.current[category]!.clear();
     }
-    // For personalized categories, don't fetch on category change, wait for user input.
-    if (!isPersonalizedCategory) {
-      getNewMessage();
-    } else {
-      setCurrentMessage({ text: '', key: 'initial-personalized' });
-    }
-  }, [language, category, getNewMessage, isPersonalizedCategory]);
+    getNewMessage();
+  }, [language, category]);
 
 
-  return { currentMessage, getNewMessage, isLoading, isPersonalizedCategory };
+  return { currentMessage, getNewMessage, isLoading };
 };

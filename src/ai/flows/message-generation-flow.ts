@@ -24,8 +24,6 @@ const MessageInputSchema = z.object({
   language: z.string().describe('The language for the message (e.g., "en", "hi", "es").'),
   category: z.string().describe('The category of the message (e.g., "shayari", "joke").'),
   existingMessages: z.array(z.string()).describe('A list of messages already shown to the user in this session to avoid repetition.'),
-  name: z.string().optional().describe('An optional name of a person for personalized messages.'),
-  characteristics: z.string().optional().describe('Optional characteristics of the person for a more personalized birthday or anniversary message.'),
 });
 export type MessageInput = z.infer<typeof MessageInputSchema>;
 
@@ -36,7 +34,11 @@ export type MessageOutput = z.infer<typeof MessageOutputSchema>;
 
 const messagePrompt = ai.definePrompt({
     name: 'messagePrompt',
-    input: {schema: MessageInputSchema},
+    input: {schema: z.object({
+      language: z.string(),
+      category: z.string(),
+      existingMessages: z.array(z.string()),
+    })},
     output: {schema: MessageOutputSchema},
     prompt: `You are an expert content creator for a morning inspiration app.
   Your task is to generate a short, engaging, and unique message for the user.
@@ -59,16 +61,6 @@ const messagePrompt = ai.definePrompt({
   - **greeting:** A simple, warm, and traditional greeting. Examples: "Good Morning", "Ram Ram", "Have a blessed day". Keep it very simple and popular.
   - **thankyou:** A heartfelt, sincere message of gratitude. It can be for a person, a situation, or a general feeling of thanks.
   - **welcome:** A warm and inviting message to welcome someone to a new place, group, or experience.
-  - **birthday:** A cheerful and celebratory birthday wish for **{{{name}}}**.
-    {{#if characteristics}}
-    **Personalization:** The user has provided these characteristics about {{{name}}}: "{{{characteristics}}}".
-    Craft a wish that specifically appreciates and celebrates these qualities. For example, if the characteristic is "kind and funny," the message could be "Happy Birthday, {{{name}}}! Your kindness and humor make the world a brighter place."
-    {{/if}}
-  - **anniversary:** A warm and loving anniversary message for **{{{name}}}**.
-    {{#if characteristics}}
-    **Personalization:** The user has provided these characteristics about the couple/person: "{{{characteristics}}}".
-    Craft a message that specifically appreciates and celebrates these qualities. For example, if the characteristic is "strong and loving," the message could be "Happy Anniversary, {{{name}}}! Your strong and loving bond is an inspiration to us all."
-    {{/if}}
 
   Your response MUST only be the message text itself, ending with one or two relevant emojis. Do not add any extra commentary or labels.
   `,
@@ -101,10 +93,6 @@ const getNewMessageFlow = ai.defineFlow(
     const fallbackMessages = messages[input.language]?.[input.category] ?? ["Have a wonderful day! 👋"];
     let fallbackMessage = fallbackMessages[Math.floor(Math.random() * fallbackMessages.length)];
 
-    if (input.name && (input.category === 'birthday' || input.category === 'anniversary')) {
-        fallbackMessage = fallbackMessage.replace('{{name}}', input.name);
-    }
-    
     return { message: fallbackMessage };
   }
 );
