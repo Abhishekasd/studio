@@ -64,27 +64,27 @@ export default function RootLayout({
                 },
                 particles: {
                   number: {
-                    value: 100,
+                    value: 150,
                     density: { enable: true, value_area: 800 }
                   },
                   size: {
-                    value: 2,
+                    value: 1.5,
                     random: { enable: true, minimumValue: 1 }
                   },
                   move: {
                     enable: true,
-                    speed: 0.5,
+                    speed: 0.8,
                     direction: "none",
-                    random: false,
+                    random: true,
                     straight: false,
                     out_mode: "out"
                   },
                   opacity: {
-                    value: 0.8,
+                    value: 0.7,
                     animation: {
                       enable: true,
-                      speed: 0.8,
-                      minimumValue: 0.3,
+                      speed: 1,
+                      minimumValue: 0.1,
                       sync: false
                     }
                   },
@@ -92,15 +92,21 @@ export default function RootLayout({
                     value: ["#ff4b5c", "#ffca3a", "#8ac926", "#1982c4", "#6a4c93"]
                   },
                   shape: { type: "circle" },
-                  links: { enable: false }
+                  links: { 
+                    enable: true,
+                    distance: 120,
+                    color: "#ffffff",
+                    opacity: 0.2,
+                    width: 1
+                  }
                 },
                 interactivity: {
                   events: {
-                    onhover: { enable: true, mode: "repulse" },
+                    onhover: { enable: true, mode: "grab" },
                     onclick: { enable: true, mode: "push" }
                   },
                   modes: {
-                    repulse: { distance: 80 },
+                    grab: { distance: 140, links: { opacity: 0.5 } },
                     push: { quantity: 2 }
                   }
                 },
