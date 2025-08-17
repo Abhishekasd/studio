@@ -2,7 +2,6 @@
 "use client";
 
 import { useState, type FC, useEffect, useRef } from "react";
-import heic2any from "heic2any";
 import {
   Copy,
   Check,
@@ -205,23 +204,26 @@ export const MorningMuseClient: FC = () => {
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      // Check if the file is a HEIC file
       if (file.type === 'image/heic' || file.name.toLowerCase().endsWith('.heic')) {
         setIsConvertingImage(true);
-        toast({ title: "Converting HEIC file...", description: "Please wait while we convert your image to a supported format." });
+        toast({ title: "Converting HEIC file...", description: "Please wait while we convert your image." });
         try {
+          const heic2any = (await import('heic2any')).default;
           const conversionResult = await heic2any({
             blob: file,
             toType: "image/jpeg",
             quality: 0.8,
           });
+
           const convertedBlob = Array.isArray(conversionResult) ? conversionResult[0] : conversionResult;
+          
           const reader = new FileReader();
           reader.onloadend = () => {
             setPersonImage(reader.result as string);
-             toast({ title: "Conversion Successful!", description: "Your image is ready to be used." });
+            toast({ title: "Conversion Successful!", description: "Your image is ready." });
           };
-          reader.readAsDataURL(convertedBlob as Blob);
+          reader.readAsDataURL(convertedBlob);
+
         } catch (error) {
           console.error("Error converting HEIC file:", error);
           toast({
@@ -610,3 +612,5 @@ export const MorningMuseClient: FC = () => {
     </>
   );
 };
+
+    
