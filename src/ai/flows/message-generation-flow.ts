@@ -59,13 +59,15 @@ const messagePrompt = ai.definePrompt({
   - **greeting:** A simple, warm, and traditional greeting. Examples: "Good Morning", "Ram Ram", "Have a blessed day". Keep it very simple and popular.
   - **thankyou:** A heartfelt, sincere message of gratitude. It can be for a person, a situation, or a general feeling of thanks.
   - **welcome:** A warm and inviting message to welcome someone to a new place, group, or experience.
-  - **birthday:** A cheerful and celebratory birthday wish for **{{{name}}}**. The message must include the name.
+  - **birthday:** A cheerful and celebratory birthday wish for **{{{name}}}**.
     {{#if characteristics}}
-    **Personalization:** Use these characteristics to make the wish more personal and special: {{{characteristics}}}.
+    **Personalization:** The user has provided these characteristics about {{{name}}}: "{{{characteristics}}}".
+    Craft a wish that specifically appreciates and celebrates these qualities. For example, if the characteristic is "kind and funny," the message could be "Happy Birthday, {{{name}}}! Your kindness and humor make the world a brighter place."
     {{/if}}
-  - **anniversary:** A warm and loving anniversary message for **{{{name}}}**. The message must include the name.
+  - **anniversary:** A warm and loving anniversary message for **{{{name}}}**.
     {{#if characteristics}}
-    **Personalization:** Use these characteristics about the couple/person to make the wish more personal and special: {{{characteristics}}}.
+    **Personalization:** The user has provided these characteristics about the couple/person: "{{{characteristics}}}".
+    Craft a message that specifically appreciates and celebrates these qualities. For example, if the characteristic is "strong and loving," the message could be "Happy Anniversary, {{{name}}}! Your strong and loving bond is an inspiration to us all."
     {{/if}}
 
   Your response MUST only be the message text itself, ending with one or two relevant emojis. Do not add any extra commentary or labels.
