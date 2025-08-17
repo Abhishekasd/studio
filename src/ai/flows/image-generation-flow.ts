@@ -42,7 +42,7 @@ const generateImageFlow = ai.defineFlow(
   },
   async (input) => {
     if (!process.env.GEMINI_API_KEY) {
-      throw new Error('Server is not configured with a GEMINI_API_KEY.');
+      throw new Error('Server is not configured with a GEMINI_API_KEY. Please set it in your .env file.');
     }
     
     let imagePrompt: string | (string | { media: { url: string; }; })[] = `Generate a beautiful and artistic image that captures the essence of the following quote: "${input.prompt}". The style should be visually appealing and match the message's tone. Do not include any watermark.`;

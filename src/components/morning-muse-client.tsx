@@ -193,11 +193,11 @@ export const MorningMuseClient: FC = () => {
         photoDataUri: isPersonalizedCategory ? personImage : undefined,
       });
       setGeneratedImage(result.imageDataUri);
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error generating image:", error);
       toast({
         title: "Image Generation Failed",
-        description: "Could not generate an image. Please try again.",
+        description: error.message || "Could not generate an image. Please try again later.",
         variant: "destructive",
       });
       setShowImageDialog(false);
@@ -595,5 +595,3 @@ export const MorningMuseClient: FC = () => {
     </>
   );
 };
-
-    
