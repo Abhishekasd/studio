@@ -45,8 +45,7 @@ const generateImageFlow = ai.defineFlow(
       throw new Error('Server is not configured with a GEMINI_API_KEY. Please set it in your .env file.');
     }
     
-    let imagePrompt: string | (string | { media: { url: string; contentType?: string; }; })[] = `Generate a beautiful and artistic image that captures the essence of the following quote: "${input.prompt}". The style should be visually appealing and match the message's tone. Do not include any watermark.`;
-    let imagePromptWithMedia: any = null;
+    let prompt: string | (string | { media: { url: string; contentType?: string; }; })[] = `Generate a beautiful and artistic image that captures the essence of the following quote: "${input.prompt}". The style should be visually appealing and match the message's tone. Do not include any watermark.`;
 
     if (input.category === 'birthday' || input.category === 'anniversary') {
       const occasion = input.category === 'birthday' ? 'Birthday' : 'Anniversary';
@@ -54,7 +53,7 @@ const generateImageFlow = ai.defineFlow(
           const mimeTypeMatch = input.photoDataUri.match(/data:([a-zA-Z0-9]+\/[a-zA-Z0-9-.+]+);base64,/);
           const mimeType = mimeTypeMatch ? mimeTypeMatch[1] : 'application/octet-stream';
 
-          imagePromptWithMedia = [
+          prompt = [
             { media: { url: input.photoDataUri, contentType: mimeType } },
             { text:
 `Create a beautiful, celebratory greeting card using the provided photo.
@@ -68,7 +67,7 @@ const generateImageFlow = ai.defineFlow(
             }
           ];
       } else {
-        imagePrompt = `Create a beautiful, celebratory greeting card image for a ${occasion}.
+        prompt = `Create a beautiful, celebratory greeting card image for a ${occasion}.
 
 **Instructions:**
 1.  **Occasion:** ${occasion}
@@ -81,7 +80,7 @@ const generateImageFlow = ai.defineFlow(
     } else if (input.category === 'spiritual') {
       // Main spiritual category (NO watermark)
       if (['en', 'hi', 'sa'].includes(input.language)) {
-        imagePrompt = `Create a beautiful, divine, and artistic image of a Hindu deity.
+        prompt = `Create a beautiful, divine, and artistic image of a Hindu deity.
 
 **Instructions:**
 1.  **Deity Selection:** Choose a deity inspired by the spiritual quote provided. Your options are:
@@ -100,9 +99,9 @@ const generateImageFlow = ai.defineFlow(
 
 **Spiritual Quote:** "${input.prompt}"`;
       } else if (input.language === 'ur') {
-        imagePrompt = `Generate a beautiful and serene image of Islamic art. This could be intricate calligraphy of a spiritual phrase from the quote "${input.prompt}", stunning mosque architecture, or an abstract geometric pattern that evokes peace and spirituality. Do not generate images of people or prophets. The style should be respectful and visually appealing. Do not include any watermarks.`;
+        prompt = `Generate a beautiful and serene image of Islamic art. This could be intricate calligraphy of a spiritual phrase from the quote "${input.prompt}", stunning mosque architecture, or an abstract geometric pattern that evokes peace and spirituality. Do not generate images of people or prophets. The style should be respectful and visually appealing. Do not include any watermarks.`;
       } else if (input.language === 'pt') {
-        imagePrompt = `Create a beautiful, serene, and artistic image with a Christian theme, inspired by the spiritual quote provided.
+        prompt = `Create a beautiful, serene, and artistic image with a Christian theme, inspired by the spiritual quote provided.
 
 **Instructions:**
 1.  **Theme Selection:** The image should be inspired by Christian spirituality. Options include:
@@ -121,7 +120,7 @@ const generateImageFlow = ai.defineFlow(
       if (input.subCategory === 'spiritual') {
          // Spiritual Greeting (Deity, no watermark)
          if (['en', 'hi', 'sa'].includes(input.language)) {
-             imagePrompt = `Create a beautiful, devotional greeting card image. The greeting text itself is "${input.prompt}".
+             prompt = `Create a beautiful, devotional greeting card image. The greeting text itself is "${input.prompt}".
 
 **Instructions:**
 1.  **Greeting Text is Primary:** The main focus of the image MUST be the greeting text: "${input.prompt}". It should be prominent, artistic, and easy to read.
@@ -130,7 +129,7 @@ const generateImageFlow = ai.defineFlow(
 3.  **Art Style:** The overall style should be similar to popular digital greetings, with vibrant colors and decorative elements like flowers, but with a clear spiritual theme.
 4.  **No Watermark:** Do not include any watermarks or extra text. The image should only contain the greeting text and the spiritual background art.`;
          } else if (input.language === 'pt') {
-            imagePrompt = `Create a beautiful, devotional Christian greeting card image. The greeting text itself is "${input.prompt}".
+            prompt = `Create a beautiful, devotional Christian greeting card image. The greeting text itself is "${input.prompt}".
 
 **Instructions:**
 1.  **Greeting Text is Primary:** The main focus of the image MUST be the greeting text: "${input.prompt}". It should be prominent, artistic, and easy to read.
@@ -139,7 +138,7 @@ const generateImageFlow = ai.defineFlow(
 4.  **No Watermark:** Do not include any watermarks or extra text. The image should only contain the greeting text and the spiritual background art.`;
          } else {
              // Fallback for other languages like Urdu for spiritual greetings
-             imagePrompt = `Generate a beautiful, traditional, and visually appealing greeting image with a spiritual but non-figurative theme. The image should feature the text "${input.prompt}" prominently and beautifully integrated.
+             prompt = `Generate a beautiful, traditional, and visually appealing greeting image with a spiritual but non-figurative theme. The image should feature the text "${input.prompt}" prominently and beautifully integrated.
 
 **Instructions:**
 1.  **Theme:** The theme must be positive and serene, suitable for a spiritual greeting. Think of beautiful calligraphy, geometric patterns, or mosque architecture.
@@ -149,7 +148,7 @@ const generateImageFlow = ai.defineFlow(
          }
       } else {
         // Simple Greeting (No watermark, no deities)
-        imagePrompt = `Generate a beautiful, traditional, and visually appealing "good morning" or "have a nice day" style greeting image. The image should feature the text "${input.prompt}" prominently and beautifully integrated.
+        prompt = `Generate a beautiful, traditional, and visually appealing "good morning" or "have a nice day" style greeting image. The image should feature the text "${input.prompt}" prominently and beautifully integrated.
 
 **Instructions:**
 1.  **Theme:** The theme must be positive and serene, suitable for a general audience. Think of floral patterns, beautiful landscapes, sunrises, or traditional motifs.
@@ -162,7 +161,7 @@ const generateImageFlow = ai.defineFlow(
     
     const {media} = await ai.generate({
       model: 'googleai/gemini-2.0-flash-preview-image-generation',
-      prompt: imagePromptWithMedia || imagePrompt,
+      prompt: prompt,
       config: {
         responseModalities: ['TEXT', 'IMAGE'],
       },
