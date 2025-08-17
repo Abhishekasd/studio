@@ -24,6 +24,8 @@ const MessageInputSchema = z.object({
   language: z.string().describe('The language for the message (e.g., "en", "hi", "es").'),
   category: z.string().describe('The category of the message (e.g., "shayari", "joke").'),
   existingMessages: z.array(z.string()).describe('A list of messages already shown to the user in this session to avoid repetition.'),
+  name: z.string().optional().describe('The name of the person for a personalized message.'),
+  characteristics: z.string().optional().describe('The characteristics of the person for a personalized message.'),
 });
 export type MessageInput = z.infer<typeof MessageInputSchema>;
 
@@ -38,6 +40,8 @@ const messagePrompt = ai.definePrompt({
       language: z.string(),
       category: z.string(),
       existingMessages: z.array(z.string()),
+      name: z.string().optional(),
+      characteristics: z.string().optional(),
     })},
     output: {schema: MessageOutputSchema},
     prompt: `You are an expert content creator for a morning inspiration app.
@@ -61,6 +65,8 @@ const messagePrompt = ai.definePrompt({
   - **greeting:** A simple, warm, and traditional greeting. Examples: "Good Morning", "Ram Ram", "Have a blessed day". Keep it very simple and popular.
   - **thankyou:** A heartfelt, sincere message of gratitude. It can be for a person, a situation, or a general feeling of thanks.
   - **welcome:** A warm and inviting message to welcome someone to a new place, group, or experience.
+  - **birthday:** Generate a warm and personalized birthday wish for {{{name}}}. If characteristics are provided ({{{characteristics}}}), weave them into the message in an appreciative and celebratory way. Example for "creative and kind": "Happy Birthday, {{{name}}}! Your creative spirit and kind heart inspire everyone around you. Have a wonderful day! 🎂"
+  - **anniversary:** Generate a heartfelt anniversary wish for {{{name}}}. If characteristics are provided ({{{characteristics}}}), use them to create a message that celebrates their journey and bond. Example for "loyal and funny": "Happy Anniversary, {{{name}}}! Your loyalty and humor make your bond so special. Wishing you many more years of love and laughter. ❤️"
 
   Your response MUST only be the message text itself, ending with one or two relevant emojis. Do not add any extra commentary or labels.
   `,

@@ -12,6 +12,11 @@ interface Message {
   key: string | number;
 }
 
+interface MessageOptions {
+    name?: string;
+    characteristics?: string;
+}
+
 const getInitialMessage = (language: string, category: string): Message => {
     const messageList: string[] = messages[language]?.[category] ?? [];
     if (messageList.length > 0) {
@@ -20,7 +25,7 @@ const getInitialMessage = (language: string, category: string): Message => {
     return { text: 'Select a category to start your day!', key: "initial" };
 };
 
-export const useMessageGenerator = (language: string, category: string) => {
+export const useMessageGenerator = (language: string, category: string, options: MessageOptions) => {
   const [currentMessage, setCurrentMessage] = useState<Message>(() => getInitialMessage(language, category));
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
@@ -39,13 +44,17 @@ export const useMessageGenerator = (language: string, category: string) => {
     }
 
     const randomIndex = Math.floor(Math.random() * availableMessages.length);
-    const newMessage = availableMessages[randomIndex];
+    let newMessage = availableMessages[randomIndex];
+    
+    if (options.name && (category === 'birthday' || category === 'anniversary')) {
+        newMessage = newMessage.replace('__NAME__', options.name);
+    }
     
     sessionCategoryMessages.add(newMessage);
     sessionMessagesRef.current[category] = sessionCategoryMessages;
     
     setCurrentMessage({ text: newMessage, key: newMessage });
-  }, [language, category]);
+  }, [language, category, options.name]);
 
 
   const getNewMessage = useCallback(async () => {
@@ -70,6 +79,12 @@ export const useMessageGenerator = (language: string, category: string) => {
       return;
     }
 
+    if ((category === 'birthday' || category === 'anniversary') && !options.name) {
+        setCurrentMessage({ text: "Please enter a name to generate a message.", key: 'prompt_for_name' });
+        setIsLoading(false);
+        return;
+    }
+
     try {
         const sessionCategoryMessages = sessionMessagesRef.current[category] || new Set();
         
@@ -77,6 +92,8 @@ export const useMessageGenerator = (language: string, category: string) => {
             language,
             category,
             existingMessages: Array.from(sessionCategoryMessages),
+            name: options.name,
+            characteristics: options.characteristics,
         };
 
         const result = await getNewAiMessage(input);
@@ -98,7 +115,7 @@ export const useMessageGenerator = (language: string, category: string) => {
         setIsLoading(false);
     }
 
-  }, [language, category, toast, getFallbackMessage]);
+  }, [language, category, toast, getFallbackMessage, options.name, options.characteristics]);
   
   useEffect(() => {
     if (sessionMessagesRef.current[category]) {

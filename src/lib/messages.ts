@@ -76,6 +76,16 @@ export const messages: Record<string, Record<string, string[]>> = {
       "Welcome! We hope you feel right at home. 🏡",
       "It's a pleasure to welcome you. 🤗"
     ],
+    birthday: [
+      "Happy Birthday, __NAME__! Wishing you a day as special as you are. 🎂",
+      "Many happy returns of the day, __NAME__! May all your dreams come true. 🎉",
+      "Happy Birthday, __NAME__! Hope you have a fantastic day. 🎈"
+    ],
+    anniversary: [
+        "Happy Anniversary, __NAME__! Wishing you both a lifetime of happiness together. ❤️",
+        "Congratulations on another year of love and laughter, __NAME__! 🥂",
+        "Happy Anniversary, __NAME__! May your love story continue to inspire. ✨"
+    ],
   },
   hi: {
     shayari: [
@@ -158,6 +168,16 @@ export const messages: Record<string, Record<string, string[]>> = {
       "आपका स्वागत है! हमें उम्मीद है कि आप घर जैसा महसूस करेंगे। 🏡",
       "आपका स्वागत करना एक खुशी की बात है। 🤗"
     ],
+    birthday: [
+        "जन्मदिन मुबारक हो, __NAME__! आपका दिन आपके जैसा ही खास हो। 🎂",
+        "इस दिन की बहुत-बहुत शुभकामनाएँ, __NAME__! आपके सभी सपने सच हों। 🎉",
+        "जन्मदिन मुबारक हो, __NAME__! आशा है आपका दिन शानदार हो। 🎈"
+    ],
+    anniversary: [
+        "शादी की सालगिरह मुबारक हो, __NAME__! आप दोनों को जीवन भर की खुशियाँ मिलें। ❤️",
+        "प्यार और हँसी के एक और साल के लिए बधाई, __NAME__! 🥂",
+        "शादी की सालगिरह मुबारक हो, __NAME__! आपकी प्रेम कहानी प्रेरणा देती रहे। ✨"
+    ],
   },
   es: {
     shayari: [
@@ -234,6 +254,16 @@ export const messages: Record<string, Record<string, string[]>> = {
       "¡Bienvenido a bordo! Estamos emocionados de tenerte con nosotros. 🎉",
       "¡Bienvenido! Esperamos que te sientas como en casa. 🏡",
       "Es un placer darte la bienvenida. 🤗"
+    ],
+    birthday: [
+        "¡Feliz cumpleaños, __NAME__! Te deseo un día tan especial como tú. 🎂",
+        "¡Muchas felicidades en tu día, __NAME__! Que todos tus sueños se hagan realidad. 🎉",
+        "¡Feliz cumpleaños, __NAME__! Espero que tengas un día fantástico. 🎈"
+    ],
+    anniversary: [
+        "¡Feliz aniversario, __NAME__! Les deseo a ambos una vida de felicidad juntos. ❤️",
+        "¡Felicitaciones por otro año de amor y risas, __NAME__! 🥂",
+        "¡Feliz aniversario, __NAME__! Que su historia de amor continúe inspirando. ✨"
     ],
   },
   ur: {
@@ -312,6 +342,16 @@ export const messages: Record<string, Record<string, string[]>> = {
       "خوش آمدید! ہمیں امید ہے کہ آپ گھر جیسا محسوس کریں گے۔ 🏡",
       "آپ کا استقبال کرنا ایک خوشی کی بات ہے۔ 🤗"
     ],
+    birthday: [
+        "سالگرہ مبارک، __NAME__! آپ کا دن آپ کی طرح خاص ہو۔ 🎂",
+        "اس دن کی بہت بہت مبارکباد، __NAME__! آپ کے تمام خواب سچے ہوں۔ 🎉",
+        "سالگرہ مبارک، __NAME__! امید ہے آپ کا دن شاندار گزرے۔ 🎈"
+    ],
+    anniversary: [
+        "شادی کی سالگرہ مبارک، __NAME__! آپ دونوں کو زندگی بھر کی خوشیاں نصیب ہوں۔ ❤️",
+        "محبت اور ہنسی کے ایک اور سال پر مبارکباد، __NAME__! 🥂",
+        "شادی کی سالگرہ مبارک، __NAME__! آپ کی محبت کی کہانی متاثر کرتی رہے۔ ✨"
+    ],
   },
   sa: {
     shayari: [
@@ -389,6 +429,16 @@ export const messages: Record<string, Record<string, string[]>> = {
       "स्वागतम्! वयं आशास्महे यत् भवान् गृहवत् अनुभवति। 🏡",
       "भवतः स्वागतं कर्तुं हर्षः भवति। 🤗"
     ],
+    birthday: [
+        "जन्मदिनस्य शुभकामनाः, __NAME__! भवतः दिनं भवतः इव विशेषं भवतु। 🎂",
+        "अस्य दिनस्य बह्वः शुभकामनाः, __NAME__! भवतः सर्वे स्वप्नाः सफलाः भवन्तु। 🎉",
+        "जन्मदिनस्य शुभकामनाः, __NAME__! आशासे भवतः दिनं अद्भुतं भवतु। 🎈"
+    ],
+    anniversary: [
+        "विवाहस्य वर्षगांठस्य शुभकामनाः, __NAME__! युवाभ्यां एकत्र जीवनस्य सुखं भवतु। ❤️",
+        "प्रेमस्य हास्यस्य च अन्यस्य वर्षस्य कृते अभिनन्दनम्, __NAME__! 🥂",
+        "विवाहस्य वर्षगांठस्य शुभकामनाः, __NAME__! युवयोः प्रेम कथा प्रेरणादायिनी भवतु। ✨"
+    ],
   },
   pt: {
     shayari: [
@@ -465,6 +515,16 @@ export const messages: Record<string, Record<string, string[]>> = {
       "Bem-vindo a bordo! Estamos animados por tê-lo conosco. 🎉",
       "Bem-vindo! Esperamos que você se sinta em casa. 🏡",
       "É um prazer recebê-lo. 🤗"
+    ],
+    birthday: [
+        "Feliz aniversário, __NAME__! Desejo a você um dia tão especial quanto você. 🎂",
+        "Muitas felicidades, __NAME__! Que todos os seus sonhos se realizem. 🎉",
+        "Feliz aniversário, __NAME__! Espero que você tenha um dia fantástico. 🎈"
+    ],
+    anniversary: [
+        "Feliz aniversário, __NAME__! Desejo a vocês uma vida inteira de felicidade juntos. ❤️",
+        "Parabéns por mais um ano de amor e risadas, __NAME__! 🥂",
+        "Feliz aniversário, __NAME__! Que a sua história de amor continue a inspirar. ✨"
     ],
   },
 };

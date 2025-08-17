@@ -19,6 +19,11 @@ import {
   Handshake,
   Gift,
   PartyPopper,
+  Cake,
+  HeartHandshake,
+  User,
+  Star,
+  Upload,
 } from "lucide-react";
 
 import { useMessageGenerator } from "@/hooks/use-message-generator";
@@ -45,6 +50,9 @@ import { cn } from "@/lib/utils";
 import { uiText } from "@/lib/ui-text";
 import { generateImage } from "@/ai/flows/image-generation-flow";
 import { Separator } from "@/components/ui/separator";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
 
 const languages = [
   { value: "en", label: "English" },
@@ -80,7 +88,17 @@ export const MorningMuseClient: FC = () => {
   const [language, setLanguage] = useState("en");
   const [category, setCategory] = useState("greeting");
   const [greetingImageSubCategory, setGreetingImageSubCategory] = useState("simple");
-  const { currentMessage, getNewMessage, isLoading } = useMessageGenerator(language, category);
+  
+  const [personName, setPersonName] = useState("");
+  const [personCharacteristics, setPersonCharacteristics] = useState("");
+  const [personImage, setPersonImage] = useState<string | null>(null);
+
+  const { currentMessage, getNewMessage, isLoading } = useMessageGenerator(
+    language,
+    category,
+    { name: personName, characteristics: personCharacteristics }
+  );
+
   const { toast } = useToast();
 
   const [isFlipped, setIsFlipped] = useState(false);
@@ -102,6 +120,8 @@ export const MorningMuseClient: FC = () => {
     { value: "joke", label: t.joke },
     { value: "thankyou", label: t.thankyou, icon: Gift },
     { value: "welcome", label: t.welcome, icon: Handshake },
+    { value: "birthday", label: t.birthday, icon: Cake },
+    { value: "anniversary", label: t.anniversary, icon: HeartHandshake },
   ];
   
   useEffect(() => {
@@ -133,7 +153,7 @@ export const MorningMuseClient: FC = () => {
   };
   
   const handleCategoryChange = (newCategory: string) => {
-    if(category === newCategory && newCategory !== 'festival') return;
+    if(category === newCategory && !['festival', 'birthday', 'anniversary'].includes(newCategory)) return;
     
     setIsFlipped(true);
     setTimeout(() => {
@@ -153,6 +173,8 @@ export const MorningMuseClient: FC = () => {
         language: language,
         category: category,
         subCategory: category === 'greeting' ? greetingImageSubCategory : undefined,
+        name: personName,
+        photoDataUri: personImage || undefined,
       });
       setGeneratedImage(result.imageDataUri);
     } catch (error: any) {
@@ -176,6 +198,17 @@ export const MorningMuseClient: FC = () => {
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+  };
+  
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPersonImage(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
   };
   
   const handleShareImage = async () => {
@@ -229,15 +262,26 @@ export const MorningMuseClient: FC = () => {
   };
   
   const cardContent = () => {
-    if (isLoading) {
+    const isPersonalizedCategory = ['birthday', 'anniversary'].includes(category);
+    const effectiveIsLoading = isLoading && (!currentMessage.text || currentMessage.text.startsWith('Select a category'));
+    
+    if (effectiveIsLoading) {
        return (
         <div className="flex items-center justify-center gap-2 text-lg text-foreground/80">
           <Loader className="animate-spin" />
-          <span>{category === 'festival' ? t.generatingFestivalMessage : t.generatingMessage}...</span>
+          <span>{t.generatingMessage}...</span>
         </div>
       );
     }
     
+    if (isPersonalizedCategory && !personName) {
+         return (
+             <div className="flex items-center justify-center gap-2 text-lg text-foreground/80">
+                <span>{t.enterNamePrompt}</span>
+             </div>
+         );
+    }
+
     if (category === 'greeting') {
       return (
         <>
@@ -297,12 +341,60 @@ export const MorningMuseClient: FC = () => {
               className="transition-all hover:scale-105"
               size="sm"
             >
-              {cat.icon && isLoading && category === 'festival' ? <Loader className="animate-spin mr-2 h-4 w-4"/> : cat.icon ? <cat.icon className="mr-2 h-4 w-4"/> : null}
+              {cat.icon ? <cat.icon className="mr-2 h-4 w-4"/> : null}
               {cat.label}
             </Button>
           ))}
         </div>
         
+        {['birthday', 'anniversary'].includes(category) && (
+            <Card className="w-full p-4 space-y-4 bg-card/30 backdrop-blur-md border-border/50">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                        <Label htmlFor="personName" className="flex items-center gap-2">
+                            <User className="w-4 h-4" />{t.personNameLabel}
+                        </Label>
+                        <Input
+                            id="personName"
+                            value={personName}
+                            onChange={(e) => setPersonName(e.target.value)}
+                            placeholder={t.personNamePlaceholder}
+                        />
+                    </div>
+                    <div className="space-y-2">
+                        <Label htmlFor="personPhoto" className="flex items-center gap-2">
+                            <Upload className="w-4 h-4" />{t.personPhotoLabel}
+                        </Label>
+                        <Input
+                            id="personPhoto"
+                            type="file"
+                            accept="image/*"
+                            onChange={handleImageUpload}
+                            className="text-xs"
+                        />
+                    </div>
+                </div>
+                <div className="space-y-2">
+                    <Label htmlFor="personCharacteristics" className="flex items-center gap-2">
+                        <Star className="w-4 h-4" />{t.personCharacteristicsLabel}
+                    </Label>
+                    <Textarea
+                        id="personCharacteristics"
+                        value={personCharacteristics}
+                        onChange={(e) => setPersonCharacteristics(e.target.value)}
+                        placeholder={t.personCharacteristicsPlaceholder}
+                        rows={2}
+                    />
+                </div>
+                 {personName && (
+                  <Button onClick={getNewMessage} className="w-full" disabled={isLoading}>
+                    {isLoading ? <Loader className="animate-spin" /> : <RefreshCw />}
+                    {t.regenerateMessage}
+                  </Button>
+                 )}
+            </Card>
+        )}
+
         {category === 'greeting' && (
           <div className="w-full space-y-4">
             <div className="flex flex-wrap items-center justify-center gap-2 rounded-lg bg-card/30 backdrop-blur-md p-2 border-border/50">
@@ -419,6 +511,8 @@ export const MorningMuseClient: FC = () => {
             <p><strong className="text-secondary">{t.catJokeTitle}</strong> {t.catJokeDesc}</p>
             <p><strong className="text-secondary">{t.catThankyouTitle}</strong> {t.catThankyouDesc}</p>
             <p><strong className="text-secondary">{t.catWelcomeTitle}</strong> {t.catWelcomeDesc}</p>
+            <p><strong className="text-secondary">{t.catBirthdayTitle}</strong> {t.catBirthdayDesc}</p>
+            <p><strong className="text-secondary">{t.catAnniversaryTitle}</strong> {t.catAnniversaryDesc}</p>
           </div>
         </section>
 

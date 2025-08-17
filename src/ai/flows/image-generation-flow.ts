@@ -24,6 +24,8 @@ const GenerateImageInputSchema = z.object({
   language: z.string().describe('The language of the prompt (e.g., "en", "ur", "pt").'),
   category: z.string().describe('The category of the prompt (e.g., "spiritual").'),
   subCategory: z.string().optional().describe('An optional sub-category for more specific image generation (e.g., "simple", "spiritual").'),
+  name: z.string().optional().describe('An optional name of a person for personalized images.'),
+  photoDataUri: z.string().optional().describe("An optional photo of a person, as a data URI that must include a MIME type and use Base64 encoding. Expected format: 'data:<mimetype>;base64,<encoded_data>'."),
 });
 export type GenerateImageInput = z.infer<typeof GenerateImageInputSchema>;
 
@@ -45,7 +47,32 @@ const generateImageFlow = ai.defineFlow(
     
     let prompt: any;
 
-    if (input.category === 'spiritual') {
+    if (input.category === 'birthday' || input.category === 'anniversary') {
+      const occasion = input.category === 'birthday' ? 'Birthday' : 'Anniversary';
+      if (input.photoDataUri) {
+         const mimeTypeMatch = input.photoDataUri.match(/data:(image\/[^;]+);base64,/);
+         const mimeType = mimeTypeMatch ? mimeTypeMatch[1] : 'application/octet-stream';
+        
+         prompt = [
+            { media: { url: input.photoDataUri, contentType: mimeType } },
+            { text: `The user has provided a photo for a ${occasion} wish.
+              **Instructions:**
+              1.  **Do Not Change the Subject:** Use the provided photo as the main subject. DO NOT change the person's face, clothes, or background.
+              2.  **Add a Decorative Frame:** Create a beautiful and elegant decorative frame around the original photo. The frame should match the celebratory tone of a ${occasion}. Think of elements like flowers, ribbons, balloons, or subtle patterns.
+              3.  **Integrate Text:** Artistically and clearly write the following wish onto the frame or in a stylish text box: "${input.prompt}". The text must be readable.
+              4.  **No Watermark:** Do not add any watermarks or extra text.`
+            }
+        ];
+      } else {
+        prompt = `Create a beautiful and celebratory greeting card image for a ${occasion}. The wish is: "${input.prompt}".
+
+          **Instructions:**
+          1.  **Theme:** The theme must be festive and joyful, suitable for a ${occasion}. Use elements like balloons, cakes, flowers, abstract celebratory patterns, etc.
+          2.  **Text is Key:** The text "${input.prompt}" must be the main focus of the image, rendered in an elegant, artistic, and readable font.
+          3.  **No People:** Do not generate images of any people. Focus on the text and decorative elements.
+          4.  **No Watermark:** Do not include any watermarks or extra text.`;
+      }
+    } else if (input.category === 'spiritual') {
       if (['en', 'hi', 'sa'].includes(input.language)) {
         prompt = `Create a beautiful, divine, and artistic image of a Hindu deity.
 
