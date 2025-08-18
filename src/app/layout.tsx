@@ -24,10 +24,8 @@ export default function RootLayout({
         <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
         <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2365487260750859"
      crossOrigin="anonymous"></script>
-        <Script src="https://cdn.jsdelivr.net/npm/tsparticles@3.0.0/tsparticles.bundle.min.js" strategy="beforeInteractive" />
       </head>
       <body className="font-body antialiased">
-        <div id="particles-js" className="bg-background" />
         <div className="relative z-10 flex flex-col min-h-screen">
           <main className="flex-grow">
             {children}
@@ -55,67 +53,6 @@ export default function RootLayout({
           </footer>
         </div>
         <Toaster />
-        <Script id="particles-init" strategy="afterInteractive">
-          {`
-            if (typeof window !== 'undefined' && window.tsParticles) {
-              window.tsParticles.load("particles-js", {
-                particles: {
-                  number: {
-                    value: 80,
-                    density: { enable: true, area: 800 }
-                  },
-                  color: {
-                    value: ["#ffffff", "#ff4b5c", "#ffca3a", "#8ac926", "#1982c4", "#6a4c93"]
-                  },
-                  shape: {
-                    type: "circle",
-                  },
-                  opacity: {
-                    value: 0.5,
-                    random: true,
-                  },
-                  size: {
-                    value: 3,
-                    random: true,
-                  },
-                  links: {
-                    enable: false,
-                  },
-                  move: {
-                    enable: true,
-                    speed: 0.5,
-                    direction: "none",
-                    outModes: {
-                      default: "out",
-                    },
-                  },
-                },
-                interactivity: {
-                  detectsOn: "canvas",
-                  events: {
-                    onHover: {
-                      enable: true,
-                      mode: "repulse",
-                    },
-                    onClick: {
-                      enable: true,
-                      mode: "push",
-                    },
-                  },
-                  modes: {
-                    repulse: {
-                      distance: 100,
-                    },
-                    push: {
-                      quantity: 4,
-                    },
-                  },
-                },
-                detectRetina: true,
-              });
-            }
-          `}
-        </Script>
       </body>
     </html>
   );
