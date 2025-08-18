@@ -24,8 +24,10 @@ export default function RootLayout({
         <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
         <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2365487260750859"
      crossOrigin="anonymous"></script>
+        <Script src="https://cdn.jsdelivr.net/npm/tsparticles@3.0.0/tsparticles.bundle.min.js" strategy="beforeInteractive" />
       </head>
-      <body className="font-body antialiased">
+      <body className="font-body antialiased bg-background">
+        <div id="particles-js" />
         <div className="relative z-10 flex flex-col min-h-screen">
           <main className="flex-grow">
             {children}
@@ -53,6 +55,58 @@ export default function RootLayout({
           </footer>
         </div>
         <Toaster />
+        <Script id="particles-init" strategy="afterInteractive">
+          {`
+            if (typeof window !== 'undefined' && window.tsParticles) {
+              window.tsParticles.load("particles-js", {
+                background: { color: { value: "transparent" } },
+                particles: {
+                  number: { value: 300, density: { enable: true, value_area: 800 } },
+                  size: {
+                    value: { min: 1, max: 3 },
+                  },
+                  move: { 
+                    enable: true, 
+                    speed: 1, 
+                    direction: "none", 
+                    random: true, 
+                    straight: false, 
+                    out_mode: "out",
+                    attract: {
+                      enable: true,
+                      rotateX: 600,
+                      rotateY: 1200
+                    }
+                  },
+                  opacity: {
+                    value: { min: 0.3, max: 0.8 },
+                    animation: {
+                      enable: true,
+                      speed: 1,
+                      minimumValue: 0.1,
+                      sync: false
+                    }
+                  },
+                  color: {
+                    value: ["#2EB6E8", "#FFFFFF", "#FFC700"]
+                  },
+                  links: { enable: false }
+                },
+                interactivity: {
+                  events: {
+                    onhover: { enable: true, mode: "bubble" },
+                    onclick: { enable: true, mode: "push" }
+                  },
+                  modes: {
+                    bubble: { distance: 200, size: 5, duration: 2, opacity: 1, speed: 3 },
+                    push: { quantity: 2 }
+                  }
+                },
+                detectRetina: true
+              });
+            }
+          `}
+        </Script>
       </body>
     </html>
   );

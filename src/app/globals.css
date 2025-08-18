@@ -7,6 +7,16 @@ body {
   background-color: hsl(var(--background));
 }
 
+#particles-js {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+}
+
+
 @layer base {
   :root {
     --background: 240 10% 4%;
@@ -84,7 +94,7 @@ body {
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-transparent text-foreground;
   }
 }
 
