@@ -154,9 +154,10 @@ const generateImageFlow = ai.defineFlow(
         
         **Instructions:**
         1. **Text as Art:** The primary focus should be the text itself, rendered in a creative, artistic, and visually appealing manner. The style should match the tone of the text (e.g., elegant for a quote, bold for a powerful statement, playful for a fun phrase).
-        2. **Background Elements:** Add complementary background elements that enhance the text without overpowering it. This could be abstract patterns, subtle textures, thematic illustrations, or beautiful color gradients. For example, for "Ram Ram", you could use a background with subtle saffron colors, a diya, or a lotus pattern.
-        3. **Readability:** Ensure the text is clearly readable.
-        4. **No Watermarks:** Do not add any watermarks or extra text.`;
+        2. **Background Elements:** Add complementary background elements that enhance the text without overpowering it. 
+        3. **Contextual Intelligence:** If the text is devotional, like "Ram Ram", include a beautiful, artistic depiction of the relevant deity (like Ram ji) in the background. For general text, use abstract patterns, subtle textures, thematic illustrations, or beautiful color gradients.
+        4. **Readability:** Ensure the text is clearly readable.
+        5. **No Watermarks:** Do not add any watermarks or extra text.`;
     }
     else {
        prompt = `Generate a beautiful and artistic image that captures the essence of the following quote: "${input.prompt}". The style should be visually appealing and match the message's tone. Do not include any watermark.`;
