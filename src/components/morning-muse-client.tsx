@@ -24,6 +24,7 @@ import {
   User,
   Star,
   Upload,
+  Search,
 } from "lucide-react";
 
 import { useMessageGenerator } from "@/hooks/use-message-generator";
@@ -88,6 +89,7 @@ export const MorningMuseClient: FC = () => {
   const [language, setLanguage] = useState("en");
   const [category, setCategory] = useState("greeting");
   const [greetingImageSubCategory, setGreetingImageSubCategory] = useState("simple");
+  const [customPrompt, setCustomPrompt] = useState("");
   
   const [personName, setPersonName] = useState("");
   const [personCharacteristics, setPersonCharacteristics] = useState("");
@@ -163,16 +165,18 @@ export const MorningMuseClient: FC = () => {
     }, 350)
   }
 
-  const handleGenerateImage = async () => {
-    if (!currentMessage.text) return;
+  const handleGenerateImage = async (prompt?: string, imageCategory?: string) => {
+    const textToGenerate = prompt || currentMessage.text;
+    if (!textToGenerate) return;
+
     setIsImageGenerating(true);
     setShowImageDialog(true);
     setGeneratedImage(null);
     try {
       const result = await generateImage({ 
-        prompt: currentMessage.text,
+        prompt: textToGenerate,
         language: language,
-        category: category,
+        category: imageCategory || category,
         subCategory: category === 'greeting' ? greetingImageSubCategory : undefined,
         name: personName,
         photoDataUri: personImage || undefined,
@@ -366,6 +370,24 @@ export const MorningMuseClient: FC = () => {
           </Select>
         </header>
 
+        <div className="w-full space-y-4">
+            <Card className="w-full p-4 bg-card/30 backdrop-blur-md border-border/50">
+              <Label htmlFor="customPrompt" className="text-sm font-medium text-foreground/80 mb-2 block">{t.searchPrompt}</Label>
+              <div className="flex gap-2">
+                  <Input
+                      id="customPrompt"
+                      value={customPrompt}
+                      onChange={(e) => setCustomPrompt(e.target.value)}
+                      placeholder={t.searchPlaceholder}
+                  />
+                  <Button onClick={() => handleGenerateImage(customPrompt, 'custom')} disabled={!customPrompt || isImageGenerating}>
+                      <Search className="mr-2 h-4 w-4" />
+                      {t.generateImage}
+                  </Button>
+              </div>
+            </Card>
+        </div>
+
         <div className="flex flex-wrap items-center justify-center gap-2">
           {categories.map((cat) => (
             <Button
@@ -479,7 +501,7 @@ export const MorningMuseClient: FC = () => {
             {isCopied ? <Check /> : <Copy />}
             {isCopied ? t.copied : t.copyText}
           </Button>
-          <Button onClick={handleGenerateImage} size="lg" variant="default" className="text-xs sm:text-sm" disabled={isLoading || isImageGenerating || !currentMessage.text || isConvertingImage}>
+          <Button onClick={() => handleGenerateImage()} size="lg" variant="default" className="text-xs sm:text-sm" disabled={isLoading || isImageGenerating || !currentMessage.text || isConvertingImage}>
             {isImageGenerating || isConvertingImage ? <Loader className="animate-spin" /> : <ImageIcon />}
             {isImageGenerating ? t.generatingImage : (isConvertingImage ? "Converting..." : t.generateImage)}
           </Button>
@@ -612,5 +634,3 @@ export const MorningMuseClient: FC = () => {
     </>
   );
 };
-
-    

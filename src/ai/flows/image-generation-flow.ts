@@ -58,7 +58,7 @@ const generateImageFlow = ai.defineFlow(
             { text: `The user has provided a photo for a ${occasion} wish.
               **Instructions:**
               1.  **Do Not Change the Subject:** Use the provided photo as the main subject. DO NOT change the person's face, clothes, or background.
-              2.  **Add a Decorative Frame:** Create a beautiful and elegant decorative frame around the original photo. The frame should match the celebratory tone of a ${occasion}. Think of elements like flowers, ribbons, balloons, or subtle patterns.
+              2.  **Add a DecorativeFrame:** Create a beautiful and elegant decorative frame around the original photo. The frame should match the celebratory tone of a ${occasion}. Think of elements like flowers, ribbons, balloons, or subtle patterns.
               3.  **Integrate Text:** Artistically and clearly write the following wish onto the frame or in a stylish text box: "${input.prompt}". The text must be readable.
               4.  **No Watermark:** Do not add any watermarks or extra text.`
             }
@@ -149,7 +149,16 @@ const generateImageFlow = ai.defineFlow(
 4.  **No Watermark:** Do not include any watermarks or extra text. The image should only contain the greeting text and the background art.
 5.  **Style:** The style should be similar to popular digital greetings found on platforms like Pinterest or WhatsApp, often featuring vibrant colors and decorative elements.`;
       }
-    } else {
+    } else if (input.category === 'custom') {
+        prompt = `Create a beautiful and artistic image based on the following text: "${input.prompt}".
+        
+        **Instructions:**
+        1. **Text as Art:** The primary focus should be the text itself, rendered in a creative, artistic, and visually appealing manner. The style should match the tone of the text (e.g., elegant for a quote, bold for a powerful statement, playful for a fun phrase).
+        2. **Background Elements:** Add complementary background elements that enhance the text without overpowering it. This could be abstract patterns, subtle textures, thematic illustrations, or beautiful color gradients. For example, for "Ram Ram", you could use a background with subtle saffron colors, a diya, or a lotus pattern.
+        3. **Readability:** Ensure the text is clearly readable.
+        4. **No Watermarks:** Do not add any watermarks or extra text.`;
+    }
+    else {
        prompt = `Generate a beautiful and artistic image that captures the essence of the following quote: "${input.prompt}". The style should be visually appealing and match the message's tone. Do not include any watermark.`;
     }
     

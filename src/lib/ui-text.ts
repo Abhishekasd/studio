@@ -83,6 +83,8 @@ export const uiText: Record<string, Record<string, string>> = {
     personCharacteristicsPlaceholder: "Describe them in a few words...",
     regenerateMessage: "Generate a New Wish",
     enterNamePrompt: "Please enter a name to generate a wish.",
+    searchPrompt: "Or create your own image from text:",
+    searchPlaceholder: "Type anything, e.g., 'Ram Ram' or 'Good Luck!'",
   },
   hi: {
     language: 'भाषा',
@@ -167,6 +169,8 @@ export const uiText: Record<string, Record<string, string>> = {
     personCharacteristicsPlaceholder: "उन्हें कुछ शब्दों में वर्णित करें...",
     regenerateMessage: "एक नई शुभकामना उत्पन्न करें",
     enterNamePrompt: "शुभकामना उत्पन्न करने के लिए कृपया एक नाम दर्ज करें।",
+    searchPrompt: "या टेक्स्ट से अपनी खुद की छवि बनाएं:",
+    searchPlaceholder: "कुछ भी टाइप करें, जैसे, 'राम राम' या 'शुभकामनाएं!'",
   },
   es: {
     language: 'Idioma',
@@ -251,6 +255,8 @@ export const uiText: Record<string, Record<string, string>> = {
     personCharacteristicsPlaceholder: "Descríbalos en pocas palabras...",
     regenerateMessage: "Generar un nuevo deseo",
     enterNamePrompt: "Por favor, introduzca un nombre para generar un deseo.",
+    searchPrompt: "O cree su propia imagen a partir de texto:",
+    searchPlaceholder: "Escriba cualquier cosa, por ejemplo, 'Ram Ram' o '¡Buena suerte!'",
   },
   ur: {
     language: 'زبان',
@@ -304,7 +310,7 @@ export const uiText: Record<string, Record<string, string>> = {
     howStep3Desc: 'ایک کلک کے ساتھ ایک خوبصورت، مماثل تصویر بنا کر اپنے پیغام کو زندہ کریں۔',
     categoriesTitle: 'ہمارے زمرے دریافت کریں',
     catMotivationalTitle: '💪 حوصلہ افزائی:',
-    catMotivationalDesc: 'اپنے دن کا آغاز طاقتور حوالوں سے کریں جو آپ کے عزائم اور ڈرائیو کو ہوا دیتے ہیں۔ یہ پیغامات آپ کو چیلنجوں سے نمٹنے اور نئے جوش کے ساتھ اپنے مقاصد کو حاصل کرنے کے لیے اضافی دباؤ دینے کے لیے بنائے گئے ہیں۔',
+    catMotivationalDesc: 'اپنے دن کا آغاز طاقتور حوالوں سے کریں جو آپ کے عزائم اور ڈرائیو کو ہوا دیتے ہیں۔ یہ پیغامات آپ کو چیلنجوں سے نمٹنے اور نئے جوش کے साथ اپنے مقاصد کو حاصل کرنے کے لیے اضافی دباؤ دینے کے لیے بنائے گئے ہیں۔',
     catSpiritualTitle: '🧘 روحانی:',
     catSpiritualDesc: 'گہری حکمت اور امن اور سکون کے پیغامات کے ساتھ اپنا مرکز تلاش کریں۔ انگریزی، ہندی اور سنسکرت میں، یہ زمرہ ہندو دیوتاؤں کا الہی فن پیدا کرتا ہے، جبکہ اردو میں، یہ خوبصورت اسلامی فن تخلیق کرتا ہے، جو ثقافتی طور پر قابل احترام تجربہ کو یقینی بناتا ہے۔',
     catShayariTitle: '📜 شاعری:',
@@ -335,6 +341,8 @@ export const uiText: Record<string, Record<string, string>> = {
     personCharacteristicsPlaceholder: "انہیں چند الفاظ میں بیان کریں...",
     regenerateMessage: "ایک نئی خواہش پیدا کریں",
     enterNamePrompt: "خواہش پیدا کرنے کے لئے براہ مہربانی ایک نام درج کریں.",
+    searchPrompt: "یا متن سے اپنی تصویر بنائیں:",
+    searchPlaceholder: "کچھ بھی ٹائپ کریں، جیسے، 'رام رام' یا 'گڈ لک!'",
   },
   sa: {
     language: 'भाषा',
@@ -419,6 +427,8 @@ export const uiText: Record<string, Record<string, string>> = {
     personCharacteristicsPlaceholder: "कतिपयैः शब्दैः वर्णयन्तु...",
     regenerateMessage: "नूतनां शुभकामनां जनयतु",
     enterNamePrompt: "शुभकामनां जनयितुं कृपया नाम प्रविशतु।",
+    searchPrompt: "अथवा पाठात् स्वचित्रं रचयन्तु:",
+    searchPlaceholder: "किमपि लिखन्तु, यथा, 'राम राम' अथवा 'शुभकामनाः!'",
   },
   pt: {
     language: 'Idioma',
@@ -503,5 +513,7 @@ export const uiText: Record<string, Record<string, string>> = {
     personCharacteristicsPlaceholder: "Descreva-os em poucas palavras...",
     regenerateMessage: "Gerar um Novo Desejo",
     enterNamePrompt: "Por favor, digite um nome para gerar um desejo.",
+    searchPrompt: "Ou crie sua própria imagem a partir de texto:",
+    searchPlaceholder: "Digite qualquer coisa, ex: 'Ram Ram' ou 'Boa sorte!'",
   },
 };
