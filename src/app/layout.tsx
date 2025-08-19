@@ -26,9 +26,9 @@ export default function RootLayout({
      crossOrigin="anonymous"></script>
         <Script src="https://cdn.jsdelivr.net/npm/tsparticles@3.0.0/tsparticles.bundle.min.js" strategy="beforeInteractive" />
       </head>
-      <body className="font-body antialiased bg-background">
+      <body className="font-body antialiased">
         <div id="particles-js" />
-        <div className="relative z-10 flex flex-col min-h-screen">
+        <div className="relative flex flex-col min-h-screen bg-background">
           <main className="flex-grow">
             {children}
           </main>
@@ -59,50 +59,82 @@ export default function RootLayout({
           {`
             if (typeof window !== 'undefined' && window.tsParticles) {
               window.tsParticles.load("particles-js", {
-                background: { color: { value: "transparent" } },
                 particles: {
-                  number: { value: 300, density: { enable: true, value_area: 800 } },
-                  size: {
-                    value: { min: 1, max: 3 },
+                  number: {
+                    value: 200,
+                    density: {
+                      enable: true,
+                      value_area: 800
+                    }
                   },
-                  move: { 
-                    enable: true, 
-                    speed: 1, 
-                    direction: "none", 
-                    random: true, 
-                    straight: false, 
+                  color: {
+                    value: ["#845ec2", "#d65db1", "#ff6f91", "#ff9671", "#ffc75f", "#f9f871"]
+                  },
+                  shape: {
+                    type: "circle"
+                  },
+                  opacity: {
+                    value: 0.8,
+                    random: true,
+                    anim: {
+                      enable: true,
+                      speed: 0.5,
+                      opacity_min: 0.1,
+                      sync: false
+                    }
+                  },
+                  size: {
+                    value: 3,
+                    random: true,
+                    anim: {
+                      enable: false
+                    }
+                  },
+                  links: {
+                    enable: false
+                  },
+                  move: {
+                    enable: true,
+                    speed: 1,
+                    direction: "none",
+                    random: true,
+                    straight: false,
                     out_mode: "out",
+                    bounce: false,
                     attract: {
                       enable: true,
                       rotateX: 600,
                       rotateY: 1200
                     }
-                  },
-                  opacity: {
-                    value: { min: 0.3, max: 0.8 },
-                    animation: {
-                      enable: true,
-                      speed: 1,
-                      minimumValue: 0.1,
-                      sync: false
-                    }
-                  },
-                  color: {
-                    value: ["#2EB6E8", "#FFFFFF", "#FFC700"]
-                  },
-                  links: { enable: false }
-                },
-                interactivity: {
-                  events: {
-                    onhover: { enable: true, mode: "bubble" },
-                    onclick: { enable: true, mode: "push" }
-                  },
-                  modes: {
-                    bubble: { distance: 200, size: 5, duration: 2, opacity: 1, speed: 3 },
-                    push: { quantity: 2 }
                   }
                 },
-                detectRetina: true
+                interactivity: {
+                  detect_on: "canvas",
+                  events: {
+                    onhover: {
+                      enable: true,
+                      mode: "bubble"
+                    },
+                    onclick: {
+                      enable: true,
+                      mode: "push"
+                    },
+                    resize: true
+                  },
+                  modes: {
+                    bubble: {
+                      distance: 200,
+                      size: 8,
+                      duration: 2,
+                      opacity: 1,
+                      speed: 3
+                    },
+                    push: {
+                      particles_nb: 4
+                    }
+                  }
+                },
+                retina_detect: true
               });
             }
           `}
