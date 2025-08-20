@@ -594,12 +594,16 @@ export const MorningMuseClient: FC = () => {
               selectedImage ? t.previewImageTitle : t.generatedImageTitle
             }</DialogTitle>
           </DialogHeader>
-          <ScrollArea className="flex-grow">
-            <div className="flex justify-center items-center min-h-[400px] bg-muted/50 rounded-md relative p-4">
-              {isImageGenerating && <Loader className="w-12 h-12 animate-spin text-primary" />}
-              
-              {!isImageGenerating && !selectedImage && generatedImages && (
-                <div className="grid grid-cols-2 gap-4">
+          <div className="flex-grow min-h-0">
+            {isImageGenerating && (
+                <div className="flex justify-center items-center h-full">
+                    <Loader className="w-12 h-12 animate-spin text-primary" />
+                </div>
+            )}
+            
+            {!isImageGenerating && !selectedImage && generatedImages && (
+              <ScrollArea className="h-full">
+                <div className="grid grid-cols-2 gap-4 p-4">
                   {generatedImages.map((img, index) => (
                     <img 
                       key={index}
@@ -610,15 +614,15 @@ export const MorningMuseClient: FC = () => {
                     />
                   ))}
                 </div>
-              )}
+              </ScrollArea>
+            )}
 
-              {selectedImage && (
-                <div className="flex-grow flex justify-center items-center">
-                   <img src={selectedImage} alt="Selected generated art" className="rounded-md max-h-[calc(90vh-150px)] object-contain" />
-                </div>
-              )}
-            </div>
-          </ScrollArea>
+            {selectedImage && (
+              <div className="flex justify-center items-center h-full">
+                 <img src={selectedImage} alt="Selected generated art" className="rounded-md max-h-full max-w-full object-contain" />
+              </div>
+            )}
+          </div>
           <DialogFooter className="flex-shrink-0 flex flex-row sm:justify-end gap-2 mt-4">
             {selectedImage && (
               <>

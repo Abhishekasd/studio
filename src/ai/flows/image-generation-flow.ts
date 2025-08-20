@@ -166,7 +166,7 @@ const generateImageFlow = ai.defineFlow(
        prompt = `Generate a beautiful and artistic image that captures the essence of the following quote: "${input.prompt}". The style should be visually appealing and match the message's tone. Do not include any watermark.`;
     }
     
-    const imagePromises = Array(4).fill(0).map(() => 
+    const imagePromises = Array(6).fill(0).map(() => 
       ai.generate({
         model: 'googleai/gemini-2.0-flash-preview-image-generation',
         prompt: prompt,
