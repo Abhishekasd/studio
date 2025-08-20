@@ -55,6 +55,7 @@ import { Separator } from "@/components/ui/separator";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
+import { ScrollArea } from "./ui/scroll-area";
 
 const languages = [
   { value: "en", label: "English" },
@@ -586,37 +587,39 @@ export const MorningMuseClient: FC = () => {
       </div>
 
       <Dialog open={showImageDialog} onOpenChange={setShowImageDialog}>
-        <DialogContent className="max-w-4xl w-full">
+        <DialogContent className="max-w-4xl w-full max-h-[90vh] flex flex-col">
           <DialogHeader>
             <DialogTitle>{
               isImageGenerating ? t.generatingImageTitle : 
               selectedImage ? t.previewImageTitle : t.generatedImageTitle
             }</DialogTitle>
           </DialogHeader>
-          <div className="flex justify-center items-center min-h-[400px] bg-muted/50 rounded-md relative">
-            {isImageGenerating && <Loader className="w-12 h-12 animate-spin text-primary" />}
-            
-            {!isImageGenerating && !selectedImage && generatedImages && (
-              <div className="grid grid-cols-2 gap-4 p-4">
-                {generatedImages.map((img, index) => (
-                  <img 
-                    key={index}
-                    src={img} 
-                    alt={`Generated art ${index + 1}`} 
-                    className="rounded-md object-cover w-full h-full cursor-pointer hover:opacity-80 transition-opacity"
-                    onClick={() => setSelectedImage(img)}
-                  />
-                ))}
-              </div>
-            )}
+          <ScrollArea className="flex-grow">
+            <div className="flex justify-center items-center min-h-[400px] bg-muted/50 rounded-md relative p-4">
+              {isImageGenerating && <Loader className="w-12 h-12 animate-spin text-primary" />}
+              
+              {!isImageGenerating && !selectedImage && generatedImages && (
+                <div className="grid grid-cols-2 gap-4">
+                  {generatedImages.map((img, index) => (
+                    <img 
+                      key={index}
+                      src={img} 
+                      alt={`Generated art ${index + 1}`} 
+                      className="rounded-md object-cover w-full h-full cursor-pointer hover:opacity-80 transition-opacity"
+                      onClick={() => setSelectedImage(img)}
+                    />
+                  ))}
+                </div>
+              )}
 
-            {selectedImage && (
-              <div className="w-full h-full flex flex-col items-center">
-                 <img src={selectedImage} alt="Selected generated art" className="rounded-md max-h-[70vh] object-contain" />
-              </div>
-            )}
-          </div>
-          <DialogFooter className="flex flex-row sm:justify-end gap-2">
+              {selectedImage && (
+                <div className="flex flex-col items-center">
+                   <img src={selectedImage} alt="Selected generated art" className="rounded-md max-h-[70vh] object-contain" />
+                </div>
+              )}
+            </div>
+          </ScrollArea>
+          <DialogFooter className="flex-shrink-0 flex flex-row sm:justify-end gap-2 mt-4">
             {selectedImage && (
               <>
                  <Button type="button" variant="ghost" onClick={() => setSelectedImage(null)} className="mr-auto">
