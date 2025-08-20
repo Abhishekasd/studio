@@ -85,8 +85,6 @@ export const uiText: Record<string, Record<string, string>> = {
     personCharacteristicsPlaceholder: "Describe them in a few words...",
     regenerateMessage: "Generate a New Wish",
     enterNamePrompt: "Please enter a name to generate a wish.",
-    searchPrompt: "Or create your own image from text:",
-    searchPlaceholder: "Type anything, e.g., 'Ram Ram' or 'Good Luck!'",
     backToGrid: 'Back to Grid',
   },
   hi: {
@@ -174,8 +172,6 @@ export const uiText: Record<string, Record<string, string>> = {
     personCharacteristicsPlaceholder: "उन्हें कुछ शब्दों में वर्णित करें...",
     regenerateMessage: "एक नई शुभकामना उत्पन्न करें",
     enterNamePrompt: "शुभकामना उत्पन्न करने के लिए कृपया एक नाम दर्ज करें।",
-    searchPrompt: "या टेक्स्ट से अपनी खुद की छवि बनाएं:",
-    searchPlaceholder: "कुछ भी टाइप करें, जैसे, 'राम राम' या 'शुभकामनाएं!'",
     backToGrid: 'ग्रिड पर वापस',
   },
   es: {
@@ -263,8 +259,6 @@ export const uiText: Record<string, Record<string, string>> = {
     personCharacteristicsPlaceholder: "Descríbalos en pocas palabras...",
     regenerateMessage: "Generar un nuevo deseo",
     enterNamePrompt: "Por favor, introduzca un nombre para generar un deseo.",
-    searchPrompt: "O cree su propia imagen a partir de texto:",
-    searchPlaceholder: "Escriba cualquier cosa, por ejemplo, 'Ram Ram' o '¡Buena suerte!'",
     backToGrid: 'Volver a la cuadrícula',
   },
   ur: {
@@ -352,8 +346,6 @@ export const uiText: Record<string, Record<string, string>> = {
     personCharacteristicsPlaceholder: "انہیں چند الفاظ میں بیان کریں...",
     regenerateMessage: "ایک نئی خواہش پیدا کریں",
     enterNamePrompt: "خواہش پیدا کرنے کے لئے براہ مہربانی ایک نام درج کریں.",
-    searchPrompt: "یا متن سے اپنی تصویر بنائیں:",
-    searchPlaceholder: "کچھ بھی ٹائپ کریں، جیسے، 'رام رام' یا 'گڈ لک!'",
     backToGrid: 'گرڈ پر واپس',
   },
   sa: {
@@ -441,8 +433,6 @@ export const uiText: Record<string, Record<string, string>> = {
     personCharacteristicsPlaceholder: "कतिपयैः शब्दैः वर्णयन्तु...",
     regenerateMessage: "नूतनां शुभकामनां जनयतु",
     enterNamePrompt: "शुभकामनां जनयितुं कृपया नाम प्रविशतु।",
-    searchPrompt: "अथवा पाठात् स्वचित्रं रचयन्तु:",
-    searchPlaceholder: "किमपि लिखन्तु, यथा, 'राम राम' अथवा 'शुभकामनाः!'",
     backToGrid: 'जालकं प्रति गच्छतु',
   },
   pt: {
@@ -530,8 +520,6 @@ export const uiText: Record<string, Record<string, string>> = {
     personCharacteristicsPlaceholder: "Descreva-os em poucas palavras...",
     regenerateMessage: "Gerar um Novo Desejo",
     enterNamePrompt: "Por favor, digite um nome para gerar um desejo.",
-    searchPrompt: "Ou crie sua própria imagem a partir de texto:",
-    searchPlaceholder: "Digite qualquer coisa, ex: 'Ram Ram' ou 'Boa sorte!'",
     backToGrid: 'Voltar para a Grade',
   },
 };

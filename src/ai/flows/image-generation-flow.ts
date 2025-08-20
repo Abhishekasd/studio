@@ -149,20 +149,7 @@ const generateImageFlow = ai.defineFlow(
 4.  **No Watermark:** Do not include any watermarks or extra text. The image should only contain the greeting text and the background art.
 5.  **Style:** The style should be similar to popular digital greetings found on platforms like Pinterest or WhatsApp, often featuring vibrant colors and decorative elements.`;
       }
-    } else if (input.category === 'custom') {
-        prompt = `Create a beautiful and artistic image based on the following text: "${input.prompt}". The target language for any text in the image is **${input.language}**.
-        
-        **Instructions:**
-        1.  **Text as Art:** The primary focus should be the text itself, rendered in a creative, artistic, and visually appealing manner in the target language. The style should match the tone of the text (e.g., elegant for a quote, bold for a powerful statement, playful for a fun phrase).
-        2.  **Background Elements:** Add complementary background elements that enhance the text without overpowering it.
-        3.  **Contextual Intelligence:**
-            *   If the text is devotional (like "Ram Ram"), include a beautiful, artistic depiction of the relevant deity (like Ram ji) in the background.
-            *   Even if the prompt is in English, if the text is devotional and the target language is different (e.g., prompt is "Ram Ram", language is "hi"), the text in the image MUST be in the target language (e.g., "राम राम").
-            *   For general text, use abstract patterns, subtle textures, thematic illustrations, or beautiful color gradients.
-        4.  **Readability:** Ensure the text is clearly readable.
-        5.  **No Watermarks:** Do not add any watermarks or extra text.`;
-    }
-    else {
+    } else {
        prompt = `Generate a beautiful and artistic image that captures the essence of the following quote: "${input.prompt}". The style should be visually appealing and match the message's tone. Do not include any watermark.`;
     }
     
