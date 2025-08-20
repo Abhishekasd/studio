@@ -25,6 +25,7 @@ import {
   Star,
   Upload,
   Search,
+  ArrowLeft,
 } from "lucide-react";
 
 import { useMessageGenerator } from "@/hooks/use-message-generator";
@@ -107,7 +108,8 @@ export const MorningMuseClient: FC = () => {
   const [isFlipped, setIsFlipped] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
   const [isImageGenerating, setIsImageGenerating] = useState(false);
-  const [generatedImage, setGeneratedImage] = useState<string | null>(null);
+  const [generatedImages, setGeneratedImages] = useState<string[] | null>(null);
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [showImageDialog, setShowImageDialog] = useState(false);
   const [showShareOptionsDialog, setShowShareOptionsDialog] = useState(false);
   const [canShare, setCanShare] = useState(false);
@@ -171,7 +173,8 @@ export const MorningMuseClient: FC = () => {
 
     setIsImageGenerating(true);
     setShowImageDialog(true);
-    setGeneratedImage(null);
+    setGeneratedImages(null);
+    setSelectedImage(null);
     try {
       const result = await generateImage({ 
         prompt: textToGenerate,
@@ -181,7 +184,7 @@ export const MorningMuseClient: FC = () => {
         name: personName,
         photoDataUri: personImage || undefined,
       });
-      setGeneratedImage(result.imageDataUri);
+      setGeneratedImages(result.imageDataUris);
     } catch (error: any) {
       console.error("Error generating image:", error);
       toast({
@@ -196,9 +199,9 @@ export const MorningMuseClient: FC = () => {
   };
 
   const handleDownloadImage = () => {
-    if (!generatedImage) return;
+    if (!selectedImage) return;
     const link = document.createElement("a");
-    link.href = generatedImage;
+    link.href = selectedImage;
     link.download = "morning-muse-art.png";
     document.body.appendChild(link);
     link.click();
@@ -250,7 +253,7 @@ export const MorningMuseClient: FC = () => {
   };
   
   const handleShareImage = async () => {
-    if (!generatedImage) return;
+    if (!selectedImage) return;
 
     const shareData = {
       title: 'MorningMuse3D Art',
@@ -258,7 +261,7 @@ export const MorningMuseClient: FC = () => {
     };
 
     try {
-      const response = await fetch(generatedImage);
+      const response = await fetch(selectedImage);
       const blob = await response.blob();
       const file = new File([blob], 'morning-muse-art.png', { type: blob.type });
       
@@ -282,7 +285,7 @@ export const MorningMuseClient: FC = () => {
   };
 
   const handleFallbackShare = (platform: 'whatsapp' | 'telegram' | 'email') => {
-    if (!generatedImage) return;
+    if (!selectedImage) return;
     const text = encodeURIComponent(`${t.shareImageText} https://morningmuse.netlify.app/`);
     let url = '';
     switch (platform) {
@@ -583,25 +586,50 @@ export const MorningMuseClient: FC = () => {
       </div>
 
       <Dialog open={showImageDialog} onOpenChange={setShowImageDialog}>
-        <DialogContent className="max-w-md sm:max-w-xl">
+        <DialogContent className="max-w-4xl w-full">
           <DialogHeader>
-            <DialogTitle>{t.generatedImageTitle}</DialogTitle>
+            <DialogTitle>{
+              isImageGenerating ? t.generatingImageTitle : 
+              selectedImage ? t.previewImageTitle : t.generatedImageTitle
+            }</DialogTitle>
           </DialogHeader>
-          <div className="flex justify-center items-center min-h-[300px] bg-muted/50 rounded-md">
+          <div className="flex justify-center items-center min-h-[400px] bg-muted/50 rounded-md relative">
             {isImageGenerating && <Loader className="w-12 h-12 animate-spin text-primary" />}
-            {generatedImage && (
-              <img src={generatedImage} alt="Generated art" className="rounded-md max-h-[70vh] object-contain" />
+            
+            {!isImageGenerating && !selectedImage && generatedImages && (
+              <div className="grid grid-cols-2 gap-4 p-4">
+                {generatedImages.map((img, index) => (
+                  <img 
+                    key={index}
+                    src={img} 
+                    alt={`Generated art ${index + 1}`} 
+                    className="rounded-md object-cover w-full h-full cursor-pointer hover:opacity-80 transition-opacity"
+                    onClick={() => setSelectedImage(img)}
+                  />
+                ))}
+              </div>
+            )}
+
+            {selectedImage && (
+              <div className="w-full h-full flex flex-col items-center">
+                 <img src={selectedImage} alt="Selected generated art" className="rounded-md max-h-[70vh] object-contain" />
+              </div>
             )}
           </div>
           <DialogFooter className="flex flex-row sm:justify-end gap-2">
-            
-              <Button type="button" onClick={handleShareImage} disabled={!generatedImage || isImageGenerating}>
-                  <Share2 />{t.shareImage}
-              </Button>
-            
-            <Button type="button" onClick={handleDownloadImage} disabled={!generatedImage || isImageGenerating}>
-                <Download />{t.downloadImage}
-            </Button>
+            {selectedImage && (
+              <>
+                 <Button type="button" variant="ghost" onClick={() => setSelectedImage(null)} className="mr-auto">
+                    <ArrowLeft />{t.backToGrid}
+                 </Button>
+                 <Button type="button" onClick={handleShareImage} disabled={isImageGenerating}>
+                    <Share2 />{t.shareImage}
+                 </Button>
+                 <Button type="button" onClick={handleDownloadImage} disabled={isImageGenerating}>
+                    <Download />{t.downloadImage}
+                 </Button>
+              </>
+            )}
              <Button type="button" variant="secondary" onClick={() => setShowImageDialog(false)}>
                 <X />{t.close}
             </Button>
