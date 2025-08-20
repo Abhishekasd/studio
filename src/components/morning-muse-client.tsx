@@ -613,8 +613,8 @@ export const MorningMuseClient: FC = () => {
               )}
 
               {selectedImage && (
-                <div className="flex flex-col items-center">
-                   <img src={selectedImage} alt="Selected generated art" className="rounded-md max-h-[70vh] object-contain" />
+                <div className="flex-grow flex justify-center items-center">
+                   <img src={selectedImage} alt="Selected generated art" className="rounded-md max-h-[calc(90vh-150px)] object-contain" />
                 </div>
               )}
             </div>
