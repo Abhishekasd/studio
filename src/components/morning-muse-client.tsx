@@ -26,6 +26,7 @@ import {
   Upload,
   Search,
   ArrowLeft,
+  Lightbulb,
 } from "lucide-react";
 
 import { useMessageGenerator } from "@/hooks/use-message-generator";
@@ -84,9 +85,20 @@ function WhatsAppIcon(props: React.SVGProps<SVGSVGElement>) {
 
 export const MorningMuseClient: FC = () => {
   const [isMounted, setIsMounted] = useState(false);
+  const [showWelcomeDialog, setShowWelcomeDialog] = useState(false);
+
   useEffect(() => {
     setIsMounted(true);
+    const hasVisited = localStorage.getItem('hasVisitedMorningMuse');
+    if (!hasVisited) {
+      setShowWelcomeDialog(true);
+    }
   }, []);
+
+  const handleCloseWelcomeDialog = () => {
+    localStorage.setItem('hasVisitedMorningMuse', 'true');
+    setShowWelcomeDialog(false);
+  }
 
   const [language, setLanguage] = useState("en");
   const [category, setCategory] = useState("greeting");
@@ -585,6 +597,37 @@ export const MorningMuseClient: FC = () => {
           </p>
         </section>
       </div>
+
+      <Dialog open={showWelcomeDialog} onOpenChange={setShowWelcomeDialog}>
+        <DialogContent>
+            <DialogHeader>
+                <DialogTitle className="flex items-center gap-2">
+                    <Lightbulb className="text-primary w-6 h-6" />
+                    Welcome to MorningMuse3D!
+                </DialogTitle>
+                <DialogDescription>
+                    Here’s a quick guide to get you started on your journey of daily inspiration.
+                </DialogDescription>
+            </DialogHeader>
+            <div className="space-y-4 py-4 text-sm text-foreground/90">
+                <div className="flex items-start gap-4">
+                    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/20 text-primary font-bold">1</div>
+                    <p><strong>Choose Your Language & Category:</strong> Pick a language and then select a category like 'Motivational' or 'Shayari' to match your mood.</p>
+                </div>
+                <div className="flex items-start gap-4">
+                    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/20 text-primary font-bold">2</div>
+                    <p><strong>Receive Your Message:</strong> Get a unique, AI-generated message. Click 'Show Another' anytime for a new one!</p>
+                </div>
+                <div className="flex items-start gap-4">
+                    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/20 text-primary font-bold">3</div>
+                    <p><strong>Create AI Art:</strong> Click 'Generate Image' to transform your message into beautiful, shareable art. You'll get multiple options to choose from!</p>
+                </div>
+            </div>
+            <DialogFooter>
+                <Button onClick={handleCloseWelcomeDialog}>Let's Go!</Button>
+            </DialogFooter>
+        </DialogContent>
+      </Dialog>
 
       <Dialog open={showImageDialog} onOpenChange={setShowImageDialog}>
         <DialogContent className="max-w-4xl w-full max-h-[90vh] flex flex-col">
