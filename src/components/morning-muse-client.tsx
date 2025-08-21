@@ -26,6 +26,7 @@ import {
   Upload,
   ArrowLeft,
   Lightbulb,
+  Search,
 } from "lucide-react";
 
 import { useMessageGenerator } from "@/hooks/use-message-generator";
@@ -107,6 +108,7 @@ export const MorningMuseClient: FC = () => {
   const [personCharacteristics, setPersonCharacteristics] = useState("");
   const [personImage, setPersonImage] = useState<string | null>(null);
   const [isConvertingImage, setIsConvertingImage] = useState(false);
+  const [searchPrompt, setSearchPrompt] = useState("");
 
   const { currentMessage, getNewMessage, isLoading } = useMessageGenerator(
     language,
@@ -178,8 +180,8 @@ export const MorningMuseClient: FC = () => {
     }, 350)
   }
 
-  const handleGenerateImage = async () => {
-    const textToGenerate = currentMessage.text;
+  const handleGenerateImage = async (prompt?: string) => {
+    const textToGenerate = prompt || currentMessage.text;
     if (!textToGenerate) return;
 
     setIsImageGenerating(true);
@@ -190,7 +192,7 @@ export const MorningMuseClient: FC = () => {
       const result = await generateImage({ 
         prompt: textToGenerate,
         language: language,
-        category: category,
+        category: prompt ? 'custom' : category,
         subCategory: category === 'greeting' ? greetingImageSubCategory : undefined,
         name: personName,
         photoDataUri: personImage || undefined,
@@ -383,6 +385,28 @@ export const MorningMuseClient: FC = () => {
             </SelectContent>
           </Select>
         </header>
+
+         <div className="w-full space-y-4">
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+            <Input
+              value={searchPrompt}
+              onChange={(e) => setSearchPrompt(e.target.value)}
+              placeholder={t.searchPlaceholder}
+              className="pl-10 pr-32"
+            />
+            <Button
+              onClick={() => handleGenerateImage(searchPrompt)}
+              disabled={!searchPrompt || isImageGenerating || isConvertingImage}
+              className="absolute right-1 top-1/2 -translate-y-1/2 h-8"
+            >
+              {isImageGenerating ? <Loader className="animate-spin" /> : <Sparkles />}
+              <span className="hidden sm:inline ml-2">{t.generateImage}</span>
+            </Button>
+          </div>
+        </div>
+
+        <Separator className="w-3/4" />
 
         <div className="flex flex-wrap items-center justify-center gap-2">
           {categories.map((cat) => (

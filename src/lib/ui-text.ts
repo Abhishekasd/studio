@@ -86,6 +86,7 @@ export const uiText: Record<string, Record<string, string>> = {
     regenerateMessage: "Generate a New Wish",
     enterNamePrompt: "Please enter a name to generate a wish.",
     backToGrid: 'Back to Grid',
+    searchPlaceholder: 'Type anything to create an image... (e.g., Ram Ram)',
   },
   hi: {
     language: 'भाषा',
@@ -173,6 +174,7 @@ export const uiText: Record<string, Record<string, string>> = {
     regenerateMessage: "एक नई शुभकामना उत्पन्न करें",
     enterNamePrompt: "शुभकामना उत्पन्न करने के लिए कृपया एक नाम दर्ज करें।",
     backToGrid: 'ग्रिड पर वापस',
+    searchPlaceholder: 'एक छवि बनाने के लिए कुछ भी टाइप करें... (उदाहरण, राम राम)',
   },
   es: {
     language: 'Idioma',
@@ -260,6 +262,7 @@ export const uiText: Record<string, Record<string, string>> = {
     regenerateMessage: "Generar un nuevo deseo",
     enterNamePrompt: "Por favor, introduzca un nombre para generar un deseo.",
     backToGrid: 'Volver a la cuadrícula',
+    searchPlaceholder: 'Escribe cualquier cosa para crear una imagen... (p. ej., Ram Ram)',
   },
   ur: {
     language: 'زبان',
@@ -315,7 +318,7 @@ export const uiText: Record<string, Record<string, string>> = {
     howStep3Desc: 'ایک کلک کے ساتھ ایک خوبصورت، مماثل تصویر بنا کر اپنے پیغام کو زندہ کریں۔',
     categoriesTitle: 'ہمارے زمرے دریافت کریں',
     catMotivationalTitle: '💪 حوصلہ افزائی:',
-    catMotivationalDesc: 'اپنے دن کا آغاز طاقتور حوالوں سے کریں جو آپ کے عزائم اور ڈرائیو کو ہوا دیتے ہیں۔ یہ پیغامات آپ کو چیلنجوں سے نمٹنے اور نئے جوش کے साथ اپنے مقاصد کو حاصل کرنے کے لیے اضافی دباؤ دینے کے لیے بنائے گئے ہیں۔',
+    catMotivationalDesc: 'اپنے دن کا آغاز طاقتور حوالوں سے کریں جو آپ کے عزائم اور ڈرائیو کو ہوا دیتے ہیں۔ یہ پیغامات آپ کو چیلنجوں سے نمٹنے اور نئے جوش کے ساتھ اپنے مقاصد کو حاصل کرنے کے لیے اضافی دباؤ دینے کے لیے بنائے گئے ہیں۔',
     catSpiritualTitle: '🧘 روحانی:',
     catSpiritualDesc: 'گہری حکمت اور امن اور سکون کے پیغامات کے ساتھ اپنا مرکز تلاش کریں۔ انگریزی، ہندی اور سنسکرت میں، یہ زمرہ ہندو دیوتاؤں کا الہی فن پیدا کرتا ہے، جبکہ اردو میں، یہ خوبصورت اسلامی فن تخلیق کرتا ہے، جو ثقافتی طور پر قابل احترام تجربہ کو یقینی بناتا ہے۔',
     catShayariTitle: '📜 شاعری:',
@@ -347,6 +350,7 @@ export const uiText: Record<string, Record<string, string>> = {
     regenerateMessage: "ایک نئی خواہش پیدا کریں",
     enterNamePrompt: "خواہش پیدا کرنے کے لئے براہ مہربانی ایک نام درج کریں.",
     backToGrid: 'گرڈ پر واپس',
+    searchPlaceholder: 'ایک تصویر بنانے کے لیے کچھ بھی ٹائپ کریں... (مثال کے طور پر، رام رام)',
   },
   sa: {
     language: 'भाषा',
@@ -434,6 +438,7 @@ export const uiText: Record<string, Record<string, string>> = {
     regenerateMessage: "नूतनां शुभकामनां जनयतु",
     enterNamePrompt: "शुभकामनां जनयितुं कृपया नाम प्रविशतु।",
     backToGrid: 'जालकं प्रति गच्छतु',
+    searchPlaceholder: 'चित्रं निर्मातुं किमपि लिखन्तु... (उदा., राम राम)',
   },
   pt: {
     language: 'Idioma',
@@ -521,5 +526,6 @@ export const uiText: Record<string, Record<string, string>> = {
     regenerateMessage: "Gerar um Novo Desejo",
     enterNamePrompt: "Por favor, digite um nome para gerar um desejo.",
     backToGrid: 'Voltar para a Grade',
+    searchPlaceholder: 'Digite algo para criar uma imagem... (por exemplo, Ram Ram)',
   },
 };

@@ -149,6 +149,13 @@ const generateImageFlow = ai.defineFlow(
 4.  **No Watermark:** Do not include any watermarks or extra text. The image should only contain the greeting text and the background art.
 5.  **Style:** The style should be similar to popular digital greetings found on platforms like Pinterest or WhatsApp, often featuring vibrant colors and decorative elements.`;
       }
+    } else if (input.category === 'custom') {
+      let basePrompt = `Generate a beautiful and artistic image that captures the essence of the following text: "${input.prompt}". The style should be visually appealing and match the message's tone. Do not include any watermark. The text in the image should be in the language: ${input.language}.`;
+      // Specific enhancement for "Ram Ram"
+      if (input.prompt.toLowerCase().trim() === 'ram ram' && ['en', 'hi', 'sa'].includes(input.language)) {
+        basePrompt = `Create a beautiful, devotional greeting card image. The main focus MUST be the text "${input.prompt}" written in an artistic, clear, and devotional font in the ${input.language} language. The background should be a beautiful, artistic, and serene depiction of Ram ji or symbols associated with him (like a bow and arrow). The deity should be part of the background art, complementing the text, not overpowering it. The overall style should be vibrant and suitable for a spiritual greeting. Do not include any watermarks.`;
+      }
+      prompt = basePrompt;
     } else {
        prompt = `Generate a beautiful and artistic image that captures the essence of the following quote: "${input.prompt}". The style should be visually appealing and match the message's tone. Do not include any watermark.`;
     }
