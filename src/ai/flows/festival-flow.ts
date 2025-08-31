@@ -46,13 +46,13 @@ const getFestivalMessageFlow = ai.defineFlow(
 **Instructions:**
 1.  **Current Date:** The current date is {{{currentDate}}}.
 2.  **Research Festivals:** You must first determine if there are any notable festivals or observances on this specific date. Check for:
-    *   **Hindu Festivals:** Check the Panchang for festivals like Radha Ashtami, Mahalakshmi Vrat, Durva Ashtami, etc.
+    *   **Hindu Festivals:** Check the Panchang for festivals like Radha Ashtami, Mahalakshmi Vrat, Durva Ashtami, etc. For languages 'en', 'hi', 'sa', you should give these the highest priority.
     *   **Other Major Religious/Regional Festivals:** Check for significant events like Christmas, Diwali, Eid, Hanukkah, New Year's Day, etc.
     *   **National Holidays:** Check for independence days or major national holidays (e.g., Hari Merdeka in Malaysia).
     *   **International Observances:** Check for UN observances or global awareness days.
 3.  **Generate a Greeting:**
     *   **If a festival is found:** Identify the most significant or joyous festival for the day. Generate a relevant, single-sentence greeting for it in the requested language: **{{{language}}}**. The greeting should be unique and celebratory. Prioritize joyous festivals over solemn observances.
-    *   **If multiple festivals exist:** Pick the one that is most celebratory in nature. For example, prioritize Radha Ashtami over a Vrat or awareness day.
+    *   **If multiple festivals exist:** Pick the one that is most celebratory in nature. For example, you **must** prioritize Radha Ashtami over a Vrat, an awareness day, or a national holiday like Hari Merdeka.
     *   **If no festival is found:** Generate a generic, cheerful greeting like "Wishing you a day full of joy and celebration! 🎉". This must also be varied each time.
 4.  **Formatting:** The response must ONLY be the message text, ending with one or two relevant emojis. Do not add any extra commentary.
 

@@ -57,14 +57,14 @@ export const useMessageGenerator = (language: string, category: string, options:
   }, [language, category, options.name]);
 
 
-  const getNewMessage = useCallback(async () => {
+  const getNewMessage = useCallback(async (isInitialLoad = false) => {
     setIsLoading(true);
 
     if (category === 'festival') {
       try {
         const result = await getFestivalMessage({ language });
         const newMessage = result.message;
-        setCurrentMessage({ text: newMessage, key: newMessage });
+        setCurrentMessage({ text: newMessage, key: Date.now() }); // Use timestamp to force re-render
       } catch (error) {
         console.error("Error fetching festival message:", error);
         toast({
@@ -80,7 +80,11 @@ export const useMessageGenerator = (language: string, category: string, options:
     }
 
     if ((category === 'birthday' || category === 'anniversary') && !options.name) {
-        setCurrentMessage({ text: "Please enter a name to generate a message.", key: 'prompt_for_name' });
+        if (!isInitialLoad) {
+           setCurrentMessage({ text: "Please enter a name to generate a message.", key: 'prompt_for_name' });
+        } else {
+           setCurrentMessage({ text: "Enter a name to begin.", key: 'initial_prompt_for_name'})
+        }
         setIsLoading(false);
         return;
     }
@@ -121,7 +125,7 @@ export const useMessageGenerator = (language: string, category: string, options:
     if (sessionMessagesRef.current[category]) {
       sessionMessagesRef.current[category]!.clear();
     }
-    getNewMessage();
+    getNewMessage(true);
   }, [language, category]);
 
 
