@@ -29,16 +29,16 @@ import {
   Search,
 } from "lucide-react";
 
-import { useMessageGenerator } from "@/hooks/use-message-generator";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { useMessageGenerator } from "../hooks/use-message-generator";
+import { Button } from "./ui/button";
+import { Card, CardContent } from "./ui/card";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
+} from "./ui/select";
 import {
   Dialog,
   DialogContent,
@@ -46,16 +46,16 @@ import {
   DialogTitle,
   DialogFooter,
   DialogDescription,
-} from "@/components/ui/dialog";
-import { useToast } from "@/hooks/use-toast";
-import { SunIcon } from "@/components/icons";
-import { cn } from "@/lib/utils";
-import { uiText } from "@/lib/ui-text";
+} from "./ui/dialog";
+import { useToast } from "../hooks/use-toast";
+import { SunIcon } from "./icons";
+import { cn } from "../lib/utils";
+import { uiText } from "../lib/ui-text";
 import { generateImage } from "../ai/flows/image-generation-flow";
-import { Separator } from "@/components/ui/separator";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
+import { Separator } from "./ui/separator";
+import { Input } from "./ui/input";
+import { Textarea } from "./ui/textarea";
+import { Label } from "./ui/label";
 import { ScrollArea } from "./ui/scroll-area";
 
 const languages = [
@@ -718,5 +718,3 @@ const MainPage: FC = () => {
 };
 
 export default MainPage;
-
-    

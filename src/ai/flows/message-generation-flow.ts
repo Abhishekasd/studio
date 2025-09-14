@@ -10,7 +10,7 @@
 
 import {ai} from '../genkit';
 import {z} from 'zod';
-import {messages} from '@/lib/messages';
+import {messages} from '../../lib/messages';
 
 if (!process.env.GEMINI_API_KEY) {
   // This error will be caught by the client and displayed to the user.

@@ -2,9 +2,9 @@
 "use client";
 
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { messages } from '@/lib/messages';
-import { getFestivalMessage } from '@/ai/flows/festival-flow';
-import { getNewMessage as getNewAiMessage, MessageInput } from '@/ai/flows/message-generation-flow';
+import { messages } from '../lib/messages';
+import { getFestivalMessage } from '../ai/flows/festival-flow';
+import { getNewMessage as getNewAiMessage, MessageInput } from '../ai/flows/message-generation-flow';
 import { useToast } from './use-toast';
 
 interface Message {
