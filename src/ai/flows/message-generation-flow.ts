@@ -8,7 +8,7 @@
  * - MessageOutput - The return type for the getNewMessage function.
  */
 
-import {ai} from '@/ai/genkit';
+import {ai} from '../genkit';
 import {z} from 'zod';
 import {messages} from '@/lib/messages';
 

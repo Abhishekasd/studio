@@ -8,7 +8,7 @@
  * - GenerateImageOutput - The return type for the generateImage function.
  */
 
-import {ai} from '@/ai/genkit';
+import {ai} from '../genkit';
 import {z} from 'zod';
 
 if (!process.env.GEMINI_API_KEY) {

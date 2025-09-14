@@ -51,7 +51,7 @@ import { useToast } from "@/hooks/use-toast";
 import { SunIcon } from "@/components/icons";
 import { cn } from "@/lib/utils";
 import { uiText } from "@/lib/ui-text";
-import { generateImage } from "@/ai/flows/image-generation-flow";
+import { generateImage } from "../ai/flows/image-generation-flow";
 import { Separator } from "@/components/ui/separator";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -718,3 +718,5 @@ const MainPage: FC = () => {
 };
 
 export default MainPage;
+
+    
