@@ -83,7 +83,7 @@ function WhatsAppIcon(props: React.SVGProps<SVGSVGElement>) {
     );
 }
 
-export const MorningMuseClient: FC = () => {
+const MainPage: FC = () => {
   const [isMounted, setIsMounted] = useState(false);
   const [showWelcomeDialog, setShowWelcomeDialog] = useState(false);
 
@@ -716,3 +716,5 @@ export const MorningMuseClient: FC = () => {
     </>
   );
 };
+
+export default MainPage;
