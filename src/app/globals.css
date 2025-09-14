@@ -88,7 +88,7 @@
   * {
     @apply border-border;
   }
-  body {
+  html, body {
     @apply bg-transparent text-foreground;
   }
 }
