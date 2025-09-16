@@ -88,8 +88,8 @@
   * {
     @apply border-border;
   }
-  html, body {
-    @apply bg-transparent text-foreground;
+  body {
+    @apply bg-background text-foreground;
   }
 }
 

@@ -28,7 +28,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark">
+    <html lang="en" className="bg-transparent">
       <head>
         <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
@@ -36,116 +36,118 @@ export default function RootLayout({
         <link rel="manifest" href="/site.webmanifest" />
         <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js" defer></script>
         <script id="particles-config" defer>{`
-          if (window.particlesJS) {
-            window.particlesJS("particles-js", {
-              "particles": {
-                "number": {
-                  "value": 80,
-                  "density": {
-                    "enable": true,
-                    "value_area": 800
-                  }
-                },
-                "color": {
-                  "value": "#ffffff"
-                },
-                "shape": {
-                  "type": "circle",
-                  "stroke": {
-                    "width": 0,
-                    "color": "#000000"
-                  },
-                  "polygon": {
-                    "nb_sides": 5
-                  }
-                },
-                "opacity": {
-                  "value": 0.5,
-                  "random": false,
-                  "anim": {
-                    "enable": false,
-                    "speed": 1,
-                    "opacity_min": 0.1,
-                    "sync": false
-                  }
-                },
-                "size": {
-                  "value": 3,
-                  "random": true,
-                  "anim": {
-                    "enable": false,
-                    "speed": 40,
-                    "size_min": 0.1,
-                    "sync": false
-                  }
-                },
-                "line_linked": {
-                  "enable": true,
-                  "distance": 150,
-                  "color": "#ffffff",
-                  "opacity": 0.4,
-                  "width": 1
-                },
-                "move": {
-                  "enable": true,
-                  "speed": 6,
-                  "direction": "none",
-                  "random": false,
-                  "straight": false,
-                  "out_mode": "out",
-                  "bounce": false,
-                  "attract": {
-                    "enable": false,
-                    "rotateX": 600,
-                    "rotateY": 1200
-                  }
-                }
-              },
-              "interactivity": {
-                "detect_on": "canvas",
-                "events": {
-                  "onhover": {
-                    "enable": true,
-                    "mode": "repulse"
-                  },
-                  "onclick": {
-                    "enable": true,
-                    "mode": "push"
-                  },
-                  "resize": true
-                },
-                "modes": {
-                  "grab": {
-                    "distance": 400,
-                    "line_linked": {
-                      "opacity": 1
+          document.addEventListener('DOMContentLoaded', () => {
+            if (window.particlesJS) {
+              window.particlesJS("particles-js", {
+                "particles": {
+                  "number": {
+                    "value": 80,
+                    "density": {
+                      "enable": true,
+                      "value_area": 800
                     }
                   },
-                  "bubble": {
-                    "distance": 400,
-                    "size": 40,
-                    "duration": 2,
-                    "opacity": 8,
-                    "speed": 3
+                  "color": {
+                    "value": "#ffffff"
                   },
-                  "repulse": {
-                    "distance": 200,
-                    "duration": 0.4
+                  "shape": {
+                    "type": "circle",
+                    "stroke": {
+                      "width": 0,
+                      "color": "#000000"
+                    },
+                    "polygon": {
+                      "nb_sides": 5
+                    }
                   },
-                  "push": {
-                    "particles_nb": 4
+                  "opacity": {
+                    "value": 0.5,
+                    "random": false,
+                    "anim": {
+                      "enable": false,
+                      "speed": 1,
+                      "opacity_min": 0.1,
+                      "sync": false
+                    }
                   },
-                  "remove": {
-                    "particles_nb": 2
+                  "size": {
+                    "value": 3,
+                    "random": true,
+                    "anim": {
+                      "enable": false,
+                      "speed": 40,
+                      "size_min": 0.1,
+                      "sync": false
+                    }
+                  },
+                  "line_linked": {
+                    "enable": true,
+                    "distance": 150,
+                    "color": "#ffffff",
+                    "opacity": 0.4,
+                    "width": 1
+                  },
+                  "move": {
+                    "enable": true,
+                    "speed": 6,
+                    "direction": "none",
+                    "random": false,
+                    "straight": false,
+                    "out_mode": "out",
+                    "bounce": false,
+                    "attract": {
+                      "enable": false,
+                      "rotateX": 600,
+                      "rotateY": 1200
+                    }
                   }
-                }
-              },
-              "retina_detect": true
-            });
-          }
+                },
+                "interactivity": {
+                  "detect_on": "canvas",
+                  "events": {
+                    "onhover": {
+                      "enable": true,
+                      "mode": "repulse"
+                    },
+                    "onclick": {
+                      "enable": true,
+                      "mode": "push"
+                    },
+                    "resize": true
+                  },
+                  "modes": {
+                    "grab": {
+                      "distance": 400,
+                      "line_linked": {
+                        "opacity": 1
+                      }
+                    },
+                    "bubble": {
+                      "distance": 400,
+                      "size": 40,
+                      "duration": 2,
+                      "opacity": 8,
+                      "speed": 3
+                    },
+                    "repulse": {
+                      "distance": 200,
+                      "duration": 0.4
+                    },
+                    "push": {
+                      "particles_nb": 4
+                    },
+                    "remove": {
+                      "particles_nb": 2
+                    }
+                  }
+                },
+                "retina_detect": true
+              });
+            }
+          });
         `}</script>
       </head>
-      <body className={cn("min-h-screen font-sans antialiased", poppins.className)}>
+      <body className={cn("dark min-h-screen font-sans antialiased", poppins.className)}>
         <div id="particles-js"></div>
           {children}
         <Toaster />
