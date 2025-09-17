@@ -126,7 +126,7 @@ export const useMessageGenerator = (language: string, category: string, options:
       sessionMessagesRef.current[category]!.clear();
     }
     getNewMessage(true);
-  }, [language, category]);
+  }, [language, category, getNewMessage]);
 
 
   return { currentMessage, getNewMessage, isLoading };
