@@ -22,17 +22,17 @@ const ParticlesBackground: React.FC = () => {
         window.particlesJS('particles-js', {
           "particles": {
             "number": {
-              "value": 15, // Fewer particles for a cleaner look
+              "value": 80,
               "density": {
                 "enable": true,
                 "value_area": 800
               }
             },
             "color": {
-              "value": "#ffffff" // Birds will be white
+              "value": "#ffffff"
             },
             "shape": {
-              "type": "edge", // A 'V' shape, like a bird
+              "type": "circle",
               "stroke": {
                 "width": 0,
                 "color": "#000000"
@@ -42,33 +42,37 @@ const ParticlesBackground: React.FC = () => {
               }
             },
             "opacity": {
-              "value": 0.8,
+              "value": 0.5,
               "random": true,
               "anim": {
                 "enable": true,
-                "speed": 0.5,
-                "opacity_min": 0.3,
+                "speed": 1,
+                "opacity_min": 0.1,
                 "sync": false
               }
             },
             "size": {
-              "value": 5,
+              "value": 3,
               "random": true,
               "anim": {
                 "enable": false,
-                "speed": 4,
-                "size_min": 3,
+                "speed": 40,
+                "size_min": 0.1,
                 "sync": false
               }
             },
             "line_linked": {
-              "enable": false // No lines connecting the birds
+              "enable": true,
+              "distance": 150,
+              "color": "#ffffff",
+              "opacity": 0.4,
+              "width": 1
             },
             "move": {
               "enable": true,
-              "speed": 2, // Slower, more graceful movement
+              "speed": 2,
               "direction": "none",
-              "random": true,
+              "random": false,
               "straight": false,
               "out_mode": "out",
               "bounce": false,
@@ -84,11 +88,11 @@ const ParticlesBackground: React.FC = () => {
             "events": {
               "onhover": {
                 "enable": true,
-                "mode": "bubble" // Birds get slightly bigger on hover
+                "mode": "repulse"
               },
               "onclick": {
                 "enable": true,
-                "mode": "push" // Click to push them away gently
+                "mode": "push"
               },
               "resize": true
             },
@@ -100,14 +104,14 @@ const ParticlesBackground: React.FC = () => {
                 }
               },
               "bubble": {
-                "distance": 150,
-                "size": 8,
+                "distance": 400,
+                "size": 40,
                 "duration": 2,
-                "opacity": 1,
+                "opacity": 8,
                 "speed": 3
               },
               "repulse": {
-                "distance": 100,
+                "distance": 200,
                 "duration": 0.4
               },
               "push": {
