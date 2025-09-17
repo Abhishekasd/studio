@@ -9,6 +9,7 @@ declare global {
     mozCancelAnimationFrame: any;
     webkitCancelAnimationFrame: any;
     msCancelAnimationFrame: any;
+    pJSDom?: { pJS: { fn: { vendors: { destroypJS: () => void } } } }[];
   }
 }
 
@@ -22,14 +23,14 @@ const ParticlesBackground: React.FC = () => {
         window.particlesJS('particles-js', {
           "particles": {
             "number": {
-              "value": 80,
+              "value": 60,
               "density": {
                 "enable": true,
                 "value_area": 800
               }
             },
             "color": {
-              "value": "#ffffff"
+              "value": "#FFD700"
             },
             "shape": {
               "type": "circle",
@@ -37,16 +38,13 @@ const ParticlesBackground: React.FC = () => {
                 "width": 0,
                 "color": "#000000"
               },
-              "polygon": {
-                "nb_sides": 5
-              }
             },
             "opacity": {
-              "value": 0.5,
+              "value": 0.6,
               "random": true,
               "anim": {
                 "enable": true,
-                "speed": 1,
+                "speed": 0.8,
                 "opacity_min": 0.1,
                 "sync": false
               }
@@ -55,24 +53,24 @@ const ParticlesBackground: React.FC = () => {
               "value": 3,
               "random": true,
               "anim": {
-                "enable": false,
-                "speed": 40,
-                "size_min": 0.1,
+                "enable": true,
+                "speed": 2,
+                "size_min": 0.5,
                 "sync": false
               }
             },
             "line_linked": {
               "enable": true,
               "distance": 150,
-              "color": "#ffffff",
-              "opacity": 0.4,
+              "color": "#FFD700",
+              "opacity": 0.2,
               "width": 1
             },
             "move": {
               "enable": true,
-              "speed": 2,
+              "speed": 1,
               "direction": "none",
-              "random": false,
+              "random": true,
               "straight": false,
               "out_mode": "out",
               "bounce": false,
@@ -80,6 +78,13 @@ const ParticlesBackground: React.FC = () => {
                 "enable": false,
                 "rotateX": 600,
                 "rotateY": 1200
+              }
+            },
+            "twinkle": {
+              "particles": {
+                "enable": true,
+                "frequency": 0.05,
+                "opacity": 1
               }
             }
           },
@@ -111,7 +116,7 @@ const ParticlesBackground: React.FC = () => {
                 "speed": 3
               },
               "repulse": {
-                "distance": 200,
+                "distance": 150,
                 "duration": 0.4
               },
               "push": {
@@ -129,14 +134,14 @@ const ParticlesBackground: React.FC = () => {
     document.body.appendChild(script);
 
     return () => {
-      document.body.removeChild(script);
+      if (document.body.contains(script)) {
+        document.body.removeChild(script);
+      }
       const pjs = document.getElementById('particles-js');
       if (pjs) {
-        pjs.remove();
-      }
-      const canvas = document.querySelector('.particles-js-canvas-el');
-      if(canvas) {
-        canvas.remove();
+        while (pjs.firstChild) {
+          pjs.removeChild(pjs.firstChild);
+        }
       }
        if (window.pJSDom && window.pJSDom.length > 0) {
         window.pJSDom[0].pJS.fn.vendors.destroypJS();
