@@ -367,7 +367,7 @@ const MainPage: FC = () => {
         <header className="flex w-full flex-col items-center justify-between gap-4 sm:flex-row">
           <div className="flex items-center gap-3 text-2xl sm:text-3xl font-bold tracking-tight text-primary">
             <SunIcon className="h-7 w-7 sm:h-8 sm:w-8 animate-spin [animation-duration:15s]" />
-            <h1 className="bg-gradient-to-r from-primary via-amber-200 to-primary bg-clip-text text-transparent">
+            <h1 className="bg-gradient-to-r from-primary via-amber-200 to-primary bg-clip-text text-transparent whitespace-nowrap">
               MorningMuse3D
             </h1>
           </div>
@@ -718,3 +718,4 @@ const MainPage: FC = () => {
 };
 
 export default MainPage;
+
